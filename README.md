@@ -9,38 +9,6 @@
 
 ---
 
-## Cheat Sheet（最短常用版）
-
-### 开始前先同步
-
-```bash
-cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
-git pull origin main
-```
-
-### 修改完成后提交并推送
-
-```bash
-git status
-git add .
-git commit -m "更新 CPA 资料"
-git push origin main
-```
-
-### 只想快速看状态
-
-```bash
-git status
-```
-
-### 改乱了，撤销未提交修改
-
-```bash
-git restore .
-```
-
----
-
 ## 1. 先进入仓库
 
 你的仓库根目录是：
@@ -225,60 +193,7 @@ git push origin main
 
 ---
 
-## 10. 终端里不要复制的内容
-
-### 不要把 Markdown 标记一起复制进终端
-
-下面这种写法里的 ````bash` 和结尾的 ``` 只是文档格式，不是命令：
-
-```text
-```bash
-git commit -m "更新 CPA 资料"
-```
-```
-
-你在终端里真正要输入的只有这一行：
-
-```bash
-git commit -m "更新 CPA 资料"
-```
-
-### 不要把两条命令粘在同一行
-
-错误示例：
-
-```text
-cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Fliesgit commit -m "更新 CPA 资料"
-```
-
-正确示例：
-
-```bash
-cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
-git commit -m "更新 CPA 资料"
-```
-
-### 如果看到 `dquote>` 是什么意思
-
-这表示你上一条命令里的双引号 `"` 没有闭合，终端正在等你把命令补完。
-
-这时候不要继续乱输，直接按：
-
-```bash
-Ctrl + C
-```
-
-然后重新输入正确命令。
-
-### 最稳妥的输入方式
-
-- 一行只输一条命令
-- 只复制代码块里面的命令，不复制 ```bash 这些标记
-- 路径里有空格时，一定加双引号
-
----
-
-## 11. 最常用的极简版本
+## 10. 最常用的极简版本
 
 如果你平时只想记最核心的 5 条，就记这个：
 
