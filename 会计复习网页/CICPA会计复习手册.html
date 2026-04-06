@@ -141,57 +141,15 @@
 
     .filter-list,
     .chip-list,
-    .tag-row,
-    .link-row,
-    .stat-grid,
-    .mode-list,
-    .card-actions {
+    .tag-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
 
-    .card-actions {
-      margin-top: 16px;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat-card {
-      padding: 14px;
-      border: 1px solid rgba(28, 22, 15, 0.08);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.74);
-    }
-
-    .stat-label {
-      margin: 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .stat-value {
-      margin: 8px 0 0;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--brand-deep);
-    }
-
-    .stat-note {
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
     .filter-button,
     .chip,
-    .tag,
-    .mode-button,
-    .card-toggle {
+    .tag {
       border: 1px solid rgba(28, 22, 15, 0.1);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.78);
@@ -199,17 +157,14 @@
     }
 
     .filter-button,
-    .chip,
-    .mode-button,
-    .card-toggle {
+    .chip {
       padding: 10px 14px;
       cursor: pointer;
       font-size: 14px;
     }
 
     .filter-button.active,
-    .chip.active,
-    .mode-button.active {
+    .chip.active {
       border-color: transparent;
       background: linear-gradient(135deg, var(--brand), #d3733e);
       color: #fff;
@@ -248,15 +203,6 @@
       cursor: pointer;
     }
 
-    .card-toggle {
-      color: var(--brand-deep);
-      background: rgba(255, 255, 255, 0.92);
-    }
-
-    .card-toggle:hover {
-      border-color: rgba(182, 84, 42, 0.2);
-    }
-
     .results-meta {
       margin: 12px 2px 10px;
       font-size: 14px;
@@ -291,9 +237,7 @@
 
     .topic-badge,
     .difficulty-badge,
-    .status-badge,
-    .tag,
-    .link-chip {
+    .tag {
       position: relative;
       z-index: 1;
       display: inline-flex;
@@ -316,12 +260,6 @@
       border-radius: 999px;
     }
 
-    .status-badge {
-      background: rgba(182, 84, 42, 0.12);
-      color: var(--brand-deep);
-      border-radius: 999px;
-    }
-
     .question-title {
       margin: 0;
       font-size: 24px;
@@ -332,69 +270,12 @@
       line-height: 1.75;
     }
 
-    .meta-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .meta-item {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.68);
-      border: 1px solid rgba(28, 22, 15, 0.08);
-    }
-
-    .meta-item strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .meta-item span {
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
     .section-block {
       position: relative;
       z-index: 1;
       margin-top: 16px;
       padding-top: 16px;
       border-top: 1px dashed rgba(28, 22, 15, 0.12);
-    }
-
-    .section-block.compact {
-      margin-top: 12px;
-      padding-top: 12px;
-    }
-
-    .section-block.is-hidden {
-      display: none;
-    }
-
-    .section-caption {
-      margin: 10px 0 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .link-chip {
-      border: 1px solid rgba(47, 125, 107, 0.14);
-      border-radius: 999px;
-      background: rgba(47, 125, 107, 0.08);
-      color: var(--mint);
-      cursor: pointer;
-      transition: transform 0.18s ease, background 0.18s ease;
-    }
-
-    .link-chip:hover {
-      transform: translateY(-1px);
-      background: rgba(47, 125, 107, 0.14);
     }
 
     .tag {
@@ -418,11 +299,6 @@
 
       .controls {
         order: 2;
-      }
-
-      .meta-grid,
-      .stat-grid {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -471,49 +347,8 @@
         </section>
 
         <section>
-          <h2>章节筛选</h2>
-          <div id="chapter-filters" class="chip-list"></div>
-        </section>
-
-        <section>
-          <h2>状态筛选</h2>
-          <div id="status-filters" class="chip-list"></div>
-        </section>
-
-        <section>
           <h2>标签筛选</h2>
           <div id="tag-filters" class="chip-list"></div>
-        </section>
-
-        <section class="memory-box">
-          <h2>知识总览</h2>
-          <div class="stat-grid">
-            <article class="stat-card">
-              <p class="stat-label">当前专题</p>
-              <p id="topic-count" class="stat-value">0</p>
-              <p class="stat-note">已收录专题数</p>
-            </article>
-            <article class="stat-card">
-              <p class="stat-label">高频易错</p>
-              <p id="critical-count" class="stat-value">0</p>
-              <p class="stat-note">建议优先二刷</p>
-            </article>
-            <article class="stat-card">
-              <p class="stat-label">临考必看</p>
-              <p id="final-review-count" class="stat-value">0</p>
-              <p class="stat-note">冲刺阶段优先看</p>
-            </article>
-            <article class="stat-card">
-              <p class="stat-label">已理解待巩固</p>
-              <p id="reviewing-count" class="stat-value">0</p>
-              <p class="stat-note">适合做二次回顾</p>
-            </article>
-          </div>
-        </section>
-
-        <section>
-          <h2>复习模式</h2>
-          <div id="mode-filters" class="mode-list"></div>
         </section>
 
         <section class="memory-box">
@@ -546,27 +381,9 @@
       <div class="qa-topline">
         <span class="topic-badge"></span>
         <span class="difficulty-badge"></span>
-        <span class="status-badge"></span>
       </div>
       <h3 class="question-title"></h3>
       <p class="question-summary"></p>
-      <div class="meta-grid">
-        <div class="meta-item">
-          <strong>所属章节</strong>
-          <span class="chapter-value"></span>
-        </div>
-        <div class="meta-item">
-          <strong>学习阶段</strong>
-          <span class="phase-value"></span>
-        </div>
-      </div>
-      <div class="section-block compact">
-        <h4>核心判断</h4>
-        <p class="section-caption key-judgement"></p>
-      </div>
-      <div class="card-actions">
-        <button class="card-toggle" type="button">收起详解</button>
-      </div>
       <div class="section-block">
         <h4>结论</h4>
         <ul class="bullet conclusion-list"></ul>
@@ -583,27 +400,18 @@
         <h4>易错点</h4>
         <ul class="bullet pitfalls-list"></ul>
       </div>
-      <div class="section-block compact">
-        <h4>关联知识点</h4>
-        <div class="link-row related-list"></div>
-      </div>
       <div class="tag-row"></div>
     </article>
   </template>
 
   <script>
     const studyData = {
-      updatedAt: "2026-03-10",
+      updatedAt: "2026-03-28",
       entries: [
         {
           id: "consolidation-downstream-minority-profit",
           topic: "合并财务报表",
-          chapter: "长期股权投资与合并报表",
-          phase: "二轮强化",
-          status: "高频回看",
           difficulty: "高频易错",
-          keyJudgement: "先判断未实现内部利润最初记在谁账上，再判断是否影响少数股东损益。",
-          related: ["顺流与逆流交易区别", "固定资产内部交易", "少数股东损益归属逻辑"],
           question: "为什么顺流交易不影响少数股东损益？",
           summary: "顺流交易里未实现内部利润最初确认在母公司，所以合并抵销时冲减的是归母利润，而不是少数股东损益。",
           conclusion: [
@@ -629,21 +437,16 @@
         {
           id: "consolidation-downstream-upstream-comparison",
           topic: "合并财务报表",
-          chapter: "长期股权投资与合并报表",
-          phase: "一轮打底",
-          status: "已理解待巩固",
           difficulty: "高频基础",
-          keyJudgement: "顺流还是逆流不是最终答案，关键看利润源头在母公司还是子公司。",
-          related: ["顺流交易不影响少数股东损益", "逆流交易少数股东调整", "内部交易抵销思路"],
           question: "顺流交易和逆流交易对少数股东损益的影响有什么区别？",
-          summary: "顺流交易与逆流交易的关键差异，不在交易方向本身，而在未实现内部利润最初形成于母公司还是子公司。",
+          summary: "核心差异在于未实现内部利润最初记在母公司还是子公司。来源在母公司时只冲归母，来源在子公司时归母和少数都要调。",
           conclusion: [
             "顺流交易：只影响归属于母公司净利润，不影响少数股东损益。",
             "逆流交易：影响归母净利润，也影响少数股东损益。"
           ],
           reasoning: [
             "顺流交易中，内部利润来自母公司，因此抵销时只影响归母净利润。",
-            "逆流交易中，内部利润来自子公司，而子公司利润需要在合并中分拆为归母和少数股东两部分，因此抵销时少数股东损益也要调整。"
+            "逆流交易中，内部利润来自子公司，而子公司利润需要在合并中分拆为归母和少数股东两部分，因此少数股东损益也要调整。"
           ],
           memory: [
             "顺流利润在母，冲归母。",
@@ -658,12 +461,7 @@
         {
           id: "fixed-assets-internal-trade-core-logic",
           topic: "合并财务报表",
-          chapter: "长期股权投资与合并报表",
-          phase: "二轮强化",
-          status: "高频回看",
           difficulty: "高频提高",
-          keyJudgement: "固定资产内部交易不是只抵销一笔损益，还要把后续折旧一起拉回集团口径。",
-          related: ["顺流与逆流交易区别", "折旧调整逻辑", "少数股东损益归属逻辑"],
           question: "固定资产内部交易是否也遵循同样逻辑？",
           summary: "遵循同样逻辑，仍然看内部损益最初记在哪一方。只是固定资产题目比存货多一步折旧调整。",
           conclusion: [
@@ -689,12 +487,7 @@
         {
           id: "downstream-fixed-assets-depreciation",
           topic: "合并财务报表",
-          chapter: "长期股权投资与合并报表",
-          phase: "冲刺回看",
-          status: "临考必看",
           difficulty: "高频易错",
-          keyJudgement: "虽然折旧发生在子公司账上，但差异源头仍来自母公司前期内部虚增利润。",
-          related: ["固定资产内部交易是否也遵循同样逻辑", "顺流交易不影响少数股东损益", "折旧调整逻辑"],
           question: "顺流固定资产交易中，多抵销的折旧会影响少数股东损益吗？",
           summary: "一般不影响。多提折旧本质上是母公司前期内部虚增利润在后续期间的延续影响，因此通常仍然归属于母公司调整。",
           conclusion: [
@@ -721,28 +514,16 @@
     const state = {
       search: "",
       topic: "全部",
-      chapter: "全部",
-      status: "全部",
-      tag: "全部",
-      mode: "全部"
+      tag: "全部"
     };
-
-    const reviewModes = ["全部", "完整模式", "只看易错点", "只看口诀", "只看结论"];
 
     const searchInput = document.querySelector("#search-input");
     const topicFilters = document.querySelector("#topic-filters");
-    const chapterFilters = document.querySelector("#chapter-filters");
-    const statusFilters = document.querySelector("#status-filters");
     const tagFilters = document.querySelector("#tag-filters");
-    const modeFilters = document.querySelector("#mode-filters");
     const cardList = document.querySelector("#card-list");
     const resultsMeta = document.querySelector("#results-meta");
     const entryCount = document.querySelector("#entry-count");
     const updatedAt = document.querySelector("#updated-at");
-    const topicCount = document.querySelector("#topic-count");
-    const criticalCount = document.querySelector("#critical-count");
-    const finalReviewCount = document.querySelector("#final-review-count");
-    const reviewingCount = document.querySelector("#reviewing-count");
     const clearFiltersButton = document.querySelector("#clear-filters");
     const cardTemplate = document.querySelector("#card-template");
 
@@ -756,25 +537,18 @@
 
     function matchesFilters(entry) {
       const topicMatch = state.topic === "全部" || entry.topic === state.topic;
-      const chapterMatch = state.chapter === "全部" || entry.chapter === state.chapter;
-      const statusMatch = state.status === "全部" || entry.status === state.status;
       const tagMatch = state.tag === "全部" || entry.tags.includes(state.tag);
       const haystack = [
         entry.question,
         entry.summary,
-        entry.chapter,
-        entry.phase,
-        entry.status,
-        entry.keyJudgement,
         ...entry.conclusion,
         ...entry.reasoning,
         ...entry.memory,
         ...entry.pitfalls,
-        ...entry.tags,
-        ...entry.related
+        ...entry.tags
       ].join(" ").toLowerCase();
       const searchMatch = !state.search || haystack.includes(state.search);
-      return topicMatch && chapterMatch && statusMatch && tagMatch && searchMatch;
+      return topicMatch && tagMatch && searchMatch;
     }
 
     function renderFilterGroup(container, values, activeValue, variant, onClick) {
@@ -789,58 +563,6 @@
         }
         button.addEventListener("click", () => onClick(value));
         container.appendChild(button);
-      });
-    }
-
-    function applyReviewMode(fragment, entry) {
-      const conclusionBlock = fragment.querySelector(".conclusion-list").closest(".section-block");
-      const reasoningBlock = fragment.querySelector(".reasoning-list").closest(".section-block");
-      const memoryBlock = fragment.querySelector(".memory-list").closest(".section-block");
-      const pitfallsBlock = fragment.querySelector(".pitfalls-list").closest(".section-block");
-      const relatedBlock = fragment.querySelector(".related-list").closest(".section-block");
-
-      [conclusionBlock, reasoningBlock, memoryBlock, pitfallsBlock, relatedBlock].forEach((block) => {
-        block.classList.remove("is-hidden");
-      });
-
-      if (state.mode === "只看易错点") {
-        conclusionBlock.classList.add("is-hidden");
-        reasoningBlock.classList.add("is-hidden");
-        memoryBlock.classList.add("is-hidden");
-        relatedBlock.classList.add("is-hidden");
-      }
-
-      if (state.mode === "只看口诀") {
-        conclusionBlock.classList.add("is-hidden");
-        reasoningBlock.classList.add("is-hidden");
-        pitfallsBlock.classList.add("is-hidden");
-        relatedBlock.classList.add("is-hidden");
-      }
-
-      if (state.mode === "只看结论") {
-        reasoningBlock.classList.add("is-hidden");
-        memoryBlock.classList.add("is-hidden");
-        pitfallsBlock.classList.add("is-hidden");
-        relatedBlock.classList.add("is-hidden");
-      }
-    }
-
-    function attachCardToggle(fragment) {
-      const toggleButton = fragment.querySelector(".card-toggle");
-      const toggleTargets = [
-        fragment.querySelector(".reasoning-list").closest(".section-block"),
-        fragment.querySelector(".memory-list").closest(".section-block"),
-        fragment.querySelector(".pitfalls-list").closest(".section-block"),
-        fragment.querySelector(".related-list").closest(".section-block")
-      ];
-      let collapsed = false;
-
-      toggleButton.addEventListener("click", () => {
-        collapsed = !collapsed;
-        toggleTargets.forEach((block) => {
-          block.classList.toggle("is-hidden", collapsed);
-        });
-        toggleButton.textContent = collapsed ? "展开详解" : "收起详解";
       });
     }
 
@@ -859,12 +581,8 @@
         const fragment = cardTemplate.content.cloneNode(true);
         fragment.querySelector(".topic-badge").textContent = entry.topic;
         fragment.querySelector(".difficulty-badge").textContent = entry.difficulty;
-        fragment.querySelector(".status-badge").textContent = entry.status;
         fragment.querySelector(".question-title").textContent = entry.question;
         fragment.querySelector(".question-summary").textContent = entry.summary;
-        fragment.querySelector(".chapter-value").textContent = entry.chapter;
-        fragment.querySelector(".phase-value").textContent = entry.phase;
-        fragment.querySelector(".key-judgement").textContent = entry.keyJudgement;
 
         const mapping = [
           [".conclusion-list", entry.conclusion],
@@ -886,30 +604,12 @@
           tagRow.appendChild(span);
         });
 
-        const relatedList = fragment.querySelector(".related-list");
-        entry.related.forEach((item) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "link-chip";
-          button.textContent = item;
-          button.addEventListener("click", () => {
-            state.search = normalizeText(item);
-            searchInput.value = item;
-            renderAll();
-          });
-          relatedList.appendChild(button);
-        });
-
-        applyReviewMode(fragment, entry);
-        attachCardToggle(fragment);
         cardList.appendChild(fragment);
       });
     }
 
     function renderFilters() {
       const topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
-      const chapters = uniqueValues(studyData.entries.map((entry) => entry.chapter));
-      const statuses = uniqueValues(studyData.entries.map((entry) => entry.status));
       const tags = uniqueValues(studyData.entries.flatMap((entry) => entry.tags));
 
       renderFilterGroup(topicFilters, topics, state.topic, "filter-button", (value) => {
@@ -917,23 +617,8 @@
         renderAll();
       });
 
-      renderFilterGroup(chapterFilters, chapters, state.chapter, "chip", (value) => {
-        state.chapter = value;
-        renderAll();
-      });
-
-      renderFilterGroup(statusFilters, statuses, state.status, "chip", (value) => {
-        state.status = value;
-        renderAll();
-      });
-
       renderFilterGroup(tagFilters, tags, state.tag, "chip", (value) => {
         state.tag = value;
-        renderAll();
-      });
-
-      renderFilterGroup(modeFilters, reviewModes, state.mode, "mode-button", (value) => {
-        state.mode = value;
         renderAll();
       });
     }
@@ -942,13 +627,9 @@
       renderFilters();
       const filteredEntries = studyData.entries.filter(matchesFilters);
       renderCards(filteredEntries);
-      resultsMeta.textContent = `当前显示 ${filteredEntries.length} / ${studyData.entries.length} 个知识点 · 专题 ${state.topic} · 章节 ${state.chapter} · 状态 ${state.status} · 标签 ${state.tag} · 模式 ${state.mode}`;
+      resultsMeta.textContent = `当前显示 ${filteredEntries.length} / ${studyData.entries.length} 个知识点`;
       entryCount.textContent = `${studyData.entries.length} 个知识点`;
       updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;
-      topicCount.textContent = `${new Set(studyData.entries.map((entry) => entry.topic)).size}`;
-      criticalCount.textContent = `${studyData.entries.filter((entry) => ["高频易错", "临考必看"].includes(entry.difficulty) || entry.status === "临考必看").length}`;
-      finalReviewCount.textContent = `${studyData.entries.filter((entry) => entry.status === "临考必看").length}`;
-      reviewingCount.textContent = `${studyData.entries.filter((entry) => entry.status === "已理解待巩固").length}`;
     }
 
     searchInput.addEventListener("input", (event) => {
@@ -959,10 +640,7 @@
     clearFiltersButton.addEventListener("click", () => {
       state.search = "";
       state.topic = "全部";
-      state.chapter = "全部";
-      state.status = "全部";
       state.tag = "全部";
-      state.mode = "全部";
       searchInput.value = "";
       renderAll();
     });
