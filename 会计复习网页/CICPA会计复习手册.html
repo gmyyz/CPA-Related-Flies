@@ -15,6 +15,7 @@
       --brand-deep: #7f2f16;
       --mint: #2f7d6b;
       --gold: #d8a946;
+      --danger: #9f4030;
       --shadow: 0 18px 45px rgba(88, 54, 22, 0.12);
       --radius: 22px;
     }
@@ -31,6 +32,12 @@
         radial-gradient(circle at top left, rgba(214, 169, 84, 0.22), transparent 28%),
         radial-gradient(circle at top right, rgba(47, 125, 107, 0.16), transparent 22%),
         linear-gradient(180deg, #f8f3ec 0%, var(--bg) 100%);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
     }
 
     .page-shell {
@@ -125,23 +132,28 @@
       color: var(--muted);
     }
 
-    input[type="search"] {
+    input[type="search"],
+    select {
       width: 100%;
       padding: 14px 16px;
       border: 1px solid rgba(28, 22, 15, 0.12);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.9);
       font-size: 15px;
+      color: var(--ink);
     }
 
-    input[type="search"]:focus {
+    input[type="search"]:focus,
+    select:focus {
       outline: 2px solid rgba(182, 84, 42, 0.22);
       border-color: rgba(182, 84, 42, 0.32);
     }
 
     .filter-list,
     .chip-list,
-    .tag-row {
+    .tag-row,
+    .toolbar-actions,
+    .status-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -170,6 +182,21 @@
       color: #fff;
     }
 
+    .toggle-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .toggle-line input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
     .memory-box ul,
     .bullet {
       margin: 0;
@@ -184,28 +211,92 @@
 
     .toolbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
     }
 
     .toolbar p,
     .results-meta,
-    .question-summary {
+    .question-summary,
+    .question-hint,
+    .card-meta,
+    .mode-tip {
       color: var(--muted);
     }
 
-    .ghost-button {
-      border: 1px solid rgba(28, 22, 15, 0.12);
+    .toolbar-copy {
+      display: grid;
+      gap: 10px;
+    }
+
+    .toolbar-copy h2 {
+      margin-bottom: 0;
+    }
+
+    .toolbar-actions {
+      justify-content: flex-end;
+    }
+
+    .ghost-button,
+    .accent-button,
+    .inline-button {
       border-radius: 999px;
-      background: #fff;
       padding: 10px 16px;
       cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .ghost-button,
+    .inline-button {
+      border: 1px solid rgba(28, 22, 15, 0.12);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .accent-button {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--brand), #d3733e);
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(182, 84, 42, 0.18);
+    }
+
+    .ghost-button:hover,
+    .accent-button:hover,
+    .inline-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .inline-button {
+      padding: 8px 14px;
+      font-size: 14px;
     }
 
     .results-meta {
       margin: 12px 2px 10px;
+      display: grid;
+      gap: 8px;
       font-size: 14px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(28, 22, 15, 0.08);
+      font-weight: 600;
+      color: var(--brand-deep);
+    }
+
+    .status-pill.quiz {
+      color: var(--mint);
+    }
+
+    .status-pill.random {
+      color: var(--danger);
     }
 
     .card-list {
@@ -230,9 +321,17 @@
 
     .qa-topline {
       display: flex;
-      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       flex-wrap: wrap;
       margin-bottom: 10px;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .topic-badge,
@@ -260,14 +359,46 @@
       border-radius: 999px;
     }
 
-    .question-title {
-      margin: 0;
-      font-size: 24px;
+    .card-meta {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .question-summary {
+    .question-title {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.4;
+    }
+
+    .question-summary,
+    .question-hint {
+      position: relative;
+      z-index: 1;
       margin: 10px 0 0;
       line-height: 1.75;
+    }
+
+    .question-hint {
+      font-style: italic;
+    }
+
+    .card-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .card-details[hidden] {
+      display: none;
     }
 
     .section-block {
@@ -283,13 +414,19 @@
       background: rgba(255, 255, 255, 0.82);
     }
 
-    .empty-state {
+    .empty-state,
+    .error-state {
       padding: 38px;
       text-align: center;
     }
 
-    .empty-state h3 {
+    .empty-state h3,
+    .error-state h3 {
       margin: 0 0 8px;
+    }
+
+    .error-state {
+      color: var(--danger);
     }
 
     @media (max-width: 960px) {
@@ -314,9 +451,15 @@
         padding: 18px;
       }
 
-      .toolbar {
+      .toolbar,
+      .qa-topline,
+      .card-actions {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .toolbar-actions {
+        justify-content: flex-start;
       }
     }
   </style>
@@ -326,10 +469,11 @@
     <header class="hero">
       <p class="eyebrow">CICPA Accounting Review</p>
       <h1>会计知识复习手册</h1>
-      <p class="hero-copy">把平时问到的会计知识点整理成结构化卡片，方便按专题、关键词和考试易错点快速回看。</p>
+      <p class="hero-copy">把平时问到的会计知识点整理成结构化卡片，方便按专题、关键词和考试易错点快速回看。现在支持排序、随机抽题、自测模式和状态续看。</p>
       <div class="hero-meta">
         <span id="entry-count">0 个知识点</span>
         <span id="updated-at">更新时间 -</span>
+        <span id="data-source">数据源加载中</span>
       </div>
     </header>
 
@@ -351,12 +495,35 @@
           <div id="tag-filters" class="chip-list"></div>
         </section>
 
+        <section>
+          <h2>复习策略</h2>
+          <label class="field-label" for="sort-select">排序方式</label>
+          <select id="sort-select">
+            <option value="default">默认顺序</option>
+            <option value="updated-desc">最近更新优先</option>
+            <option value="question-asc">题目字顺</option>
+          </select>
+        </section>
+
+        <section>
+          <h2>强化模式</h2>
+          <label class="toggle-line" for="focus-pitfalls">
+            <input id="focus-pitfalls" type="checkbox">
+            <span>只看高频易错</span>
+          </label>
+          <label class="toggle-line" for="quiz-mode">
+            <input id="quiz-mode" type="checkbox">
+            <span>开启自测模式，先思考再看解析</span>
+          </label>
+        </section>
+
         <section class="memory-box">
           <h2>复习建议</h2>
           <ul>
             <li>先看结论，再看原因，最后背口诀。</li>
             <li>易错点优先在做题前后各复习一次。</li>
             <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
+            <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
           </ul>
         </section>
       </aside>
@@ -364,10 +531,16 @@
       <section class="content">
         <div class="panel toolbar">
           <div class="toolbar-copy">
-            <h2>知识卡片</h2>
-            <p>支持关键词搜索、专题筛选和标签定位。</p>
+            <div>
+              <h2>知识卡片</h2>
+              <p>数据已从主 HTML 拆分，后续补知识点时只需要维护独立数据文件。</p>
+            </div>
+            <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
           </div>
-          <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
+          <div class="toolbar-actions">
+            <button id="random-entry" class="accent-button" type="button">随机抽题</button>
+            <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
+          </div>
         </div>
 
         <div id="results-meta" class="results-meta"></div>
@@ -379,213 +552,233 @@
   <template id="card-template">
     <article class="panel qa-card">
       <div class="qa-topline">
-        <span class="topic-badge"></span>
-        <span class="difficulty-badge"></span>
+        <div class="badge-group">
+          <span class="topic-badge"></span>
+          <span class="difficulty-badge"></span>
+        </div>
+        <span class="card-meta"></span>
       </div>
       <h3 class="question-title"></h3>
       <p class="question-summary"></p>
-      <div class="section-block">
-        <h4>结论</h4>
-        <ul class="bullet conclusion-list"></ul>
+      <p class="question-hint">自测模式已开启：先独立作答，再点击“查看解析”。</p>
+      <div class="card-actions">
+        <button class="inline-button toggle-details" type="button"></button>
       </div>
-      <div class="section-block">
-        <h4>原因</h4>
-        <ul class="bullet reasoning-list"></ul>
-      </div>
-      <div class="section-block">
-        <h4>口诀</h4>
-        <ul class="bullet memory-list"></ul>
-      </div>
-      <div class="section-block">
-        <h4>易错点</h4>
-        <ul class="bullet pitfalls-list"></ul>
+      <div class="card-details" hidden>
+        <div class="section-block">
+          <h4>结论</h4>
+          <ul class="bullet conclusion-list"></ul>
+        </div>
+        <div class="section-block">
+          <h4>原因</h4>
+          <ul class="bullet reasoning-list"></ul>
+        </div>
+        <div class="section-block">
+          <h4>口诀</h4>
+          <ul class="bullet memory-list"></ul>
+        </div>
+        <div class="section-block">
+          <h4>易错点</h4>
+          <ul class="bullet pitfalls-list"></ul>
+        </div>
       </div>
       <div class="tag-row"></div>
     </article>
   </template>
 
+  <script src="./study-data.js"></script>
   <script>
-    const studyData = {
-      updatedAt: "2026-04-06",
-      entries: [
-        {
-          id: "share-based-payment-cash-vs-equity",
-          topic: "股份支付",
-          difficulty: "高频基础",
-          question: "股份支付以现金结算和以权益结算有什么区别？",
-          summary: "核心区别看最终是给现金还是给权益工具。给股计入资本公积，给钱计入应付职工薪酬；权益结算通常看授予日，现金结算通常看每个资产负债表日。",
-          conclusion: [
-            "以权益结算的股份支付，企业最终用股票、期权等权益工具结算。",
-            "以现金结算的股份支付，企业最终用现金结算，只是金额通常参照股价或权益工具价值确定。",
-            "区分关键不在于是否与股价挂钩，而在于最终交付的是现金还是权益工具。"
-          ],
-          reasoning: [
-            "以权益结算时，企业本质上是以自身权益工具换取职工服务，因此确认费用的同时计入资本公积。",
-            "以现金结算时，企业未来需要支付现金，本质上形成一项负债，因此确认费用的同时计入应付职工薪酬。",
-            "由于负债需要持续按公允价值反映现实义务，以现金结算在每个资产负债表日通常都要重新计量；以权益结算一般以授予日公允价值为基础，不因后续股价波动反复调整总额。"
-          ],
-          memory: [
-            "给股不还价，贷资本公积。",
-            "给钱看股价，贷应付职工薪酬。",
-            "权益结算看授予日，现金结算看资产负债表日。"
-          ],
-          pitfalls: [
-            "和股价挂钩，不等于一定是以权益结算；如果最后付的是现金，仍属于以现金结算。",
-            "以权益结算通常不按后续股价变动反复调整总额，考试中不要和现金结算混淆。",
-            "判断题目时先看最终结算方式，再看后续是否需要按公允价值重估。"
-          ],
-          tags: ["股份支付", "现金结算", "权益结算", "资本公积", "应付职工薪酬"]
-        },
-        {
-          id: "consolidation-downstream-minority-profit",
-          topic: "合并财务报表",
-          difficulty: "高频易错",
-          question: "为什么顺流交易不影响少数股东损益？",
-          summary: "顺流交易里未实现内部利润最初确认在母公司，所以合并抵销时冲减的是归母利润，而不是少数股东损益。",
-          conclusion: [
-            "顺流交易中，未实现内部利润最初确认在母公司。",
-            "合并抵销时冲减的是归属于母公司的利润。",
-            "少数股东损益通常不受影响。"
-          ],
-          reasoning: [
-            "顺流交易是母公司向子公司销售。",
-            "内部未实现利润先体现在母公司个别报表中，而不是子公司利润中。",
-            "少数股东只分享子公司实现的净损益，不分享母公司虚增形成的内部利润。"
-          ],
-          memory: [
-            "顺流看母公司，冲归母。",
-            "逆流看子公司，归母少数一起冲。"
-          ],
-          pitfalls: [
-            "不要只看货物在谁手里，要看未实现内部利润最初记在谁账上。",
-            "顺流交易不影响少数股东损益，不代表所有相关项目都与少数股东完全无关。"
-          ],
-          tags: ["顺流交易", "少数股东损益", "内部交易抵销", "合并报表"]
-        },
-        {
-          id: "consolidation-downstream-upstream-comparison",
-          topic: "合并财务报表",
-          difficulty: "高频基础",
-          question: "顺流交易和逆流交易对少数股东损益的影响有什么区别？",
-          summary: "核心差异在于未实现内部利润最初记在母公司还是子公司。来源在母公司时只冲归母，来源在子公司时归母和少数都要调。",
-          conclusion: [
-            "顺流交易：只影响归属于母公司净利润，不影响少数股东损益。",
-            "逆流交易：影响归母净利润，也影响少数股东损益。"
-          ],
-          reasoning: [
-            "顺流交易中，内部利润来自母公司，因此抵销时只影响归母净利润。",
-            "逆流交易中，内部利润来自子公司，而子公司利润需要在合并中分拆为归母和少数股东两部分，因此少数股东损益也要调整。"
-          ],
-          memory: [
-            "顺流利润在母，冲归母。",
-            "逆流利润在子，母少同冲。"
-          ],
-          pitfalls: [
-            "做题时不要只背方向，要先判断利润源头。",
-            "逆流交易下，少数股东损益按持股比例调整。"
-          ],
-          tags: ["顺流交易", "逆流交易", "少数股东损益", "归母净利润"]
-        },
-        {
-          id: "fixed-assets-internal-trade-core-logic",
-          topic: "合并财务报表",
-          difficulty: "高频提高",
-          question: "固定资产内部交易是否也遵循同样逻辑？",
-          summary: "遵循同样逻辑，仍然看内部损益最初记在哪一方。只是固定资产题目比存货多一步折旧调整。",
-          conclusion: [
-            "固定资产内部交易也遵循相同逻辑，仍然看未实现内部损益最初记在谁那里。",
-            "顺流固定资产交易通常只影响归母净利润，不影响少数股东损益。",
-            "逆流固定资产交易会影响归母净利润和少数股东损益。"
-          ],
-          reasoning: [
-            "固定资产内部交易同样属于集团内部未对外实现的损益。",
-            "合并报表需要抵销内部处置损益，并将固定资产账面价值调回集团角度的原账面价值。",
-            "由于资产在后续期间继续使用，还要同步调整后续多提或少提的折旧。"
-          ],
-          memory: [
-            "存货看未实现利润，固定资产看未实现损益加折旧调整。",
-            "顺流仍冲归母，逆流仍母少同冲。"
-          ],
-          pitfalls: [
-            "固定资产内部交易不能只做一笔处置损益抵销，还要记得折旧调整。",
-            "做题时要从出售当期和后续期间两个阶段看。"
-          ],
-          tags: ["固定资产内部交易", "折旧调整", "顺流交易", "逆流交易"]
-        },
-        {
-          id: "downstream-fixed-assets-depreciation",
-          topic: "合并财务报表",
-          difficulty: "高频易错",
-          question: "顺流固定资产交易中，多抵销的折旧会影响少数股东损益吗？",
-          summary: "一般不影响。多提折旧本质上是母公司前期内部虚增利润在后续期间的延续影响，因此通常仍然归属于母公司调整。",
-          conclusion: [
-            "顺流固定资产交易中，多抵销的折旧一般不影响少数股东损益。"
-          ],
-          reasoning: [
-            "顺流交易中，内部固定资产交易的虚增利润最初来自母公司。",
-            "子公司后续多提折旧，是因为其按内部交易价格入账，属于前期母公司内部未实现损益的后续影响。",
-            "合并报表冲回多提折旧，本质上是在继续纠正母公司形成的内部虚增，因此通常归属于母公司。"
-          ],
-          memory: [
-            "顺流交易下，利润和折旧修正都看母公司。",
-            "因此一般不影响少数股东损益。"
-          ],
-          pitfalls: [
-            "不要把子公司账上多提折旧误判为少数股东一定要分担。",
-            "关键仍然是这笔差异的源头在母公司。"
-          ],
-          tags: ["固定资产内部交易", "折旧调整", "少数股东损益", "顺流交易"]
-        }
-      ]
-    };
-
-    const state = {
+    const STORAGE_KEY = "cicpa-review-state";
+    const defaultState = {
       search: "",
       topic: "全部",
-      tag: "全部"
+      tag: "全部",
+      focusPitfalls: false,
+      sort: "default",
+      quizMode: false,
+      randomEntryId: null
+    };
+
+    const difficultyRank = {
+      "高频易错": 3,
+      "高频提高": 2,
+      "高频基础": 1
     };
 
     const searchInput = document.querySelector("#search-input");
     const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
+    const sortSelect = document.querySelector("#sort-select");
+    const focusPitfallsCheckbox = document.querySelector("#focus-pitfalls");
+    const quizModeCheckbox = document.querySelector("#quiz-mode");
     const cardList = document.querySelector("#card-list");
     const resultsMeta = document.querySelector("#results-meta");
     const entryCount = document.querySelector("#entry-count");
     const updatedAt = document.querySelector("#updated-at");
+    const dataSource = document.querySelector("#data-source");
+    const modeTip = document.querySelector("#mode-tip");
     const clearFiltersButton = document.querySelector("#clear-filters");
+    const randomEntryButton = document.querySelector("#random-entry");
     const cardTemplate = document.querySelector("#card-template");
+
+    const state = {
+      ...defaultState
+    };
+
+    const uiState = {
+      expandedIds: new Set()
+    };
+
+    let studyData = null;
+    let topics = [];
+    let tags = [];
 
     function uniqueValues(values) {
       return ["全部", ...new Set(values)];
     }
 
     function normalizeText(value) {
-      return value.toLowerCase().trim();
+      return String(value || "").toLowerCase().trim();
     }
 
-    function matchesFilters(entry) {
-      const topicMatch = state.topic === "全部" || entry.topic === state.topic;
-      const tagMatch = state.tag === "全部" || entry.tags.includes(state.tag);
-      const haystack = [
-        entry.question,
-        entry.summary,
-        ...entry.conclusion,
-        ...entry.reasoning,
-        ...entry.memory,
-        ...entry.pitfalls,
-        ...entry.tags
-      ].join(" ").toLowerCase();
-      const searchMatch = !state.search || haystack.includes(state.search);
-      return topicMatch && tagMatch && searchMatch;
+    function parseDate(value) {
+      if (!value) {
+        return 0;
+      }
+
+      const timestamp = new Date(value).getTime();
+      return Number.isNaN(timestamp) ? 0 : timestamp;
     }
 
-    function renderFilterGroup(container, values, activeValue, variant, onClick) {
-      container.innerHTML = "";
+    function createListItems(listElement, items) {
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        listElement.appendChild(li);
+      });
+    }
+
+    function clearNode(node) {
+      while (node.firstChild) {
+        node.removeChild(node.firstChild);
+      }
+    }
+
+    function setState(patch, options = {}) {
+      Object.assign(state, patch);
+
+      if (options.clearRandom !== false && patch.randomEntryId === undefined) {
+        state.randomEntryId = null;
+      }
+
+      syncControls();
+      updateActiveFilterButtons();
+      syncPersistence();
+      renderResults();
+    }
+
+    function readPersistedState() {
+      const urlState = {};
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has("q")) {
+        urlState.search = normalizeText(params.get("q"));
+      }
+      if (params.has("topic")) {
+        urlState.topic = params.get("topic");
+      }
+      if (params.has("tag")) {
+        urlState.tag = params.get("tag");
+      }
+      if (params.has("sort")) {
+        urlState.sort = params.get("sort");
+      }
+      if (params.has("focus")) {
+        urlState.focusPitfalls = params.get("focus") === "1";
+      }
+      if (params.has("quiz")) {
+        urlState.quizMode = params.get("quiz") === "1";
+      }
+      if (params.has("random")) {
+        urlState.randomEntryId = params.get("random");
+      }
+
+      if (Object.keys(urlState).length > 0) {
+        return urlState;
+      }
+
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function syncPersistence() {
+      const serializableState = {
+        search: state.search,
+        topic: state.topic,
+        tag: state.tag,
+        focusPitfalls: state.focusPitfalls,
+        sort: state.sort,
+        quizMode: state.quizMode,
+        randomEntryId: state.randomEntryId
+      };
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(serializableState));
+      } catch (error) {
+        // Ignore localStorage errors and keep the page usable.
+      }
+
+      const params = new URLSearchParams();
+      if (state.search) {
+        params.set("q", state.search);
+      }
+      if (state.topic !== "全部") {
+        params.set("topic", state.topic);
+      }
+      if (state.tag !== "全部") {
+        params.set("tag", state.tag);
+      }
+      if (state.sort !== "default") {
+        params.set("sort", state.sort);
+      }
+      if (state.focusPitfalls) {
+        params.set("focus", "1");
+      }
+      if (state.quizMode) {
+        params.set("quiz", "1");
+      }
+      if (state.randomEntryId) {
+        params.set("random", state.randomEntryId);
+      }
+
+      const query = params.toString();
+      const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState(null, "", nextUrl);
+    }
+
+    function syncControls() {
+      searchInput.value = state.search;
+      sortSelect.value = state.sort;
+      focusPitfallsCheckbox.checked = state.focusPitfalls;
+      quizModeCheckbox.checked = state.quizMode;
+      modeTip.textContent = state.quizMode
+        ? "自测模式下默认隐藏摘要和解析，先自己作答，再点按钮揭晓。"
+        : "默认显示摘要，点击卡片按钮可展开完整解析。";
+    }
+
+    function renderFilterButtons(container, values, activeValue, className, onClick) {
+      clearNode(container);
+
       values.forEach((value) => {
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = value;
-        button.className = variant;
+        button.dataset.value = value;
+        button.className = className;
         if (value === activeValue) {
           button.classList.add("active");
         }
@@ -594,34 +787,195 @@
       });
     }
 
-    function renderCards(entries) {
-      cardList.innerHTML = "";
+    function updateActiveFilterButtons() {
+      topicFilters.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.value === state.topic);
+      });
 
-      if (!entries.length) {
-        const empty = document.createElement("div");
-        empty.className = "panel empty-state";
-        empty.innerHTML = "<h3>没有找到匹配内容</h3><p>试试清空筛选，或者换一个关键词。</p>";
-        cardList.appendChild(empty);
-        return;
+      tagFilters.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.value === state.tag);
+      });
+    }
+
+    function matchesFilters(entry) {
+      const topicMatch = state.topic === "全部" || entry.topic === state.topic;
+      const tagMatch = state.tag === "全部" || entry.tags.includes(state.tag);
+      const pitfallsMatch = !state.focusPitfalls || entry.difficulty === "高频易错";
+      const searchMatch = !state.search || entry.searchIndex.includes(state.search);
+      return topicMatch && tagMatch && pitfallsMatch && searchMatch;
+    }
+
+    function sortEntries(entries) {
+      const nextEntries = [...entries];
+
+      if (state.sort === "updated-desc") {
+        nextEntries.sort((left, right) => {
+          const updatedGap = right.updatedAtValue - left.updatedAtValue;
+          if (updatedGap !== 0) {
+            return updatedGap;
+          }
+
+          const difficultyGap = (difficultyRank[right.difficulty] || 0) - (difficultyRank[left.difficulty] || 0);
+          if (difficultyGap !== 0) {
+            return difficultyGap;
+          }
+
+          return left.order - right.order;
+        });
+        return nextEntries;
       }
+
+      if (state.sort === "question-asc") {
+        nextEntries.sort((left, right) => left.question.localeCompare(right.question, "zh-CN"));
+        return nextEntries;
+      }
+
+      nextEntries.sort((left, right) => left.order - right.order);
+      return nextEntries;
+    }
+
+    function getFilteredEntries() {
+      return sortEntries(studyData.entries.filter(matchesFilters));
+    }
+
+    function getVisibleEntries() {
+      const filteredEntries = getFilteredEntries();
+
+      if (!state.randomEntryId) {
+        return filteredEntries;
+      }
+
+      const pickedEntry = filteredEntries.find((entry) => entry.id === state.randomEntryId);
+      return pickedEntry ? [pickedEntry] : filteredEntries;
+    }
+
+    function buildStatusPill(text, variant = "") {
+      const span = document.createElement("span");
+      span.className = variant ? `status-pill ${variant}` : "status-pill";
+      span.textContent = text;
+      return span;
+    }
+
+    function renderResultsMeta(filteredEntries, visibleEntries) {
+      clearNode(resultsMeta);
+
+      const summary = document.createElement("div");
+      summary.textContent = `当前显示 ${visibleEntries.length} / ${studyData.entries.length} 个知识点，筛选结果共 ${filteredEntries.length} 个。`;
+      resultsMeta.appendChild(summary);
+
+      const statusRow = document.createElement("div");
+      statusRow.className = "status-row";
+
+      if (state.search) {
+        statusRow.appendChild(buildStatusPill(`关键词：${state.search}`));
+      }
+      if (state.topic !== "全部") {
+        statusRow.appendChild(buildStatusPill(`专题：${state.topic}`));
+      }
+      if (state.tag !== "全部") {
+        statusRow.appendChild(buildStatusPill(`标签：${state.tag}`));
+      }
+      if (state.focusPitfalls) {
+        statusRow.appendChild(buildStatusPill("仅看高频易错"));
+      }
+      if (state.sort === "updated-desc") {
+        statusRow.appendChild(buildStatusPill("最近更新优先"));
+      }
+      if (state.sort === "question-asc") {
+        statusRow.appendChild(buildStatusPill("题目字顺"));
+      }
+      if (state.quizMode) {
+        statusRow.appendChild(buildStatusPill("自测模式中", "quiz"));
+      }
+      if (state.randomEntryId && visibleEntries.length === 1) {
+        statusRow.appendChild(buildStatusPill("随机抽题中", "random"));
+      }
+
+      if (statusRow.childNodes.length > 0) {
+        resultsMeta.appendChild(statusRow);
+      }
+    }
+
+    function renderEmptyState(message, details) {
+      clearNode(cardList);
+
+      const empty = document.createElement("div");
+      empty.className = "panel empty-state";
+
+      const title = document.createElement("h3");
+      title.textContent = message;
+      empty.appendChild(title);
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = details;
+      empty.appendChild(paragraph);
+
+      cardList.appendChild(empty);
+    }
+
+    function renderErrorState(errorMessage) {
+      clearNode(cardList);
+
+      const error = document.createElement("div");
+      error.className = "panel error-state";
+
+      const title = document.createElement("h3");
+      title.textContent = "数据加载失败";
+      error.appendChild(title);
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = errorMessage;
+      error.appendChild(paragraph);
+
+      cardList.appendChild(error);
+    }
+
+    function renderCards(entries) {
+      clearNode(cardList);
 
       entries.forEach((entry) => {
         const fragment = cardTemplate.content.cloneNode(true);
+        const article = fragment.querySelector(".qa-card");
+        const summary = fragment.querySelector(".question-summary");
+        const hint = fragment.querySelector(".question-hint");
+        const details = fragment.querySelector(".card-details");
+        const toggleButton = fragment.querySelector(".toggle-details");
+        const isExpanded = uiState.expandedIds.has(entry.id);
+
+        article.dataset.entryId = entry.id;
         fragment.querySelector(".topic-badge").textContent = entry.topic;
         fragment.querySelector(".difficulty-badge").textContent = entry.difficulty;
+        fragment.querySelector(".card-meta").textContent = `更新于 ${entry.updatedAt}`;
         fragment.querySelector(".question-title").textContent = entry.question;
-        fragment.querySelector(".question-summary").textContent = entry.summary;
+        summary.textContent = entry.summary;
+        summary.hidden = state.quizMode && !isExpanded;
+        hint.hidden = !(state.quizMode && !isExpanded);
 
-        const mapping = [
+        toggleButton.textContent = isExpanded
+          ? "收起详情"
+          : (state.quizMode ? "查看解析" : "展开详情");
+        toggleButton.setAttribute("aria-expanded", String(isExpanded));
+        toggleButton.addEventListener("click", () => {
+          if (uiState.expandedIds.has(entry.id)) {
+            uiState.expandedIds.delete(entry.id);
+          } else {
+            uiState.expandedIds.add(entry.id);
+          }
+          renderResults();
+        });
+
+        details.hidden = !isExpanded;
+
+        const sections = [
           [".conclusion-list", entry.conclusion],
           [".reasoning-list", entry.reasoning],
           [".memory-list", entry.memory],
           [".pitfalls-list", entry.pitfalls]
         ];
 
-        mapping.forEach(([selector, items]) => {
+        sections.forEach(([selector, items]) => {
           const list = fragment.querySelector(selector);
-          list.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+          createListItems(list, items);
         });
 
         const tagRow = fragment.querySelector(".tag-row");
@@ -636,44 +990,165 @@
       });
     }
 
-    function renderFilters() {
-      const topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
-      const tags = uniqueValues(studyData.entries.flatMap((entry) => entry.tags));
+    function renderResults() {
+      if (!studyData) {
+        return;
+      }
 
-      renderFilterGroup(topicFilters, topics, state.topic, "filter-button", (value) => {
-        state.topic = value;
-        renderAll();
-      });
+      const filteredEntries = getFilteredEntries();
 
-      renderFilterGroup(tagFilters, tags, state.tag, "chip", (value) => {
-        state.tag = value;
-        renderAll();
-      });
-    }
+      if (state.randomEntryId && !filteredEntries.some((entry) => entry.id === state.randomEntryId)) {
+        state.randomEntryId = null;
+        syncPersistence();
+      }
 
-    function renderAll() {
-      renderFilters();
-      const filteredEntries = studyData.entries.filter(matchesFilters);
-      renderCards(filteredEntries);
-      resultsMeta.textContent = `当前显示 ${filteredEntries.length} / ${studyData.entries.length} 个知识点`;
+      const visibleEntries = getVisibleEntries();
+      renderResultsMeta(filteredEntries, visibleEntries);
+
+      if (visibleEntries.length === 0) {
+        renderEmptyState("没有找到匹配内容", "试试清空筛选，或者换一个关键词。");
+        return;
+      }
+
+      renderCards(visibleEntries);
       entryCount.textContent = `${studyData.entries.length} 个知识点`;
       updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;
     }
 
-    searchInput.addEventListener("input", (event) => {
-      state.search = normalizeText(event.target.value);
-      renderAll();
-    });
+    function initializeFilters() {
+      topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
+      tags = uniqueValues(studyData.entries.flatMap((entry) => entry.tags));
 
-    clearFiltersButton.addEventListener("click", () => {
-      state.search = "";
-      state.topic = "全部";
-      state.tag = "全部";
-      searchInput.value = "";
-      renderAll();
-    });
+      renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
+        setState({ topic: value });
+      });
 
-    renderAll();
+      renderFilterButtons(tagFilters, tags, state.tag, "chip", (value) => {
+        setState({ tag: value });
+      });
+    }
+
+    function validateState() {
+      if (!topics.includes(state.topic)) {
+        state.topic = "全部";
+      }
+      if (!tags.includes(state.tag)) {
+        state.tag = "全部";
+      }
+
+      const allowedSorts = new Set(["default", "updated-desc", "question-asc"]);
+      if (!allowedSorts.has(state.sort)) {
+        state.sort = "default";
+      }
+
+      if (state.randomEntryId && !studyData.entries.some((entry) => entry.id === state.randomEntryId)) {
+        state.randomEntryId = null;
+      }
+    }
+
+    function initializeData(rawData) {
+      if (!rawData || !Array.isArray(rawData.entries)) {
+        throw new Error("study-data.js 中没有找到有效的 entries 数组。");
+      }
+
+      studyData = {
+        updatedAt: rawData.updatedAt || "-",
+        entries: rawData.entries.map((entry, index) => {
+          const updatedValue = entry.updatedAt || rawData.updatedAt || "-";
+          const searchIndex = normalizeText([
+            entry.question,
+            entry.summary,
+            ...entry.conclusion,
+            ...entry.reasoning,
+            ...entry.memory,
+            ...entry.pitfalls,
+            ...entry.tags,
+            entry.topic,
+            entry.difficulty
+          ].join(" "));
+
+          return {
+            ...entry,
+            order: index,
+            updatedAt: updatedValue,
+            updatedAtValue: parseDate(updatedValue),
+            searchIndex
+          };
+        })
+      };
+    }
+
+    function pickRandomEntry() {
+      const candidates = getFilteredEntries();
+
+      if (candidates.length === 0) {
+        renderEmptyState("没有可抽取的题目", "先放宽筛选条件，再试一次随机抽题。");
+        return;
+      }
+
+      const pickedEntry = candidates[Math.floor(Math.random() * candidates.length)];
+      uiState.expandedIds.delete(pickedEntry.id);
+      setState({ randomEntryId: pickedEntry.id }, { clearRandom: false });
+
+      window.requestAnimationFrame(() => {
+        const card = document.querySelector(`[data-entry-id="${pickedEntry.id}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+
+    function clearAllFilters() {
+      uiState.expandedIds.clear();
+      Object.assign(state, defaultState);
+      syncControls();
+      updateActiveFilterButtons();
+      syncPersistence();
+      renderResults();
+    }
+
+    function bindEvents() {
+      searchInput.addEventListener("input", (event) => {
+        setState({ search: normalizeText(event.target.value) });
+      });
+
+      sortSelect.addEventListener("change", (event) => {
+        setState({ sort: event.target.value });
+      });
+
+      focusPitfallsCheckbox.addEventListener("change", (event) => {
+        setState({ focusPitfalls: event.target.checked });
+      });
+
+      quizModeCheckbox.addEventListener("change", (event) => {
+        if (!event.target.checked) {
+          uiState.expandedIds.clear();
+        }
+        setState({ quizMode: event.target.checked }, { clearRandom: false });
+      });
+
+      clearFiltersButton.addEventListener("click", clearAllFilters);
+      randomEntryButton.addEventListener("click", pickRandomEntry);
+    }
+
+    function boot() {
+      try {
+        initializeData(window.studyData);
+        Object.assign(state, readPersistedState());
+        initializeFilters();
+        validateState();
+        syncControls();
+        updateActiveFilterButtons();
+        bindEvents();
+        dataSource.textContent = "数据源 study-data.js";
+        renderResults();
+      } catch (error) {
+        dataSource.textContent = "数据源加载失败";
+        renderErrorState(error.message || "请检查 study-data.js 是否存在且格式正确。");
+      }
+    }
+
+    boot();
   </script>
 </body>
 </html>
