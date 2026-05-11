@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CICPA 会计复习手册</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b6542a'/%3E%3Cpath d='M18 18h28v28H18z' fill='%23fff7ec'/%3E%3Cpath d='M24 27h16M24 36h16' stroke='%232f7d6b' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
     :root {
       --bg: #f4efe7;
@@ -94,6 +95,45 @@
       font-weight: 600;
     }
 
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .quick-action {
+      min-height: 96px;
+      padding: 18px;
+      border: 1px solid rgba(28, 22, 15, 0.1);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 12px 26px rgba(88, 54, 22, 0.08);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .quick-action:hover {
+      transform: translateY(-2px);
+      border-color: rgba(182, 84, 42, 0.32);
+      box-shadow: 0 18px 34px rgba(88, 54, 22, 0.12);
+    }
+
+    .quick-action strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .quick-action span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .layout {
       display: grid;
       grid-template-columns: 320px minmax(0, 1fr);
@@ -152,6 +192,8 @@
     .filter-list,
     .chip-list,
     .tag-row,
+    .mode-list,
+    .mastery-actions,
     .toolbar-actions,
     .status-row {
       display: flex;
@@ -161,7 +203,8 @@
 
     .filter-button,
     .chip,
-    .tag {
+    .tag,
+    .mode-button {
       border: 1px solid rgba(28, 22, 15, 0.1);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.78);
@@ -169,17 +212,73 @@
     }
 
     .filter-button,
-    .chip {
+    .chip,
+    .mode-button {
       padding: 10px 14px;
       cursor: pointer;
       font-size: 14px;
     }
 
     .filter-button.active,
-    .chip.active {
+    .chip.active,
+    .mode-button.active {
       border-color: transparent;
       background: linear-gradient(135deg, var(--brand), #d3733e);
       color: #fff;
+    }
+
+    .tag-group + .tag-group {
+      margin-top: 14px;
+    }
+
+    .grouped-tags {
+      display: block;
+    }
+
+    .tag-filter-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tag-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .tag-group-title {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .tag-group-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag-group-footer {
+      margin-top: 10px;
+    }
+
+    .tag-toggle {
+      border: none;
+      padding: 0;
+      background: transparent;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tag-toggle:hover {
+      color: var(--brand-deep);
     }
 
     .toggle-line {
@@ -299,6 +398,10 @@
       color: var(--danger);
     }
 
+    .status-pill.review {
+      color: var(--brand-deep);
+    }
+
     .card-list {
       display: grid;
       gap: 16px;
@@ -397,6 +500,36 @@
       margin-top: 16px;
     }
 
+    .mastery-actions {
+      justify-content: flex-end;
+    }
+
+    .mastery-button {
+      border: 1px solid rgba(28, 22, 15, 0.12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--ink);
+      cursor: pointer;
+      padding: 8px 12px;
+      font-size: 13px;
+      transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+    }
+
+    .mastery-button.active {
+      border-color: transparent;
+      background: var(--mint);
+      color: #fff;
+    }
+
+    .mastery-button.weak.active {
+      background: var(--danger);
+    }
+
+    .mastery-button.favorite.active {
+      background: var(--gold);
+      color: #3b2a09;
+    }
+
     .card-details[hidden] {
       display: none;
     }
@@ -412,6 +545,27 @@
     .tag {
       margin-top: 14px;
       background: rgba(255, 255, 255, 0.82);
+    }
+
+    .diagram-block[hidden] {
+      display: none;
+    }
+
+    .diagram-shell {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid rgba(28, 22, 15, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      overflow-x: auto;
+    }
+
+    .diagram-fallback {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
     }
 
     .empty-state,
@@ -433,10 +587,6 @@
       .layout {
         grid-template-columns: 1fr;
       }
-
-      .controls {
-        order: 2;
-      }
     }
 
     @media (max-width: 640px) {
@@ -449,6 +599,10 @@
       .toolbar,
       .qa-card {
         padding: 18px;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
       }
 
       .toolbar,
@@ -474,6 +628,20 @@
         <span id="entry-count">0 个知识点</span>
         <span id="updated-at">更新时间 -</span>
         <span id="data-source">数据源加载中</span>
+      </div>
+      <div class="quick-actions" aria-label="复习快捷入口">
+        <button class="quick-action" type="button" data-quick-action="today">
+          <strong>今天复习</strong>
+          <span>优先看未复习、薄弱、7 天未回看的知识点。</span>
+        </button>
+        <button class="quick-action" type="button" data-quick-action="pitfalls">
+          <strong>高频易错</strong>
+          <span>直接进入考试最容易混淆的卡片。</span>
+        </button>
+        <button class="quick-action" type="button" data-quick-action="random-quiz">
+          <strong>随机自测</strong>
+          <span>隐藏答案，随机抽一题先自己作答。</span>
+        </button>
       </div>
     </header>
 
@@ -501,8 +669,34 @@
           <select id="sort-select">
             <option value="default">默认顺序</option>
             <option value="updated-desc">最近更新优先</option>
+            <option value="reviewed-desc">最近复习优先</option>
+            <option value="reviewed-asc">久未复习优先</option>
             <option value="question-asc">题目字顺</option>
           </select>
+        </section>
+
+        <section>
+          <h2>弱项复习</h2>
+          <div id="review-filters" class="chip-list">
+            <button class="chip active" type="button" data-review-filter="全部">全部</button>
+            <button class="chip" type="button" data-review-filter="today">今天复习</button>
+            <button class="chip" type="button" data-review-filter="unreviewed">未复习</button>
+            <button class="chip" type="button" data-review-filter="weak">薄弱</button>
+            <button class="chip" type="button" data-review-filter="high-risk">高频易错未掌握</button>
+            <button class="chip" type="button" data-review-filter="stale">7 天没复习</button>
+            <button class="chip" type="button" data-review-filter="favorite-open">收藏未掌握</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>考前模式</h2>
+          <div id="exam-modes" class="mode-list">
+            <button class="mode-button active" type="button" data-exam-mode="default">常规</button>
+            <button class="mode-button" type="button" data-exam-mode="foundation">基础回顾</button>
+            <button class="mode-button" type="button" data-exam-mode="pitfall">高频易错</button>
+            <button class="mode-button" type="button" data-exam-mode="sprint">冲刺速记</button>
+            <button class="mode-button" type="button" data-exam-mode="quiz">自测刷题</button>
+          </div>
         </section>
 
         <section>
@@ -533,7 +727,7 @@
           <div class="toolbar-copy">
             <div>
               <h2>知识卡片</h2>
-              <p>数据已从主 HTML 拆分，后续补知识点时只需要维护独立数据文件。</p>
+              <p>按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
             </div>
             <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
           </div>
@@ -563,6 +757,12 @@
       <p class="question-hint">自测模式已开启：先独立作答，再点击“查看解析”。</p>
       <div class="card-actions">
         <button class="inline-button toggle-details" type="button"></button>
+        <div class="mastery-actions">
+          <button class="mastery-button reviewed" type="button" data-mastery-action="reviewed">复习过</button>
+          <button class="mastery-button known" type="button" data-mastery-action="known">已掌握</button>
+          <button class="mastery-button weak" type="button" data-mastery-action="weak">薄弱</button>
+          <button class="mastery-button favorite" type="button" data-mastery-action="favorite">收藏</button>
+        </div>
       </div>
       <div class="card-details" hidden>
         <div class="section-block">
@@ -581,18 +781,31 @@
           <h4>易错点</h4>
           <ul class="bullet pitfalls-list"></ul>
         </div>
+        <div class="section-block diagram-block" hidden>
+          <h4>思维导图</h4>
+          <div class="diagram-shell">
+            <div class="mermaid mermaid-chart"></div>
+            <div class="diagram-fallback" hidden></div>
+          </div>
+        </div>
       </div>
       <div class="tag-row"></div>
     </article>
   </template>
 
   <script src="./study-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
     const STORAGE_KEY = "cicpa-review-state";
+    const PROGRESS_STORAGE_KEY = "cicpa-review-progress";
+    const REVIEW_INTERVAL_DAYS = 7;
+    const DAY_IN_MS = 24 * 60 * 60 * 1000;
     const defaultState = {
       search: "",
       topic: "全部",
       tag: "全部",
+      reviewFilter: "全部",
+      examMode: "default",
       focusPitfalls: false,
       sort: "default",
       quizMode: false,
@@ -605,12 +818,32 @@
       "高频基础": 1
     };
 
+    const reviewFilterLabels = {
+      "全部": "全部",
+      today: "今天复习",
+      unreviewed: "未复习",
+      weak: "薄弱",
+      "high-risk": "高频易错未掌握",
+      stale: "7 天没复习",
+      "favorite-open": "收藏未掌握"
+    };
+
+    const examModeLabels = {
+      default: "常规",
+      foundation: "基础回顾",
+      pitfall: "高频易错",
+      sprint: "冲刺速记",
+      quiz: "自测刷题"
+    };
+
     const searchInput = document.querySelector("#search-input");
     const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
     const sortSelect = document.querySelector("#sort-select");
     const focusPitfallsCheckbox = document.querySelector("#focus-pitfalls");
     const quizModeCheckbox = document.querySelector("#quiz-mode");
+    const reviewFilters = document.querySelector("#review-filters");
+    const examModes = document.querySelector("#exam-modes");
     const cardList = document.querySelector("#card-list");
     const resultsMeta = document.querySelector("#results-meta");
     const entryCount = document.querySelector("#entry-count");
@@ -619,6 +852,7 @@
     const modeTip = document.querySelector("#mode-tip");
     const clearFiltersButton = document.querySelector("#clear-filters");
     const randomEntryButton = document.querySelector("#random-entry");
+    const quickActionButtons = document.querySelectorAll("[data-quick-action]");
     const cardTemplate = document.querySelector("#card-template");
 
     const state = {
@@ -626,15 +860,56 @@
     };
 
     const uiState = {
-      expandedIds: new Set()
+      expandedIds: new Set(),
+      expandedTagGroups: new Set()
     };
 
     let studyData = null;
     let topics = [];
     let tags = [];
+    let tagGroups = [];
+    let progressState = {};
+    const TAG_GROUP_COLLAPSED_LIMIT = 8;
+    const hasMermaid = typeof window.mermaid !== "undefined";
+
+    if (hasMermaid) {
+      window.mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        securityLevel: "loose",
+        themeVariables: {
+          primaryColor: "#fff7ec",
+          primaryTextColor: "#1c160f",
+          primaryBorderColor: "#b6542a",
+          lineColor: "#7f2f16",
+          secondaryColor: "#eef7f4",
+          tertiaryColor: "#fffdf8",
+          fontFamily: "Microsoft YaHei, PingFang SC, sans-serif"
+        }
+      });
+    }
 
     function uniqueValues(values) {
       return ["全部", ...new Set(values)];
+    }
+
+    function buildTagItems(entries) {
+      const counts = new Map();
+
+      entries.forEach((entry) => {
+        [...new Set(entry.tags)].forEach((tag) => {
+          counts.set(tag, (counts.get(tag) || 0) + 1);
+        });
+      });
+
+      return [...counts.entries()]
+        .sort((left, right) => {
+          if (right[1] !== left[1]) {
+            return right[1] - left[1];
+          }
+          return left[0].localeCompare(right[0], "zh-CN");
+        })
+        .map(([value, count]) => ({ value, count }));
     }
 
     function normalizeText(value) {
@@ -650,12 +925,117 @@
       return Number.isNaN(timestamp) ? 0 : timestamp;
     }
 
+    function formatReviewDate(value) {
+      const timestamp = parseDate(value);
+      if (!timestamp) {
+        return "未复习";
+      }
+
+      return new Intl.DateTimeFormat("zh-CN", {
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date(timestamp));
+    }
+
+    function getProgress(entryId) {
+      return progressState[entryId] || {
+        status: "new",
+        favorite: false,
+        reviewedAt: ""
+      };
+    }
+
+    function getReviewedAtValue(entry) {
+      return parseDate(getProgress(entry.id).reviewedAt);
+    }
+
+    function isStale(entry) {
+      const reviewedAt = getReviewedAtValue(entry);
+      if (!reviewedAt) {
+        return true;
+      }
+
+      return Date.now() - reviewedAt >= REVIEW_INTERVAL_DAYS * DAY_IN_MS;
+    }
+
+    function isKnown(entry) {
+      return getProgress(entry.id).status === "known";
+    }
+
+    function isWeak(entry) {
+      return getProgress(entry.id).status === "weak";
+    }
+
+    function isTodayReview(entry) {
+      return !getReviewedAtValue(entry) || isWeak(entry) || isStale(entry) || entry.difficulty === "高频易错";
+    }
+
+    function persistProgress() {
+      try {
+        window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progressState));
+      } catch (error) {
+        // Local progress is optional; the page should keep working even if storage is blocked.
+      }
+    }
+
+    function readProgressState() {
+      try {
+        const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function updateProgress(entryId, patch, options = {}) {
+      const current = getProgress(entryId);
+      const next = {
+        ...current,
+        ...patch
+      };
+
+      if (options.touch !== false) {
+        next.reviewedAt = new Date().toISOString();
+      }
+
+      progressState[entryId] = next;
+      persistProgress();
+      renderResults();
+    }
+
     function createListItems(listElement, items) {
       items.forEach((item) => {
         const li = document.createElement("li");
         li.textContent = item;
         listElement.appendChild(li);
       });
+    }
+
+    async function renderMermaidDiagrams() {
+      if (!hasMermaid) {
+        return;
+      }
+
+      const nodes = document.querySelectorAll(".mermaid-chart");
+      if (!nodes.length) {
+        return;
+      }
+
+      nodes.forEach((node) => {
+        node.removeAttribute("data-processed");
+      });
+
+      try {
+        await window.mermaid.run({ nodes });
+      } catch (error) {
+        nodes.forEach((node) => {
+          const fallback = node.parentElement.querySelector(".diagram-fallback");
+          if (fallback) {
+            fallback.hidden = false;
+            fallback.textContent = node.textContent || "思维导图加载失败。";
+          }
+        });
+      }
     }
 
     function clearNode(node) {
@@ -690,6 +1070,12 @@
       if (params.has("tag")) {
         urlState.tag = params.get("tag");
       }
+      if (params.has("review")) {
+        urlState.reviewFilter = params.get("review");
+      }
+      if (params.has("mode")) {
+        urlState.examMode = params.get("mode");
+      }
       if (params.has("sort")) {
         urlState.sort = params.get("sort");
       }
@@ -720,6 +1106,8 @@
         search: state.search,
         topic: state.topic,
         tag: state.tag,
+        reviewFilter: state.reviewFilter,
+        examMode: state.examMode,
         focusPitfalls: state.focusPitfalls,
         sort: state.sort,
         quizMode: state.quizMode,
@@ -741,6 +1129,12 @@
       }
       if (state.tag !== "全部") {
         params.set("tag", state.tag);
+      }
+      if (state.reviewFilter !== "全部") {
+        params.set("review", state.reviewFilter);
+      }
+      if (state.examMode !== "default") {
+        params.set("mode", state.examMode);
       }
       if (state.sort !== "default") {
         params.set("sort", state.sort);
@@ -767,7 +1161,7 @@
       quizModeCheckbox.checked = state.quizMode;
       modeTip.textContent = state.quizMode
         ? "自测模式下默认隐藏摘要和解析，先自己作答，再点按钮揭晓。"
-        : "默认显示摘要，点击卡片按钮可展开完整解析。";
+        : "默认显示摘要，点击卡片按钮可展开完整解析；标记掌握度后可按弱项清单复习。";
     }
 
     function renderFilterButtons(container, values, activeValue, className, onClick) {
@@ -787,6 +1181,97 @@
       });
     }
 
+    function renderGroupedTagFilters() {
+      clearNode(tagFilters);
+      tagFilters.classList.add("grouped-tags");
+
+      const toolbar = document.createElement("div");
+      toolbar.className = "tag-filter-toolbar";
+
+      const resetButton = document.createElement("button");
+      resetButton.type = "button";
+      resetButton.textContent = "全部标签";
+      resetButton.dataset.value = "全部";
+      resetButton.className = "chip";
+      resetButton.classList.toggle("active", state.tag === "全部");
+      resetButton.addEventListener("click", () => setState({ tag: "全部" }));
+      toolbar.appendChild(resetButton);
+
+      tagFilters.appendChild(toolbar);
+
+      tagGroups.forEach((group) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "tag-group";
+
+        const header = document.createElement("div");
+        header.className = "tag-group-header";
+
+        const title = document.createElement("p");
+        title.className = "tag-group-title";
+        title.textContent = group.title;
+        header.appendChild(title);
+
+        const meta = document.createElement("span");
+        meta.className = "tag-group-meta";
+        meta.textContent = `共 ${group.items.length} 个`;
+        header.appendChild(meta);
+
+        wrapper.appendChild(header);
+
+        const list = document.createElement("div");
+        list.className = "chip-list";
+        const isExpanded = uiState.expandedTagGroups.has(group.id);
+        const visibleItems = isExpanded
+          ? [...group.items]
+          : group.items.slice(0, group.collapsedLimit || TAG_GROUP_COLLAPSED_LIMIT);
+
+        if (!isExpanded && state.tag !== "全部") {
+          const activeItem = group.items.find((item) => item.value === state.tag);
+          if (activeItem && !visibleItems.some((item) => item.value === activeItem.value)) {
+            visibleItems.push(activeItem);
+          }
+        }
+
+        visibleItems.forEach((item) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = `${item.value} (${item.count})`;
+          button.dataset.value = item.value;
+          button.className = "chip";
+          button.classList.toggle("active", item.value === state.tag);
+          button.addEventListener("click", () => setState({ tag: item.value }));
+          list.appendChild(button);
+        });
+
+        wrapper.appendChild(list);
+
+        if (group.items.length > visibleItems.length || isExpanded) {
+          const footer = document.createElement("div");
+          footer.className = "tag-group-footer";
+
+          const toggle = document.createElement("button");
+          toggle.type = "button";
+          toggle.className = "tag-toggle";
+          toggle.textContent = isExpanded
+            ? "收起"
+            : `展开更多（+${group.items.length - visibleItems.length}）`;
+          toggle.addEventListener("click", () => {
+            if (isExpanded) {
+              uiState.expandedTagGroups.delete(group.id);
+            } else {
+              uiState.expandedTagGroups.add(group.id);
+            }
+            renderGroupedTagFilters();
+          });
+
+          footer.appendChild(toggle);
+          wrapper.appendChild(footer);
+        }
+
+        tagFilters.appendChild(wrapper);
+      });
+    }
+
     function updateActiveFilterButtons() {
       topicFilters.querySelectorAll("button").forEach((button) => {
         button.classList.toggle("active", button.dataset.value === state.topic);
@@ -795,14 +1280,63 @@
       tagFilters.querySelectorAll("button").forEach((button) => {
         button.classList.toggle("active", button.dataset.value === state.tag);
       });
+
+      reviewFilters.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.reviewFilter === state.reviewFilter);
+      });
+
+      examModes.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.examMode === state.examMode);
+      });
     }
 
     function matchesFilters(entry) {
       const topicMatch = state.topic === "全部" || entry.topic === state.topic;
-      const tagMatch = state.tag === "全部" || entry.tags.includes(state.tag);
+      const tagMatch = state.tag === "全部" || entry.topic === state.tag || entry.difficulty === state.tag || entry.tags.includes(state.tag);
       const pitfallsMatch = !state.focusPitfalls || entry.difficulty === "高频易错";
+      const reviewMatch = matchesReviewFilter(entry);
+      const modeMatch = matchesExamMode(entry);
       const searchMatch = !state.search || entry.searchIndex.includes(state.search);
-      return topicMatch && tagMatch && pitfallsMatch && searchMatch;
+      return topicMatch && tagMatch && pitfallsMatch && reviewMatch && modeMatch && searchMatch;
+    }
+
+    function matchesReviewFilter(entry) {
+      const progress = getProgress(entry.id);
+
+      if (state.reviewFilter === "today") {
+        return isTodayReview(entry);
+      }
+      if (state.reviewFilter === "unreviewed") {
+        return !getReviewedAtValue(entry);
+      }
+      if (state.reviewFilter === "weak") {
+        return progress.status === "weak";
+      }
+      if (state.reviewFilter === "high-risk") {
+        return entry.difficulty === "高频易错" && progress.status !== "known";
+      }
+      if (state.reviewFilter === "stale") {
+        return isStale(entry);
+      }
+      if (state.reviewFilter === "favorite-open") {
+        return progress.favorite && progress.status !== "known";
+      }
+
+      return true;
+    }
+
+    function matchesExamMode(entry) {
+      if (state.examMode === "foundation") {
+        return entry.difficulty === "高频基础";
+      }
+      if (state.examMode === "pitfall") {
+        return entry.difficulty === "高频易错";
+      }
+      if (state.examMode === "sprint") {
+        return entry.memory.length > 0 || entry.difficulty !== "高频基础";
+      }
+
+      return true;
     }
 
     function sortEntries(entries) {
@@ -827,6 +1361,40 @@
 
       if (state.sort === "question-asc") {
         nextEntries.sort((left, right) => left.question.localeCompare(right.question, "zh-CN"));
+        return nextEntries;
+      }
+
+      if (state.sort === "reviewed-desc") {
+        nextEntries.sort((left, right) => {
+          const reviewedGap = getReviewedAtValue(right) - getReviewedAtValue(left);
+          if (reviewedGap !== 0) {
+            return reviewedGap;
+          }
+
+          return left.order - right.order;
+        });
+        return nextEntries;
+      }
+
+      if (state.sort === "reviewed-asc") {
+        nextEntries.sort((left, right) => {
+          const leftReviewed = getReviewedAtValue(left);
+          const rightReviewed = getReviewedAtValue(right);
+
+          if (!leftReviewed && rightReviewed) {
+            return -1;
+          }
+          if (leftReviewed && !rightReviewed) {
+            return 1;
+          }
+
+          const reviewedGap = leftReviewed - rightReviewed;
+          if (reviewedGap !== 0) {
+            return reviewedGap;
+          }
+
+          return left.order - right.order;
+        });
         return nextEntries;
       }
 
@@ -875,11 +1443,23 @@
       if (state.tag !== "全部") {
         statusRow.appendChild(buildStatusPill(`标签：${state.tag}`));
       }
+      if (state.reviewFilter !== "全部") {
+        statusRow.appendChild(buildStatusPill(`弱项：${reviewFilterLabels[state.reviewFilter] || state.reviewFilter}`, "review"));
+      }
+      if (state.examMode !== "default") {
+        statusRow.appendChild(buildStatusPill(`模式：${examModeLabels[state.examMode] || state.examMode}`, "review"));
+      }
       if (state.focusPitfalls) {
         statusRow.appendChild(buildStatusPill("仅看高频易错"));
       }
       if (state.sort === "updated-desc") {
         statusRow.appendChild(buildStatusPill("最近更新优先"));
+      }
+      if (state.sort === "reviewed-desc") {
+        statusRow.appendChild(buildStatusPill("最近复习优先"));
+      }
+      if (state.sort === "reviewed-asc") {
+        statusRow.appendChild(buildStatusPill("久未复习优先"));
       }
       if (state.sort === "question-asc") {
         statusRow.appendChild(buildStatusPill("题目字顺"));
@@ -940,12 +1520,15 @@
         const hint = fragment.querySelector(".question-hint");
         const details = fragment.querySelector(".card-details");
         const toggleButton = fragment.querySelector(".toggle-details");
+        const diagramBlock = fragment.querySelector(".diagram-block");
         const isExpanded = uiState.expandedIds.has(entry.id);
+        const progress = getProgress(entry.id);
+        const reviewText = formatReviewDate(progress.reviewedAt);
 
         article.dataset.entryId = entry.id;
         fragment.querySelector(".topic-badge").textContent = entry.topic;
         fragment.querySelector(".difficulty-badge").textContent = entry.difficulty;
-        fragment.querySelector(".card-meta").textContent = `更新于 ${entry.updatedAt}`;
+        fragment.querySelector(".card-meta").textContent = `更新于 ${entry.updatedAt} · ${reviewText}`;
         fragment.querySelector(".question-title").textContent = entry.question;
         summary.textContent = entry.summary;
         summary.hidden = state.quizMode && !isExpanded;
@@ -964,6 +1547,34 @@
           renderResults();
         });
 
+        fragment.querySelectorAll("[data-mastery-action]").forEach((button) => {
+          const action = button.dataset.masteryAction;
+          if (action === "known") {
+            button.classList.toggle("active", progress.status === "known");
+          }
+          if (action === "weak") {
+            button.classList.toggle("active", progress.status === "weak");
+          }
+          if (action === "favorite") {
+            button.classList.toggle("active", progress.favorite);
+          }
+
+          button.addEventListener("click", () => {
+            if (action === "reviewed") {
+              updateProgress(entry.id, {});
+            }
+            if (action === "known") {
+              updateProgress(entry.id, { status: progress.status === "known" ? "new" : "known" });
+            }
+            if (action === "weak") {
+              updateProgress(entry.id, { status: progress.status === "weak" ? "new" : "weak" });
+            }
+            if (action === "favorite") {
+              updateProgress(entry.id, { favorite: !progress.favorite }, { touch: false });
+            }
+          });
+        });
+
         details.hidden = !isExpanded;
 
         const sections = [
@@ -978,6 +1589,15 @@
           createListItems(list, items);
         });
 
+        if (entry.diagram) {
+          diagramBlock.hidden = false;
+          const chart = fragment.querySelector(".mermaid-chart");
+          const fallback = fragment.querySelector(".diagram-fallback");
+          chart.textContent = entry.diagram;
+          fallback.textContent = entry.diagram;
+          fallback.hidden = true;
+        }
+
         const tagRow = fragment.querySelector(".tag-row");
         entry.tags.forEach((tag) => {
           const span = document.createElement("span");
@@ -988,6 +1608,8 @@
 
         cardList.appendChild(fragment);
       });
+
+      renderMermaidDiagrams();
     }
 
     function renderResults() {
@@ -1017,15 +1639,57 @@
 
     function initializeFilters() {
       topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
-      tags = uniqueValues(studyData.entries.flatMap((entry) => entry.tags));
+      const difficultyTags = [...new Set(studyData.entries.map((entry) => entry.difficulty))];
+      const keywordTags = [...new Set(studyData.entries.flatMap((entry) => entry.tags))];
+      const pitfallTags = [...new Set(studyData.entries
+        .filter((entry) => entry.difficulty === "高频易错")
+        .flatMap((entry) => entry.tags))];
+
+      tags = uniqueValues([
+        ...studyData.entries.map((entry) => entry.topic),
+        ...studyData.entries.map((entry) => entry.difficulty),
+        ...studyData.entries.flatMap((entry) => entry.tags)
+      ]);
+
+      tagGroups = [
+        { title: "章节标签", values: topics },
+        { title: "题型标签", values: difficultyTags },
+        { title: "关键词标签", values: keywordTags },
+        { title: "易错标签", values: pitfallTags }
+      ];
 
       renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
         setState({ topic: value });
       });
 
-      renderFilterButtons(tagFilters, tags, state.tag, "chip", (value) => {
-        setState({ tag: value });
+      renderGroupedTagFilters();
+    }
+
+    function initializeFilters() {
+      topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
+      const keywordTagItems = buildTagItems(studyData.entries);
+      const pitfallTagItems = buildTagItems(
+        studyData.entries.filter((entry) => entry.difficulty === "楂橀鏄撻敊")
+      );
+
+      tags = uniqueValues([
+        ...studyData.entries.map((entry) => entry.topic),
+        ...studyData.entries.map((entry) => entry.difficulty),
+        ...studyData.entries.flatMap((entry) => entry.tags)
+      ]);
+
+      tagGroups = [
+        { id: "keywords", title: "常用关键词", items: keywordTagItems, collapsedLimit: TAG_GROUP_COLLAPSED_LIMIT },
+        { id: "pitfalls", title: "高频易错", items: pitfallTagItems, collapsedLimit: 6 }
+      ].filter((group) => group.items.length > 0);
+
+      uiState.expandedTagGroups.clear();
+
+      renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
+        setState({ topic: value });
       });
+
+      renderGroupedTagFilters();
     }
 
     function validateState() {
@@ -1036,7 +1700,17 @@
         state.tag = "全部";
       }
 
-      const allowedSorts = new Set(["default", "updated-desc", "question-asc"]);
+      const allowedReviewFilters = new Set(["全部", "today", "unreviewed", "weak", "high-risk", "stale", "favorite-open"]);
+      if (!allowedReviewFilters.has(state.reviewFilter)) {
+        state.reviewFilter = "全部";
+      }
+
+      const allowedExamModes = new Set(["default", "foundation", "pitfall", "sprint", "quiz"]);
+      if (!allowedExamModes.has(state.examMode)) {
+        state.examMode = "default";
+      }
+
+      const allowedSorts = new Set(["default", "updated-desc", "reviewed-desc", "reviewed-asc", "question-asc"]);
       if (!allowedSorts.has(state.sort)) {
         state.sort = "default";
       }
@@ -1062,6 +1736,7 @@
             ...entry.reasoning,
             ...entry.memory,
             ...entry.pitfalls,
+            entry.diagram || "",
             ...entry.tags,
             entry.topic,
             entry.difficulty
@@ -1098,6 +1773,58 @@
       });
     }
 
+    function getExamModePatch(mode) {
+      if (mode === "foundation") {
+        return {
+          examMode: mode,
+          reviewFilter: "全部",
+          focusPitfalls: false,
+          quizMode: false,
+          sort: "default"
+        };
+      }
+      if (mode === "pitfall") {
+        return {
+          examMode: mode,
+          reviewFilter: "high-risk",
+          focusPitfalls: true,
+          quizMode: false,
+          sort: "updated-desc"
+        };
+      }
+      if (mode === "sprint") {
+        return {
+          examMode: mode,
+          reviewFilter: "stale",
+          focusPitfalls: false,
+          quizMode: false,
+          sort: "reviewed-asc"
+        };
+      }
+      if (mode === "quiz") {
+        return {
+          examMode: mode,
+          reviewFilter: "today",
+          focusPitfalls: false,
+          quizMode: true,
+          sort: "reviewed-asc"
+        };
+      }
+
+      return {
+        examMode: "default",
+        reviewFilter: "全部",
+        focusPitfalls: false,
+        quizMode: false,
+        sort: "default"
+      };
+    }
+
+    function applyExamMode(mode) {
+      uiState.expandedIds.clear();
+      setState(getExamModePatch(mode));
+    }
+
     function clearAllFilters() {
       uiState.expandedIds.clear();
       Object.assign(state, defaultState);
@@ -1129,12 +1856,46 @@
 
       clearFiltersButton.addEventListener("click", clearAllFilters);
       randomEntryButton.addEventListener("click", pickRandomEntry);
+
+      reviewFilters.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => {
+          setState({ reviewFilter: button.dataset.reviewFilter });
+        });
+      });
+
+      examModes.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => {
+          applyExamMode(button.dataset.examMode);
+        });
+      });
+
+      quickActionButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const action = button.dataset.quickAction;
+          uiState.expandedIds.clear();
+
+          if (action === "today") {
+            setState({ reviewFilter: "today", sort: "reviewed-asc", examMode: "default", quizMode: false, focusPitfalls: false });
+          }
+          if (action === "pitfalls") {
+            setState({ reviewFilter: "high-risk", sort: "updated-desc", examMode: "pitfall", quizMode: false, focusPitfalls: true });
+          }
+          if (action === "random-quiz") {
+            setState({ reviewFilter: "today", sort: "reviewed-asc", examMode: "quiz", quizMode: true, focusPitfalls: false }, { clearRandom: false });
+            pickRandomEntry();
+          }
+        });
+      });
     }
 
     function boot() {
       try {
         initializeData(window.studyData);
+        progressState = readProgressState();
         Object.assign(state, readPersistedState());
+        if (state.examMode === "quiz") {
+          state.quizMode = true;
+        }
         initializeFilters();
         validateState();
         syncControls();
