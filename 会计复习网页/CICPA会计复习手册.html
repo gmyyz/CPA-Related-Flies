@@ -1639,37 +1639,9 @@
 
     function initializeFilters() {
       topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
-      const difficultyTags = [...new Set(studyData.entries.map((entry) => entry.difficulty))];
-      const keywordTags = [...new Set(studyData.entries.flatMap((entry) => entry.tags))];
-      const pitfallTags = [...new Set(studyData.entries
-        .filter((entry) => entry.difficulty === "高频易错")
-        .flatMap((entry) => entry.tags))];
-
-      tags = uniqueValues([
-        ...studyData.entries.map((entry) => entry.topic),
-        ...studyData.entries.map((entry) => entry.difficulty),
-        ...studyData.entries.flatMap((entry) => entry.tags)
-      ]);
-
-      tagGroups = [
-        { title: "章节标签", values: topics },
-        { title: "题型标签", values: difficultyTags },
-        { title: "关键词标签", values: keywordTags },
-        { title: "易错标签", values: pitfallTags }
-      ];
-
-      renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
-        setState({ topic: value });
-      });
-
-      renderGroupedTagFilters();
-    }
-
-    function initializeFilters() {
-      topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
       const keywordTagItems = buildTagItems(studyData.entries);
       const pitfallTagItems = buildTagItems(
-        studyData.entries.filter((entry) => entry.difficulty === "楂橀鏄撻敊")
+        studyData.entries.filter((entry) => entry.difficulty === "高频易错")
       );
 
       tags = uniqueValues([
