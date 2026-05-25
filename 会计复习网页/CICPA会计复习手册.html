@@ -800,6 +800,7 @@
     const PROGRESS_STORAGE_KEY = "cicpa-review-progress";
     const REVIEW_INTERVAL_DAYS = 7;
     const DAY_IN_MS = 24 * 60 * 60 * 1000;
+    const SEARCH_DEBOUNCE_MS = 180;
     const defaultState = {
       search: "",
       topic: "全部",
@@ -869,6 +870,7 @@
     let tags = [];
     let tagGroups = [];
     let progressState = {};
+    let searchInputDebounceTimer = 0;
     const TAG_GROUP_COLLAPSED_LIMIT = 8;
     const hasMermaid = typeof window.mermaid !== "undefined";
 
@@ -952,7 +954,7 @@
     function isStale(entry) {
       const reviewedAt = getReviewedAtValue(entry);
       if (!reviewedAt) {
-        return true;
+        return false;
       }
 
       return Date.now() - reviewedAt >= REVIEW_INTERVAL_DAYS * DAY_IN_MS;
@@ -967,7 +969,7 @@
     }
 
     function isTodayReview(entry) {
-      return !getReviewedAtValue(entry) || isWeak(entry) || isStale(entry) || entry.difficulty === "高频易错";
+      return !getReviewedAtValue(entry) || isWeak(entry) || isStale(entry);
     }
 
     function persistProgress() {
@@ -1011,13 +1013,8 @@
       });
     }
 
-    async function renderMermaidDiagrams() {
-      if (!hasMermaid) {
-        return;
-      }
-
-      const nodes = document.querySelectorAll(".mermaid-chart");
-      if (!nodes.length) {
+    async function renderMermaidDiagrams(nodes = []) {
+      if (!hasMermaid || !nodes.length) {
         return;
       }
 
@@ -1045,9 +1042,16 @@
     }
 
     function setState(patch, options = {}) {
+      const hasStateChanges = Object.keys(patch).some((key) => state[key] !== patch[key]);
+      const shouldClearRandom = options.clearRandom !== false && patch.randomEntryId === undefined;
+
+      if (!hasStateChanges && !(shouldClearRandom && state.randomEntryId !== null)) {
+        return;
+      }
+
       Object.assign(state, patch);
 
-      if (options.clearRandom !== false && patch.randomEntryId === undefined) {
+      if (shouldClearRandom) {
         state.randomEntryId = null;
       }
 
@@ -1512,6 +1516,7 @@
 
     function renderCards(entries) {
       clearNode(cardList);
+      const mermaidNodes = [];
 
       entries.forEach((entry) => {
         const fragment = cardTemplate.content.cloneNode(true);
@@ -1589,13 +1594,14 @@
           createListItems(list, items);
         });
 
-        if (entry.diagram) {
+        if (entry.diagram && isExpanded) {
           diagramBlock.hidden = false;
           const chart = fragment.querySelector(".mermaid-chart");
           const fallback = fragment.querySelector(".diagram-fallback");
           chart.textContent = entry.diagram;
           fallback.textContent = entry.diagram;
           fallback.hidden = true;
+          mermaidNodes.push(chart);
         }
 
         const tagRow = fragment.querySelector(".tag-row");
@@ -1609,7 +1615,7 @@
         cardList.appendChild(fragment);
       });
 
-      renderMermaidDiagrams();
+      renderMermaidDiagrams(mermaidNodes);
     }
 
     function renderResults() {
@@ -1618,6 +1624,8 @@
       }
 
       const filteredEntries = getFilteredEntries();
+      entryCount.textContent = `${studyData.entries.length} 个知识点`;
+      updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;
 
       if (state.randomEntryId && !filteredEntries.some((entry) => entry.id === state.randomEntryId)) {
         state.randomEntryId = null;
@@ -1633,8 +1641,6 @@
       }
 
       renderCards(visibleEntries);
-      entryCount.textContent = `${studyData.entries.length} 个知识点`;
-      updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;
     }
 
     function initializeFilters() {
@@ -1697,25 +1703,45 @@
         throw new Error("study-data.js 中没有找到有效的 entries 数组。");
       }
 
+      const toText = (value, fallback = "") => String(value ?? fallback).trim();
+      const toList = (value) => Array.isArray(value)
+        ? value.map((item) => String(item ?? "").trim()).filter(Boolean)
+        : [];
+
       studyData = {
-        updatedAt: rawData.updatedAt || "-",
+        updatedAt: toText(rawData.updatedAt, "-") || "-",
         entries: rawData.entries.map((entry, index) => {
-          const updatedValue = entry.updatedAt || rawData.updatedAt || "-";
+          const normalizedEntry = {
+            ...entry,
+            id: toText(entry?.id, `entry-${index + 1}`) || `entry-${index + 1}`,
+            updatedAt: toText(entry?.updatedAt),
+            topic: toText(entry?.topic, "未分类") || "未分类",
+            difficulty: toText(entry?.difficulty, "未标记") || "未标记",
+            question: toText(entry?.question, `未命名知识点 ${index + 1}`) || `未命名知识点 ${index + 1}`,
+            summary: toText(entry?.summary, "暂未提供摘要。") || "暂未提供摘要。",
+            conclusion: toList(entry?.conclusion),
+            reasoning: toList(entry?.reasoning),
+            memory: toList(entry?.memory),
+            pitfalls: toList(entry?.pitfalls),
+            tags: toList(entry?.tags),
+            diagram: toText(entry?.diagram)
+          };
+          const updatedValue = normalizedEntry.updatedAt || rawData.updatedAt || "-";
           const searchIndex = normalizeText([
-            entry.question,
-            entry.summary,
-            ...entry.conclusion,
-            ...entry.reasoning,
-            ...entry.memory,
-            ...entry.pitfalls,
-            entry.diagram || "",
-            ...entry.tags,
-            entry.topic,
-            entry.difficulty
+            normalizedEntry.question,
+            normalizedEntry.summary,
+            ...normalizedEntry.conclusion,
+            ...normalizedEntry.reasoning,
+            ...normalizedEntry.memory,
+            ...normalizedEntry.pitfalls,
+            normalizedEntry.diagram || "",
+            ...normalizedEntry.tags,
+            normalizedEntry.topic,
+            normalizedEntry.difficulty
           ].join(" "));
 
           return {
-            ...entry,
+            ...normalizedEntry,
             order: index,
             updatedAt: updatedValue,
             updatedAtValue: parseDate(updatedValue),
@@ -1808,7 +1834,11 @@
 
     function bindEvents() {
       searchInput.addEventListener("input", (event) => {
-        setState({ search: normalizeText(event.target.value) });
+        const nextSearch = normalizeText(event.target.value);
+        window.clearTimeout(searchInputDebounceTimer);
+        searchInputDebounceTimer = window.setTimeout(() => {
+          setState({ search: nextSearch });
+        }, SEARCH_DEBOUNCE_MS);
       });
 
       sortSelect.addEventListener("change", (event) => {
