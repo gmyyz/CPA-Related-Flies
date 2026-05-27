@@ -630,9 +630,9 @@
         <span id="data-source">数据源加载中</span>
       </div>
       <div class="quick-actions" aria-label="复习快捷入口">
-        <button class="quick-action" type="button" data-quick-action="today">
-          <strong>今天复习</strong>
-          <span>优先看未复习、薄弱、7 天未回看的知识点。</span>
+        <button class="quick-action" type="button" data-quick-action="daily">
+          <strong>今日任务</strong>
+          <span>按薄弱、久未复习、未复习生成一轮今日复习清单。</span>
         </button>
         <button class="quick-action" type="button" data-quick-action="pitfalls">
           <strong>高频易错</strong>
@@ -679,7 +679,7 @@
           <h2>弱项复习</h2>
           <div id="review-filters" class="chip-list">
             <button class="chip active" type="button" data-review-filter="全部">全部</button>
-            <button class="chip" type="button" data-review-filter="today">今天复习</button>
+            <button class="chip" type="button" data-review-filter="daily">今日任务</button>
             <button class="chip" type="button" data-review-filter="unreviewed">未复习</button>
             <button class="chip" type="button" data-review-filter="weak">薄弱</button>
             <button class="chip" type="button" data-review-filter="high-risk">高频易错未掌握</button>
@@ -689,26 +689,12 @@
         </section>
 
         <section>
-          <h2>考前模式</h2>
-          <div id="exam-modes" class="mode-list">
-            <button class="mode-button active" type="button" data-exam-mode="default">常规</button>
-            <button class="mode-button" type="button" data-exam-mode="foundation">基础回顾</button>
-            <button class="mode-button" type="button" data-exam-mode="pitfall">高频易错</button>
-            <button class="mode-button" type="button" data-exam-mode="sprint">冲刺速记</button>
-            <button class="mode-button" type="button" data-exam-mode="quiz">自测刷题</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>强化模式</h2>
-          <label class="toggle-line" for="focus-pitfalls">
-            <input id="focus-pitfalls" type="checkbox">
-            <span>只看高频易错</span>
-          </label>
+          <h2>复习方式</h2>
           <label class="toggle-line" for="quiz-mode">
             <input id="quiz-mode" type="checkbox">
             <span>开启自测模式，先思考再看解析</span>
           </label>
+          <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
         </section>
 
         <section class="memory-box">
@@ -733,6 +719,7 @@
           </div>
           <div class="toolbar-actions">
             <button id="random-entry" class="accent-button" type="button">随机抽题</button>
+            <button id="restore-session" class="ghost-button" type="button" hidden>恢复上次筛选</button>
             <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
           </div>
         </div>
@@ -806,8 +793,6 @@
       topic: "全部",
       tag: "全部",
       reviewFilter: "全部",
-      examMode: "default",
-      focusPitfalls: false,
       sort: "default",
       quizMode: false,
       randomEntryId: null
@@ -821,7 +806,7 @@
 
     const reviewFilterLabels = {
       "全部": "全部",
-      today: "今天复习",
+      daily: "今日任务",
       unreviewed: "未复习",
       weak: "薄弱",
       "high-risk": "高频易错未掌握",
@@ -829,22 +814,12 @@
       "favorite-open": "收藏未掌握"
     };
 
-    const examModeLabels = {
-      default: "常规",
-      foundation: "基础回顾",
-      pitfall: "高频易错",
-      sprint: "冲刺速记",
-      quiz: "自测刷题"
-    };
-
     const searchInput = document.querySelector("#search-input");
     const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
     const sortSelect = document.querySelector("#sort-select");
-    const focusPitfallsCheckbox = document.querySelector("#focus-pitfalls");
     const quizModeCheckbox = document.querySelector("#quiz-mode");
     const reviewFilters = document.querySelector("#review-filters");
-    const examModes = document.querySelector("#exam-modes");
     const cardList = document.querySelector("#card-list");
     const resultsMeta = document.querySelector("#results-meta");
     const entryCount = document.querySelector("#entry-count");
@@ -853,6 +828,7 @@
     const modeTip = document.querySelector("#mode-tip");
     const clearFiltersButton = document.querySelector("#clear-filters");
     const randomEntryButton = document.querySelector("#random-entry");
+    const restoreSessionButton = document.querySelector("#restore-session");
     const quickActionButtons = document.querySelectorAll("[data-quick-action]");
     const cardTemplate = document.querySelector("#card-template");
 
@@ -968,8 +944,21 @@
       return getProgress(entry.id).status === "weak";
     }
 
-    function isTodayReview(entry) {
-      return !getReviewedAtValue(entry) || isWeak(entry) || isStale(entry);
+    function getDailyTaskPriority(entry) {
+      if (isWeak(entry)) {
+        return 1;
+      }
+      if (isStale(entry)) {
+        return 2;
+      }
+      if (!getReviewedAtValue(entry)) {
+        return 3;
+      }
+      return 0;
+    }
+
+    function isDailyTask(entry) {
+      return getDailyTaskPriority(entry) > 0;
     }
 
     function persistProgress() {
@@ -1061,7 +1050,23 @@
       renderResults();
     }
 
-    function readPersistedState() {
+    function statesEqual(left, right) {
+      return JSON.stringify(left) === JSON.stringify(right);
+    }
+
+    function sanitizeStatePatch(rawState = {}) {
+      return {
+        search: typeof rawState.search === "string" ? rawState.search : defaultState.search,
+        topic: typeof rawState.topic === "string" ? rawState.topic : defaultState.topic,
+        tag: typeof rawState.tag === "string" ? rawState.tag : defaultState.tag,
+        reviewFilter: typeof rawState.reviewFilter === "string" ? rawState.reviewFilter : defaultState.reviewFilter,
+        sort: typeof rawState.sort === "string" ? rawState.sort : defaultState.sort,
+        quizMode: typeof rawState.quizMode === "boolean" ? rawState.quizMode : defaultState.quizMode,
+        randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId
+      };
+    }
+
+    function readUrlState() {
       const urlState = {};
       const params = new URLSearchParams(window.location.search);
 
@@ -1077,14 +1082,8 @@
       if (params.has("review")) {
         urlState.reviewFilter = params.get("review");
       }
-      if (params.has("mode")) {
-        urlState.examMode = params.get("mode");
-      }
       if (params.has("sort")) {
         urlState.sort = params.get("sort");
-      }
-      if (params.has("focus")) {
-        urlState.focusPitfalls = params.get("focus") === "1";
       }
       if (params.has("quiz")) {
         urlState.quizMode = params.get("quiz") === "1";
@@ -1093,16 +1092,29 @@
         urlState.randomEntryId = params.get("random");
       }
 
-      if (Object.keys(urlState).length > 0) {
-        return urlState;
-      }
+      return sanitizeStatePatch(urlState);
+    }
 
+    function readSavedState() {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {};
+        return raw ? sanitizeStatePatch(JSON.parse(raw)) : sanitizeStatePatch();
       } catch (error) {
-        return {};
+        return sanitizeStatePatch();
       }
+    }
+
+    function hasUrlFilters() {
+      return new URLSearchParams(window.location.search).toString().length > 0;
+    }
+
+    function updateRestoreSessionButton() {
+      const hasUrlState = hasUrlFilters();
+      const savedState = readSavedState();
+      const hasSavedFilters = !statesEqual({ ...defaultState }, { ...defaultState, ...savedState });
+      const shouldShowRestore = !hasUrlState && hasSavedFilters && !statesEqual(state, { ...defaultState, ...savedState });
+
+      restoreSessionButton.hidden = !shouldShowRestore;
     }
 
     function syncPersistence() {
@@ -1111,8 +1123,6 @@
         topic: state.topic,
         tag: state.tag,
         reviewFilter: state.reviewFilter,
-        examMode: state.examMode,
-        focusPitfalls: state.focusPitfalls,
         sort: state.sort,
         quizMode: state.quizMode,
         randomEntryId: state.randomEntryId
@@ -1137,14 +1147,8 @@
       if (state.reviewFilter !== "全部") {
         params.set("review", state.reviewFilter);
       }
-      if (state.examMode !== "default") {
-        params.set("mode", state.examMode);
-      }
       if (state.sort !== "default") {
         params.set("sort", state.sort);
-      }
-      if (state.focusPitfalls) {
-        params.set("focus", "1");
       }
       if (state.quizMode) {
         params.set("quiz", "1");
@@ -1156,12 +1160,12 @@
       const query = params.toString();
       const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
       window.history.replaceState(null, "", nextUrl);
+      updateRestoreSessionButton();
     }
 
     function syncControls() {
       searchInput.value = state.search;
       sortSelect.value = state.sort;
-      focusPitfallsCheckbox.checked = state.focusPitfalls;
       quizModeCheckbox.checked = state.quizMode;
       modeTip.textContent = state.quizMode
         ? "自测模式下默认隐藏摘要和解析，先自己作答，再点按钮揭晓。"
@@ -1288,27 +1292,21 @@
       reviewFilters.querySelectorAll("button").forEach((button) => {
         button.classList.toggle("active", button.dataset.reviewFilter === state.reviewFilter);
       });
-
-      examModes.querySelectorAll("button").forEach((button) => {
-        button.classList.toggle("active", button.dataset.examMode === state.examMode);
-      });
     }
 
     function matchesFilters(entry) {
       const topicMatch = state.topic === "全部" || entry.topic === state.topic;
       const tagMatch = state.tag === "全部" || entry.topic === state.tag || entry.difficulty === state.tag || entry.tags.includes(state.tag);
-      const pitfallsMatch = !state.focusPitfalls || entry.difficulty === "高频易错";
       const reviewMatch = matchesReviewFilter(entry);
-      const modeMatch = matchesExamMode(entry);
       const searchMatch = !state.search || entry.searchIndex.includes(state.search);
-      return topicMatch && tagMatch && pitfallsMatch && reviewMatch && modeMatch && searchMatch;
+      return topicMatch && tagMatch && reviewMatch && searchMatch;
     }
 
     function matchesReviewFilter(entry) {
       const progress = getProgress(entry.id);
 
-      if (state.reviewFilter === "today") {
-        return isTodayReview(entry);
+      if (state.reviewFilter === "daily") {
+        return isDailyTask(entry);
       }
       if (state.reviewFilter === "unreviewed") {
         return !getReviewedAtValue(entry);
@@ -1329,22 +1327,25 @@
       return true;
     }
 
-    function matchesExamMode(entry) {
-      if (state.examMode === "foundation") {
-        return entry.difficulty === "高频基础";
-      }
-      if (state.examMode === "pitfall") {
-        return entry.difficulty === "高频易错";
-      }
-      if (state.examMode === "sprint") {
-        return entry.memory.length > 0 || entry.difficulty !== "高频基础";
-      }
-
-      return true;
-    }
-
     function sortEntries(entries) {
       const nextEntries = [...entries];
+
+      if (state.reviewFilter === "daily" && state.sort === "default") {
+        nextEntries.sort((left, right) => {
+          const priorityGap = getDailyTaskPriority(left) - getDailyTaskPriority(right);
+          if (priorityGap !== 0) {
+            return priorityGap;
+          }
+
+          const reviewedGap = getReviewedAtValue(left) - getReviewedAtValue(right);
+          if (reviewedGap !== 0) {
+            return reviewedGap;
+          }
+
+          return left.order - right.order;
+        });
+        return nextEntries;
+      }
 
       if (state.sort === "updated-desc") {
         nextEntries.sort((left, right) => {
@@ -1450,12 +1451,6 @@
       if (state.reviewFilter !== "全部") {
         statusRow.appendChild(buildStatusPill(`弱项：${reviewFilterLabels[state.reviewFilter] || state.reviewFilter}`, "review"));
       }
-      if (state.examMode !== "default") {
-        statusRow.appendChild(buildStatusPill(`模式：${examModeLabels[state.examMode] || state.examMode}`, "review"));
-      }
-      if (state.focusPitfalls) {
-        statusRow.appendChild(buildStatusPill("仅看高频易错"));
-      }
       if (state.sort === "updated-desc") {
         statusRow.appendChild(buildStatusPill("最近更新优先"));
       }
@@ -1467,6 +1462,9 @@
       }
       if (state.sort === "question-asc") {
         statusRow.appendChild(buildStatusPill("题目字顺"));
+      }
+      if (state.reviewFilter === "daily" && state.sort === "default") {
+        statusRow.appendChild(buildStatusPill("顺序：薄弱 > 久未复习 > 未复习"));
       }
       if (state.quizMode) {
         statusRow.appendChild(buildStatusPill("自测模式中", "quiz"));
@@ -1678,14 +1676,9 @@
         state.tag = "全部";
       }
 
-      const allowedReviewFilters = new Set(["全部", "today", "unreviewed", "weak", "high-risk", "stale", "favorite-open"]);
+      const allowedReviewFilters = new Set(["全部", "daily", "unreviewed", "weak", "high-risk", "stale", "favorite-open"]);
       if (!allowedReviewFilters.has(state.reviewFilter)) {
         state.reviewFilter = "全部";
-      }
-
-      const allowedExamModes = new Set(["default", "foundation", "pitfall", "sprint", "quiz"]);
-      if (!allowedExamModes.has(state.examMode)) {
-        state.examMode = "default";
       }
 
       const allowedSorts = new Set(["default", "updated-desc", "reviewed-desc", "reviewed-asc", "question-asc"]);
@@ -1771,58 +1764,6 @@
       });
     }
 
-    function getExamModePatch(mode) {
-      if (mode === "foundation") {
-        return {
-          examMode: mode,
-          reviewFilter: "全部",
-          focusPitfalls: false,
-          quizMode: false,
-          sort: "default"
-        };
-      }
-      if (mode === "pitfall") {
-        return {
-          examMode: mode,
-          reviewFilter: "high-risk",
-          focusPitfalls: true,
-          quizMode: false,
-          sort: "updated-desc"
-        };
-      }
-      if (mode === "sprint") {
-        return {
-          examMode: mode,
-          reviewFilter: "stale",
-          focusPitfalls: false,
-          quizMode: false,
-          sort: "reviewed-asc"
-        };
-      }
-      if (mode === "quiz") {
-        return {
-          examMode: mode,
-          reviewFilter: "today",
-          focusPitfalls: false,
-          quizMode: true,
-          sort: "reviewed-asc"
-        };
-      }
-
-      return {
-        examMode: "default",
-        reviewFilter: "全部",
-        focusPitfalls: false,
-        quizMode: false,
-        sort: "default"
-      };
-    }
-
-    function applyExamMode(mode) {
-      uiState.expandedIds.clear();
-      setState(getExamModePatch(mode));
-    }
-
     function clearAllFilters() {
       uiState.expandedIds.clear();
       Object.assign(state, defaultState);
@@ -1845,10 +1786,6 @@
         setState({ sort: event.target.value });
       });
 
-      focusPitfallsCheckbox.addEventListener("change", (event) => {
-        setState({ focusPitfalls: event.target.checked });
-      });
-
       quizModeCheckbox.addEventListener("change", (event) => {
         if (!event.target.checked) {
           uiState.expandedIds.clear();
@@ -1858,16 +1795,15 @@
 
       clearFiltersButton.addEventListener("click", clearAllFilters);
       randomEntryButton.addEventListener("click", pickRandomEntry);
+      restoreSessionButton.addEventListener("click", () => {
+        const savedState = { ...defaultState, ...readSavedState() };
+        uiState.expandedIds.clear();
+        setState(savedState, { clearRandom: false });
+      });
 
       reviewFilters.querySelectorAll("button").forEach((button) => {
         button.addEventListener("click", () => {
           setState({ reviewFilter: button.dataset.reviewFilter });
-        });
-      });
-
-      examModes.querySelectorAll("button").forEach((button) => {
-        button.addEventListener("click", () => {
-          applyExamMode(button.dataset.examMode);
         });
       });
 
@@ -1876,14 +1812,14 @@
           const action = button.dataset.quickAction;
           uiState.expandedIds.clear();
 
-          if (action === "today") {
-            setState({ reviewFilter: "today", sort: "reviewed-asc", examMode: "default", quizMode: false, focusPitfalls: false });
+          if (action === "daily") {
+            setState({ reviewFilter: "daily", sort: "default", quizMode: false });
           }
           if (action === "pitfalls") {
-            setState({ reviewFilter: "high-risk", sort: "updated-desc", examMode: "pitfall", quizMode: false, focusPitfalls: true });
+            setState({ reviewFilter: "high-risk", sort: "updated-desc", quizMode: false });
           }
           if (action === "random-quiz") {
-            setState({ reviewFilter: "today", sort: "reviewed-asc", examMode: "quiz", quizMode: true, focusPitfalls: false }, { clearRandom: false });
+            setState({ reviewFilter: "daily", sort: "default", quizMode: true }, { clearRandom: false });
             pickRandomEntry();
           }
         });
@@ -1894,16 +1830,14 @@
       try {
         initializeData(window.studyData);
         progressState = readProgressState();
-        Object.assign(state, readPersistedState());
-        if (state.examMode === "quiz") {
-          state.quizMode = true;
-        }
+        Object.assign(state, readUrlState());
         initializeFilters();
         validateState();
         syncControls();
         updateActiveFilterButtons();
         bindEvents();
         dataSource.textContent = "数据源 study-data.js";
+        updateRestoreSessionButton();
         renderResults();
       } catch (error) {
         dataSource.textContent = "数据源加载失败";
