@@ -190,8 +190,10 @@
     }
 
     .filter-list,
+    .chapter-list,
     .chip-list,
     .tag-row,
+    .related-list,
     .mode-list,
     .mastery-actions,
     .toolbar-actions,
@@ -202,6 +204,7 @@
     }
 
     .filter-button,
+    .chapter-button,
     .chip,
     .tag,
     .mode-button {
@@ -212,6 +215,7 @@
     }
 
     .filter-button,
+    .chapter-button,
     .chip,
     .mode-button {
       padding: 10px 14px;
@@ -220,10 +224,61 @@
     }
 
     .filter-button.active,
+    .chapter-button.active,
     .chip.active,
     .mode-button.active {
       border-color: transparent;
       background: linear-gradient(135deg, var(--brand), #d3733e);
+      color: #fff;
+    }
+
+    .chapter-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-height: 360px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(182, 84, 42, 0.45) rgba(28, 22, 15, 0.06);
+    }
+
+    .chapter-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chapter-list::-webkit-scrollbar-track {
+      border-radius: 999px;
+      background: rgba(28, 22, 15, 0.06);
+    }
+
+    .chapter-list::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(182, 84, 42, 0.45);
+    }
+
+    .chapter-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .chapter-count {
+      flex: 0 0 auto;
+      min-width: 26px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(47, 125, 107, 0.12);
+      color: var(--mint);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .chapter-button.active .chapter-count {
+      background: rgba(255, 255, 255, 0.22);
       color: #fff;
     }
 
@@ -542,6 +597,40 @@
       border-top: 1px dashed rgba(28, 22, 15, 0.12);
     }
 
+    .related-list {
+      align-items: stretch;
+    }
+
+    .related-button {
+      flex: 1 1 220px;
+      border: 1px solid rgba(28, 22, 15, 0.1);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    .related-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(182, 84, 42, 0.28);
+    }
+
+    .related-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .related-button span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
     .tag {
       margin-top: 14px;
       background: rgba(255, 255, 255, 0.82);
@@ -605,6 +694,10 @@
         grid-template-columns: 1fr;
       }
 
+      .chapter-list {
+        max-height: 280px;
+      }
+
       .toolbar,
       .qa-topline,
       .card-actions {
@@ -651,6 +744,11 @@
           <h2>快速查找</h2>
           <label class="field-label" for="search-input">关键词</label>
           <input id="search-input" type="search" placeholder="搜索题目、结论、口诀、标签">
+        </section>
+
+        <section>
+          <h2>章节导航</h2>
+          <div id="chapter-filters" class="chapter-list"></div>
         </section>
 
         <section>
@@ -768,6 +866,10 @@
           <h4>易错点</h4>
           <ul class="bullet pitfalls-list"></ul>
         </div>
+        <div class="section-block related-block" hidden>
+          <h4>相邻知识点</h4>
+          <div class="related-list"></div>
+        </div>
         <div class="section-block diagram-block" hidden>
           <h4>思维导图</h4>
           <div class="diagram-shell">
@@ -790,12 +892,14 @@
     const SEARCH_DEBOUNCE_MS = 180;
     const defaultState = {
       search: "",
+      chapter: "全部",
       topic: "全部",
       tag: "全部",
       reviewFilter: "全部",
       sort: "default",
       quizMode: false,
-      randomEntryId: null
+      randomEntryId: null,
+      randomEntrySource: ""
     };
 
     const difficultyRank = {
@@ -814,7 +918,20 @@
       "favorite-open": "收藏未掌握"
     };
 
+    const chapterDefinitions = [
+      { id: "全部", title: "全部章节", topics: [] },
+      { id: "share-based-payment", title: "股份支付", topics: ["股份支付"] },
+      { id: "employee-benefits", title: "第九章 职工薪酬", topics: ["应付职工薪酬"] },
+      { id: "liabilities", title: "第八章 负债", topics: ["负债"] },
+      { id: "consolidation", title: "合并财务报表", topics: ["合并财务报表"] },
+      { id: "lease", title: "第十四章 租赁", topics: ["租赁"] },
+      { id: "investment-property", title: "投资性房地产", topics: ["投资性房地产"] },
+      { id: "government-grants", title: "政府补助", topics: ["政府补助"] },
+      { id: "fair-value", title: "公允价值计量", topics: ["公允价值计量"] }
+    ];
+
     const searchInput = document.querySelector("#search-input");
+    const chapterFilters = document.querySelector("#chapter-filters");
     const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
     const sortSelect = document.querySelector("#sort-select");
@@ -842,6 +959,7 @@
     };
 
     let studyData = null;
+    let chapters = [];
     let topics = [];
     let tags = [];
     let tagGroups = [];
@@ -869,6 +987,30 @@
 
     function uniqueValues(values) {
       return ["全部", ...new Set(values)];
+    }
+
+    function getChapterById(chapterId) {
+      return chapters.find((chapter) => chapter.id === chapterId) || chapters[0];
+    }
+
+    function getChapterForTopic(topic) {
+      return chapters.find((chapter) => chapter.id !== "全部" && chapter.topics.includes(topic));
+    }
+
+    function buildChapterOptions(entries) {
+      const topicCounts = entries.reduce((counts, entry) => {
+        counts.set(entry.topic, (counts.get(entry.topic) || 0) + 1);
+        return counts;
+      }, new Map());
+
+      return chapterDefinitions
+        .map((chapter) => {
+          const count = chapter.id === "全部"
+            ? entries.length
+            : chapter.topics.reduce((sum, topic) => sum + (topicCounts.get(topic) || 0), 0);
+          return { ...chapter, count };
+        })
+        .filter((chapter) => chapter.id === "全部" || chapter.count > 0);
     }
 
     function buildTagItems(entries) {
@@ -1042,6 +1184,7 @@
 
       if (shouldClearRandom) {
         state.randomEntryId = null;
+        state.randomEntrySource = "";
       }
 
       syncControls();
@@ -1057,12 +1200,14 @@
     function sanitizeStatePatch(rawState = {}) {
       return {
         search: typeof rawState.search === "string" ? rawState.search : defaultState.search,
+        chapter: typeof rawState.chapter === "string" ? rawState.chapter : defaultState.chapter,
         topic: typeof rawState.topic === "string" ? rawState.topic : defaultState.topic,
         tag: typeof rawState.tag === "string" ? rawState.tag : defaultState.tag,
         reviewFilter: typeof rawState.reviewFilter === "string" ? rawState.reviewFilter : defaultState.reviewFilter,
         sort: typeof rawState.sort === "string" ? rawState.sort : defaultState.sort,
         quizMode: typeof rawState.quizMode === "boolean" ? rawState.quizMode : defaultState.quizMode,
-        randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId
+        randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId,
+        randomEntrySource: typeof rawState.randomEntrySource === "string" ? rawState.randomEntrySource : defaultState.randomEntrySource
       };
     }
 
@@ -1075,6 +1220,9 @@
       }
       if (params.has("topic")) {
         urlState.topic = params.get("topic");
+      }
+      if (params.has("chapter")) {
+        urlState.chapter = params.get("chapter");
       }
       if (params.has("tag")) {
         urlState.tag = params.get("tag");
@@ -1090,6 +1238,9 @@
       }
       if (params.has("random")) {
         urlState.randomEntryId = params.get("random");
+      }
+      if (params.has("source")) {
+        urlState.randomEntrySource = params.get("source");
       }
 
       return sanitizeStatePatch(urlState);
@@ -1120,12 +1271,14 @@
     function syncPersistence() {
       const serializableState = {
         search: state.search,
+        chapter: state.chapter,
         topic: state.topic,
         tag: state.tag,
         reviewFilter: state.reviewFilter,
         sort: state.sort,
         quizMode: state.quizMode,
-        randomEntryId: state.randomEntryId
+        randomEntryId: state.randomEntryId,
+        randomEntrySource: state.randomEntrySource
       };
 
       try {
@@ -1137,6 +1290,9 @@
       const params = new URLSearchParams();
       if (state.search) {
         params.set("q", state.search);
+      }
+      if (state.chapter !== "全部") {
+        params.set("chapter", state.chapter);
       }
       if (state.topic !== "全部") {
         params.set("topic", state.topic);
@@ -1155,6 +1311,9 @@
       }
       if (state.randomEntryId) {
         params.set("random", state.randomEntryId);
+        if (state.randomEntrySource) {
+          params.set("source", state.randomEntrySource);
+        }
       }
 
       const query = params.toString();
@@ -1187,6 +1346,51 @@
         button.addEventListener("click", () => onClick(value));
         container.appendChild(button);
       });
+    }
+
+    function keepActiveChapterVisible() {
+      const activeButton = chapterFilters.querySelector(".chapter-button.active");
+      if (!activeButton) {
+        return;
+      }
+
+      const listRect = chapterFilters.getBoundingClientRect();
+      const buttonRect = activeButton.getBoundingClientRect();
+
+      if (buttonRect.top < listRect.top) {
+        chapterFilters.scrollTop -= listRect.top - buttonRect.top;
+      } else if (buttonRect.bottom > listRect.bottom) {
+        chapterFilters.scrollTop += buttonRect.bottom - listRect.bottom;
+      }
+    }
+
+    function renderChapterFilters() {
+      clearNode(chapterFilters);
+
+      chapters.forEach((chapter) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "chapter-button";
+        button.dataset.value = chapter.id;
+        button.classList.toggle("active", chapter.id === state.chapter);
+
+        const title = document.createElement("span");
+        title.textContent = chapter.title;
+        button.appendChild(title);
+
+        const count = document.createElement("span");
+        count.className = "chapter-count";
+        count.textContent = chapter.count;
+        button.appendChild(count);
+
+        button.addEventListener("click", () => {
+          setState({ chapter: chapter.id, topic: "全部" });
+        });
+
+        chapterFilters.appendChild(button);
+      });
+
+      keepActiveChapterVisible();
     }
 
     function renderGroupedTagFilters() {
@@ -1281,6 +1485,11 @@
     }
 
     function updateActiveFilterButtons() {
+      chapterFilters.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.value === state.chapter);
+      });
+      keepActiveChapterVisible();
+
       topicFilters.querySelectorAll("button").forEach((button) => {
         button.classList.toggle("active", button.dataset.value === state.topic);
       });
@@ -1295,11 +1504,13 @@
     }
 
     function matchesFilters(entry) {
+      const chapter = getChapterById(state.chapter);
+      const chapterMatch = !chapter || chapter.id === "全部" || chapter.topics.includes(entry.topic);
       const topicMatch = state.topic === "全部" || entry.topic === state.topic;
       const tagMatch = state.tag === "全部" || entry.topic === state.tag || entry.difficulty === state.tag || entry.tags.includes(state.tag);
       const reviewMatch = matchesReviewFilter(entry);
       const searchMatch = !state.search || entry.searchIndex.includes(state.search);
-      return topicMatch && tagMatch && reviewMatch && searchMatch;
+      return chapterMatch && topicMatch && tagMatch && reviewMatch && searchMatch;
     }
 
     function matchesReviewFilter(entry) {
@@ -1442,6 +1653,10 @@
       if (state.search) {
         statusRow.appendChild(buildStatusPill(`关键词：${state.search}`));
       }
+      if (state.chapter !== "全部") {
+        const chapter = getChapterById(state.chapter);
+        statusRow.appendChild(buildStatusPill(`章节：${chapter?.title || state.chapter}`));
+      }
       if (state.topic !== "全部") {
         statusRow.appendChild(buildStatusPill(`专题：${state.topic}`));
       }
@@ -1470,7 +1685,8 @@
         statusRow.appendChild(buildStatusPill("自测模式中", "quiz"));
       }
       if (state.randomEntryId && visibleEntries.length === 1) {
-        statusRow.appendChild(buildStatusPill("随机抽题中", "random"));
+        const randomText = state.randomEntrySource === "related" ? "相邻知识点" : "随机抽题中";
+        statusRow.appendChild(buildStatusPill(randomText, "random"));
       }
 
       if (statusRow.childNodes.length > 0) {
@@ -1512,6 +1728,53 @@
       cardList.appendChild(error);
     }
 
+    function getRelatedEntries(entry, limit = 3) {
+      const tagSet = new Set(entry.tags);
+
+      return studyData.entries
+        .filter((candidate) => candidate.id !== entry.id)
+        .map((candidate) => {
+          const sharedTags = candidate.tags.filter((tag) => tagSet.has(tag)).length;
+          const sameTopic = candidate.topic === entry.topic ? 3 : 0;
+          const sameDifficulty = candidate.difficulty === entry.difficulty ? 1 : 0;
+          const score = sameTopic + sharedTags * 2 + sameDifficulty;
+          return { entry: candidate, score, sharedTags };
+        })
+        .filter((item) => item.score > 0)
+        .sort((left, right) => {
+          if (right.score !== left.score) {
+            return right.score - left.score;
+          }
+          if (right.sharedTags !== left.sharedTags) {
+            return right.sharedTags - left.sharedTags;
+          }
+          return left.entry.order - right.entry.order;
+        })
+        .slice(0, limit)
+        .map((item) => item.entry);
+    }
+
+    function openRelatedEntry(entryId) {
+      uiState.expandedIds.clear();
+      uiState.expandedIds.add(entryId);
+      setState({
+        search: "",
+        chapter: "全部",
+        topic: "全部",
+        tag: "全部",
+        reviewFilter: "全部",
+        randomEntryId: entryId,
+        randomEntrySource: "related"
+      }, { clearRandom: false });
+
+      window.requestAnimationFrame(() => {
+        const card = document.querySelector(`[data-entry-id="${entryId}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+
     function renderCards(entries) {
       clearNode(cardList);
       const mermaidNodes = [];
@@ -1523,6 +1786,8 @@
         const hint = fragment.querySelector(".question-hint");
         const details = fragment.querySelector(".card-details");
         const toggleButton = fragment.querySelector(".toggle-details");
+        const relatedBlock = fragment.querySelector(".related-block");
+        const relatedList = fragment.querySelector(".related-list");
         const diagramBlock = fragment.querySelector(".diagram-block");
         const isExpanded = uiState.expandedIds.has(entry.id);
         const progress = getProgress(entry.id);
@@ -1592,6 +1857,29 @@
           createListItems(list, items);
         });
 
+        if (isExpanded) {
+          const relatedEntries = getRelatedEntries(entry);
+          if (relatedEntries.length > 0) {
+            relatedBlock.hidden = false;
+            relatedEntries.forEach((relatedEntry) => {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.className = "related-button";
+
+              const title = document.createElement("strong");
+              title.textContent = relatedEntry.question;
+              button.appendChild(title);
+
+              const meta = document.createElement("span");
+              meta.textContent = `${relatedEntry.topic} · ${relatedEntry.difficulty}`;
+              button.appendChild(meta);
+
+              button.addEventListener("click", () => openRelatedEntry(relatedEntry.id));
+              relatedList.appendChild(button);
+            });
+          }
+        }
+
         if (entry.diagram && isExpanded) {
           diagramBlock.hidden = false;
           const chart = fragment.querySelector(".mermaid-chart");
@@ -1627,6 +1915,7 @@
 
       if (state.randomEntryId && !filteredEntries.some((entry) => entry.id === state.randomEntryId)) {
         state.randomEntryId = null;
+        state.randomEntrySource = "";
         syncPersistence();
       }
 
@@ -1642,6 +1931,7 @@
     }
 
     function initializeFilters() {
+      chapters = buildChapterOptions(studyData.entries);
       topics = uniqueValues(studyData.entries.map((entry) => entry.topic));
       const keywordTagItems = buildTagItems(studyData.entries);
       const pitfallTagItems = buildTagItems(
@@ -1661,16 +1951,28 @@
 
       uiState.expandedTagGroups.clear();
 
+      renderChapterFilters();
+
       renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
-        setState({ topic: value });
+        const chapter = value === "全部" ? null : getChapterForTopic(value);
+        setState({ topic: value, chapter: chapter?.id || state.chapter });
       });
 
       renderGroupedTagFilters();
     }
 
     function validateState() {
+      if (!chapters.some((chapter) => chapter.id === state.chapter)) {
+        state.chapter = "全部";
+      }
       if (!topics.includes(state.topic)) {
         state.topic = "全部";
+      }
+      if (state.topic !== "全部") {
+        const chapter = getChapterById(state.chapter);
+        if (chapter?.id !== "全部" && !chapter.topics.includes(state.topic)) {
+          state.chapter = getChapterForTopic(state.topic)?.id || "全部";
+        }
       }
       if (!tags.includes(state.tag)) {
         state.tag = "全部";
@@ -1754,7 +2056,7 @@
 
       const pickedEntry = candidates[Math.floor(Math.random() * candidates.length)];
       uiState.expandedIds.delete(pickedEntry.id);
-      setState({ randomEntryId: pickedEntry.id }, { clearRandom: false });
+      setState({ randomEntryId: pickedEntry.id, randomEntrySource: "random" }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
         const card = document.querySelector(`[data-entry-id="${pickedEntry.id}"]`);
