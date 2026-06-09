@@ -97,7 +97,7 @@
 
     .quick-actions {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
       margin-top: 24px;
     }
@@ -408,6 +408,12 @@
       color: var(--ink);
     }
 
+    .ghost-button.active {
+      border-color: rgba(47, 125, 107, 0.28);
+      background: rgba(47, 125, 107, 0.1);
+      color: var(--mint);
+    }
+
     .accent-button {
       border: 1px solid transparent;
       background: linear-gradient(135deg, var(--brand), #d3733e);
@@ -601,6 +607,89 @@
       align-items: stretch;
     }
 
+    .journal-block {
+      border-top-style: solid;
+      border-top-color: rgba(182, 84, 42, 0.2);
+    }
+
+    .journal-list,
+    .journal-library-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .journal-entry {
+      border: 1px solid rgba(182, 84, 42, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 247, 236, 0.72);
+      overflow: hidden;
+    }
+
+    .journal-entry-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(182, 84, 42, 0.12);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .journal-entry-title {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .journal-entry-meta {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .journal-entry-body {
+      margin: 0;
+      padding: 12px 14px;
+      overflow-x: auto;
+      color: #312418;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre;
+    }
+
+    .journal-entry-condition,
+    .journal-entry-note {
+      margin: 0;
+      padding: 10px 14px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .journal-entry-note {
+      padding-top: 0;
+      padding-bottom: 12px;
+    }
+
+    .journal-library-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .journal-library-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .journal-library-card .journal-entry {
+      margin-top: 4px;
+    }
+
     .related-button {
       flex: 1 1 220px;
       border: 1px solid rgba(28, 22, 15, 0.1);
@@ -676,6 +765,10 @@
       .layout {
         grid-template-columns: 1fr;
       }
+
+      .quick-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 640px) {
@@ -734,6 +827,10 @@
         <button class="quick-action" type="button" data-quick-action="random-quiz">
           <strong>随机自测</strong>
           <span>隐藏答案，随机抽一题先自己作答。</span>
+        </button>
+        <button class="quick-action" type="button" data-quick-action="journal-library">
+          <strong>分录库</strong>
+          <span>集中查看当前筛选范围内的分录，先抓借贷方向。</span>
         </button>
       </div>
     </header>
@@ -816,6 +913,7 @@
             <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
           </div>
           <div class="toolbar-actions">
+            <button id="journal-library" class="ghost-button" type="button">分录库</button>
             <button id="random-entry" class="accent-button" type="button">随机抽题</button>
             <button id="restore-session" class="ghost-button" type="button" hidden>恢复上次筛选</button>
             <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
@@ -853,6 +951,10 @@
         <div class="section-block">
           <h4>结论</h4>
           <ul class="bullet conclusion-list"></ul>
+        </div>
+        <div class="section-block journal-block" hidden>
+          <h4>分录</h4>
+          <div class="journal-list"></div>
         </div>
         <div class="section-block">
           <h4>原因</h4>
@@ -898,6 +1000,7 @@
       reviewFilter: "全部",
       sort: "default",
       quizMode: false,
+      journalMode: false,
       randomEntryId: null,
       randomEntrySource: ""
     };
@@ -949,6 +1052,7 @@
     const modeTip = document.querySelector("#mode-tip");
     const clearFiltersButton = document.querySelector("#clear-filters");
     const randomEntryButton = document.querySelector("#random-entry");
+    const journalLibraryButton = document.querySelector("#journal-library");
     const restoreSessionButton = document.querySelector("#restore-session");
     const quickActionButtons = document.querySelectorAll("[data-quick-action]");
     const cardTemplate = document.querySelector("#card-template");
@@ -1148,6 +1252,155 @@
       });
     }
 
+    function formatJournalLine(line) {
+      if (typeof line === "string") {
+        return line.trim();
+      }
+      if (!line || typeof line !== "object") {
+        return "";
+      }
+
+      const side = String(line.side || "").trim();
+      const account = String(line.account || "").trim();
+      const amount = String(line.amount || "").trim();
+      const note = String(line.note || "").trim();
+      const prefix = side ? `${side}：` : "";
+      const parts = [`${prefix}${account}`.trim(), amount, note].filter(Boolean);
+      return parts.join("  ");
+    }
+
+    function normalizeJournalEntries(value) {
+      if (!Array.isArray(value)) {
+        return [];
+      }
+
+      return value
+        .map((item, index) => {
+          if (typeof item === "string") {
+            return {
+              title: `分录 ${index + 1}`,
+              scope: "",
+              condition: "",
+              body: item.trim(),
+              note: "",
+              source: "manual"
+            };
+          }
+          if (!item || typeof item !== "object") {
+            return null;
+          }
+
+          const lines = Array.isArray(item.lines)
+            ? item.lines.map(formatJournalLine).filter(Boolean)
+            : [];
+          const body = String(item.body || item.text || item.entry || lines.join("\n") || "").trim();
+
+          if (!body) {
+            return null;
+          }
+
+          return {
+            title: String(item.title || `分录 ${index + 1}`).trim(),
+            scope: String(item.scope || "").trim(),
+            condition: String(item.condition || "").trim(),
+            body,
+            note: String(item.note || "").trim(),
+            source: "manual"
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function extractJournalEntriesFromText(text, indexBase = 0) {
+      const sourceText = String(text || "");
+      const matches = [...sourceText.matchAll(/```(?:text)?\s*\n([\s\S]*?)```/g)];
+      const heading = sourceText.match(/^【([^】]+)】/);
+
+      return matches
+        .map((match, index) => match[1].trim())
+        .filter((body) => /借：/.test(body) && /贷：/.test(body))
+        .map((body, index) => ({
+          title: heading?.[1] || `自动识别分录 ${indexBase + index + 1}`,
+          scope: "",
+          condition: "",
+          body,
+          note: "从卡片正文中的明确分录代码块自动提取。",
+          source: "auto"
+        }));
+    }
+
+    function buildAutoJournalEntries(entry) {
+      const candidates = [
+        ...entry.conclusion,
+        ...entry.reasoning,
+        ...entry.memory,
+        ...entry.pitfalls
+      ];
+      const journalEntries = candidates.flatMap((item, index) => extractJournalEntriesFromText(item, index));
+      const seen = new Set();
+
+      return journalEntries.filter((journalEntry) => {
+        const key = journalEntry.body;
+        if (seen.has(key)) {
+          return false;
+        }
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function getJournalText(journalEntry) {
+      return [
+        journalEntry.title,
+        journalEntry.scope,
+        journalEntry.condition,
+        journalEntry.body,
+        journalEntry.note
+      ].filter(Boolean).join(" ");
+    }
+
+    function createJournalEntryElement(journalEntry) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "journal-entry";
+
+      const header = document.createElement("div");
+      header.className = "journal-entry-header";
+
+      const title = document.createElement("h5");
+      title.className = "journal-entry-title";
+      title.textContent = journalEntry.title || "分录";
+      header.appendChild(title);
+
+      const meta = document.createElement("span");
+      meta.className = "journal-entry-meta";
+      const metaItems = [journalEntry.scope, journalEntry.source === "auto" ? "自动提取" : "结构化"].filter(Boolean);
+      meta.textContent = metaItems.join(" · ");
+      header.appendChild(meta);
+
+      wrapper.appendChild(header);
+
+      if (journalEntry.condition) {
+        const condition = document.createElement("p");
+        condition.className = "journal-entry-condition";
+        condition.textContent = journalEntry.condition;
+        wrapper.appendChild(condition);
+      }
+
+      const body = document.createElement("pre");
+      body.className = "journal-entry-body";
+      body.textContent = journalEntry.body;
+      wrapper.appendChild(body);
+
+      if (journalEntry.note) {
+        const note = document.createElement("p");
+        note.className = "journal-entry-note";
+        note.textContent = journalEntry.note;
+        wrapper.appendChild(note);
+      }
+
+      return wrapper;
+    }
+
     async function renderMermaidDiagrams(nodes = []) {
       if (!hasMermaid || !nodes.length) {
         return;
@@ -1210,6 +1463,7 @@
         reviewFilter: typeof rawState.reviewFilter === "string" ? rawState.reviewFilter : defaultState.reviewFilter,
         sort: typeof rawState.sort === "string" ? rawState.sort : defaultState.sort,
         quizMode: typeof rawState.quizMode === "boolean" ? rawState.quizMode : defaultState.quizMode,
+        journalMode: typeof rawState.journalMode === "boolean" ? rawState.journalMode : defaultState.journalMode,
         randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId,
         randomEntrySource: typeof rawState.randomEntrySource === "string" ? rawState.randomEntrySource : defaultState.randomEntrySource
       };
@@ -1239,6 +1493,9 @@
       }
       if (params.has("quiz")) {
         urlState.quizMode = params.get("quiz") === "1";
+      }
+      if (params.has("journal")) {
+        urlState.journalMode = params.get("journal") === "1";
       }
       if (params.has("random")) {
         urlState.randomEntryId = params.get("random");
@@ -1281,6 +1538,7 @@
         reviewFilter: state.reviewFilter,
         sort: state.sort,
         quizMode: state.quizMode,
+        journalMode: state.journalMode,
         randomEntryId: state.randomEntryId,
         randomEntrySource: state.randomEntrySource
       };
@@ -1313,6 +1571,9 @@
       if (state.quizMode) {
         params.set("quiz", "1");
       }
+      if (state.journalMode) {
+        params.set("journal", "1");
+      }
       if (state.randomEntryId) {
         params.set("random", state.randomEntryId);
         if (state.randomEntrySource) {
@@ -1330,7 +1591,11 @@
       searchInput.value = state.search;
       sortSelect.value = state.sort;
       quizModeCheckbox.checked = state.quizMode;
-      modeTip.textContent = state.quizMode
+      journalLibraryButton.textContent = state.journalMode ? "返回卡片" : "分录库";
+      journalLibraryButton.classList.toggle("active", state.journalMode);
+      modeTip.textContent = state.journalMode
+        ? "分录库会自动汇总当前筛选范围内的分录；点击来源卡片可以回到完整知识点。"
+        : state.quizMode
         ? "自测模式下默认隐藏摘要和解析，先自己作答，再点按钮揭晓。"
         : "默认显示摘要，点击卡片按钮可展开完整解析；标记掌握度后可按弱项清单复习。";
     }
@@ -1647,8 +1912,11 @@
     function renderResultsMeta(filteredEntries, visibleEntries) {
       clearNode(resultsMeta);
 
+      const visibleJournalCount = getJournalItems(visibleEntries).length;
       const summary = document.createElement("div");
-      summary.textContent = `当前显示 ${visibleEntries.length} / ${studyData.entries.length} 个知识点，筛选结果共 ${filteredEntries.length} 个。`;
+      summary.textContent = state.journalMode
+        ? `当前分录库显示 ${visibleJournalCount} 条分录，来自 ${visibleEntries.length} 个知识点。`
+        : `当前显示 ${visibleEntries.length} / ${studyData.entries.length} 个知识点，筛选结果共 ${filteredEntries.length} 个。`;
       resultsMeta.appendChild(summary);
 
       const statusRow = document.createElement("div");
@@ -1688,8 +1956,15 @@
       if (state.quizMode) {
         statusRow.appendChild(buildStatusPill("自测模式中", "quiz"));
       }
+      if (state.journalMode) {
+        statusRow.appendChild(buildStatusPill("分录库视图", "quiz"));
+      }
       if (state.randomEntryId && visibleEntries.length === 1) {
-        const randomText = state.randomEntrySource === "related" ? "相邻知识点" : "随机抽题中";
+        const randomText = state.randomEntrySource === "related"
+          ? "相邻知识点"
+          : state.randomEntrySource === "journal"
+            ? "分录来源卡片"
+            : "随机抽题中";
         statusRow.appendChild(buildStatusPill(randomText, "random"));
       }
 
@@ -1767,6 +2042,7 @@
         topic: "全部",
         tag: "全部",
         reviewFilter: "全部",
+        journalMode: false,
         randomEntryId: entryId,
         randomEntrySource: "related"
       }, { clearRandom: false });
@@ -1792,6 +2068,8 @@
         const toggleButton = fragment.querySelector(".toggle-details");
         const relatedBlock = fragment.querySelector(".related-block");
         const relatedList = fragment.querySelector(".related-list");
+        const journalBlock = fragment.querySelector(".journal-block");
+        const journalList = fragment.querySelector(".journal-list");
         const diagramBlock = fragment.querySelector(".diagram-block");
         const isExpanded = uiState.expandedIds.has(entry.id);
         const progress = getProgress(entry.id);
@@ -1861,6 +2139,13 @@
           createListItems(list, items);
         });
 
+        if (entry.journalEntries.length > 0) {
+          journalBlock.hidden = false;
+          entry.journalEntries.forEach((journalEntry) => {
+            journalList.appendChild(createJournalEntryElement(journalEntry));
+          });
+        }
+
         if (isExpanded) {
           const relatedEntries = getRelatedEntries(entry);
           if (relatedEntries.length > 0) {
@@ -1908,6 +2193,74 @@
       renderMermaidDiagrams(mermaidNodes);
     }
 
+    function openEntryFromJournal(entryId) {
+      uiState.expandedIds.clear();
+      uiState.expandedIds.add(entryId);
+      setState({
+        journalMode: false,
+        randomEntryId: entryId,
+        randomEntrySource: "journal"
+      }, { clearRandom: false });
+
+      window.requestAnimationFrame(() => {
+        const card = document.querySelector(`[data-entry-id="${entryId}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+
+    function getJournalItems(entries) {
+      return entries.flatMap((entry) => entry.journalEntries.map((journalEntry) => ({
+        entry,
+        journalEntry
+      })));
+    }
+
+    function renderJournalLibrary(entries) {
+      clearNode(cardList);
+
+      const journalItems = getJournalItems(entries);
+      if (journalItems.length === 0) {
+        renderEmptyState("当前筛选范围内没有分录", "换一个章节、标签或关键词，或者回到卡片视图继续复习。");
+        return;
+      }
+
+      const list = document.createElement("div");
+      list.className = "journal-library-list";
+
+      journalItems.forEach(({ entry, journalEntry }) => {
+        const card = document.createElement("article");
+        card.className = "panel journal-library-card";
+
+        const title = document.createElement("h3");
+        title.textContent = entry.question;
+        card.appendChild(title);
+
+        const meta = document.createElement("div");
+        meta.className = "status-row";
+        meta.appendChild(buildStatusPill(entry.topic));
+        meta.appendChild(buildStatusPill(entry.difficulty));
+        card.appendChild(meta);
+
+        card.appendChild(createJournalEntryElement(journalEntry));
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "inline-button";
+        button.textContent = "打开来源卡片";
+        button.addEventListener("click", () => openEntryFromJournal(entry.id));
+        actions.appendChild(button);
+        card.appendChild(actions);
+
+        list.appendChild(card);
+      });
+
+      cardList.appendChild(list);
+    }
+
     function renderResults() {
       if (!studyData) {
         return;
@@ -1928,6 +2281,11 @@
 
       if (visibleEntries.length === 0) {
         renderEmptyState("没有找到匹配内容", "试试清空筛选，或者换一个关键词。");
+        return;
+      }
+
+      if (state.journalMode) {
+        renderJournalLibrary(visibleEntries);
         return;
       }
 
@@ -2023,8 +2381,16 @@
             memory: toList(entry?.memory),
             pitfalls: toList(entry?.pitfalls),
             tags: toList(entry?.tags),
+            journalEntries: normalizeJournalEntries(entry?.journalEntries),
             diagram: toText(entry?.diagram)
           };
+          normalizedEntry.journalEntries = [
+            ...normalizedEntry.journalEntries,
+            ...buildAutoJournalEntries(normalizedEntry)
+          ];
+          if (normalizedEntry.journalEntries.length > 0 && !normalizedEntry.tags.includes("分录")) {
+            normalizedEntry.tags.push("分录");
+          }
           const updatedValue = normalizedEntry.updatedAt || rawData.updatedAt || "-";
           const searchIndex = normalizeText([
             normalizedEntry.question,
@@ -2033,6 +2399,7 @@
             ...normalizedEntry.reasoning,
             ...normalizedEntry.memory,
             ...normalizedEntry.pitfalls,
+            ...normalizedEntry.journalEntries.map(getJournalText),
             normalizedEntry.diagram || "",
             ...normalizedEntry.tags,
             normalizedEntry.topic,
@@ -2060,7 +2427,7 @@
 
       const pickedEntry = candidates[Math.floor(Math.random() * candidates.length)];
       uiState.expandedIds.delete(pickedEntry.id);
-      setState({ randomEntryId: pickedEntry.id, randomEntrySource: "random" }, { clearRandom: false });
+      setState({ journalMode: false, randomEntryId: pickedEntry.id, randomEntrySource: "random" }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
         const card = document.querySelector(`[data-entry-id="${pickedEntry.id}"]`);
@@ -2101,6 +2468,9 @@
 
       clearFiltersButton.addEventListener("click", clearAllFilters);
       randomEntryButton.addEventListener("click", pickRandomEntry);
+      journalLibraryButton.addEventListener("click", () => {
+        setState({ journalMode: !state.journalMode }, { clearRandom: false });
+      });
       restoreSessionButton.addEventListener("click", () => {
         const savedState = { ...defaultState, ...readSavedState() };
         uiState.expandedIds.clear();
@@ -2127,6 +2497,9 @@
           if (action === "random-quiz") {
             setState({ reviewFilter: "daily", sort: "default", quizMode: true }, { clearRandom: false });
             pickRandomEntry();
+          }
+          if (action === "journal-library") {
+            setState({ journalMode: true, quizMode: false });
           }
         });
       });
