@@ -618,6 +618,81 @@
       gap: 12px;
     }
 
+    .journal-workbench {
+      display: grid;
+      gap: 14px;
+    }
+
+    .journal-toolbox {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .journal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .journal-stat {
+      padding: 12px;
+      border: 1px solid rgba(47, 125, 107, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .journal-stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .journal-stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .journal-tool-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr);
+      gap: 12px;
+      align-items: end;
+    }
+
+    .journal-filter-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-filter-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .journal-account-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-account-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 116px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .journal-account-list .chip {
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
     .journal-entry {
       border: 1px solid rgba(182, 84, 42, 0.16);
       border-radius: 12px;
@@ -677,17 +752,114 @@
 
     .journal-library-card {
       display: grid;
-      gap: 12px;
+      gap: 14px;
+      padding: 18px;
     }
 
     .journal-library-card h3 {
       margin: 0;
-      font-size: 20px;
+      font-size: 19px;
       line-height: 1.45;
     }
 
     .journal-library-card .journal-entry {
       margin-top: 4px;
+    }
+
+    .journal-library-card-header {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-card-kicker {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .journal-card-title {
+      display: grid;
+      gap: 6px;
+    }
+
+    .journal-card-title h4 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .journal-split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .journal-side-panel {
+      min-width: 0;
+      border: 1px solid rgba(28, 22, 15, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+    }
+
+    .journal-side-panel h5 {
+      margin: 0;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(28, 22, 15, 0.08);
+      color: var(--brand-deep);
+      font-size: 13px;
+    }
+
+    .journal-line-list {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .journal-line-list li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 10px 12px;
+      border-top: 1px solid rgba(28, 22, 15, 0.06);
+      line-height: 1.5;
+    }
+
+    .journal-line-list li:first-child {
+      border-top: 0;
+    }
+
+    .journal-line-account {
+      min-width: 0;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .journal-line-amount {
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      white-space: nowrap;
+    }
+
+    .journal-line-note {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .journal-empty-side {
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .journal-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .related-button {
@@ -769,6 +941,10 @@
       .quick-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .journal-tool-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 640px) {
@@ -800,6 +976,16 @@
 
       .toolbar-actions {
         justify-content: flex-start;
+      }
+
+      .journal-stats,
+      .journal-split {
+        grid-template-columns: 1fr;
+      }
+
+      .journal-card-actions,
+      .journal-card-actions .inline-button {
+        width: 100%;
       }
     }
   </style>
@@ -907,8 +1093,8 @@
         <div class="panel toolbar">
           <div class="toolbar-copy">
             <div>
-              <h2>知识卡片</h2>
-              <p>按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
+              <h2 id="content-title">知识卡片</h2>
+              <p id="content-subtitle">按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
             </div>
             <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
           </div>
@@ -1001,6 +1187,10 @@
       sort: "default",
       quizMode: false,
       journalMode: false,
+      journalSearch: "",
+      journalSide: "全部",
+      journalAccount: "全部",
+      journalSource: "全部",
       randomEntryId: null,
       randomEntrySource: ""
     };
@@ -1049,6 +1239,8 @@
     const entryCount = document.querySelector("#entry-count");
     const updatedAt = document.querySelector("#updated-at");
     const dataSource = document.querySelector("#data-source");
+    const contentTitle = document.querySelector("#content-title");
+    const contentSubtitle = document.querySelector("#content-subtitle");
     const modeTip = document.querySelector("#mode-tip");
     const clearFiltersButton = document.querySelector("#clear-filters");
     const randomEntryButton = document.querySelector("#random-entry");
@@ -1073,6 +1265,7 @@
     let tagGroups = [];
     let progressState = {};
     let searchInputDebounceTimer = 0;
+    let journalSearchInputDebounceTimer = 0;
     const TAG_GROUP_COLLAPSED_LIMIT = 8;
     const hasMermaid = typeof window.mermaid !== "undefined";
 
@@ -1269,6 +1462,23 @@
       return parts.join("  ");
     }
 
+    function normalizeJournalLine(line) {
+      if (!line || typeof line !== "object") {
+        return null;
+      }
+
+      const side = String(line.side || "").trim();
+      const account = String(line.account || "").trim();
+      const amount = String(line.amount || "").trim();
+      const note = String(line.note || "").trim();
+
+      if (!side || !account) {
+        return null;
+      }
+
+      return { side, account, amount, note };
+    }
+
     function normalizeJournalEntries(value) {
       if (!Array.isArray(value)) {
         return [];
@@ -1277,13 +1487,15 @@
       return value
         .map((item, index) => {
           if (typeof item === "string") {
+            const body = item.trim();
             return {
               title: `分录 ${index + 1}`,
               scope: "",
               condition: "",
-              body: item.trim(),
+              body,
               note: "",
-              source: "manual"
+              source: "manual",
+              lines: parseJournalBodyLines(body)
             };
           }
           if (!item || typeof item !== "object") {
@@ -1291,13 +1503,15 @@
           }
 
           const lines = Array.isArray(item.lines)
-            ? item.lines.map(formatJournalLine).filter(Boolean)
+            ? item.lines.map(normalizeJournalLine).filter(Boolean)
             : [];
-          const body = String(item.body || item.text || item.entry || lines.join("\n") || "").trim();
+          const body = String(item.body || item.text || item.entry || lines.map(formatJournalLine).join("\n") || "").trim();
 
           if (!body) {
             return null;
           }
+
+          const parsedLines = lines.length > 0 ? lines : parseJournalBodyLines(body);
 
           return {
             title: String(item.title || `分录 ${index + 1}`).trim(),
@@ -1305,7 +1519,8 @@
             condition: String(item.condition || "").trim(),
             body,
             note: String(item.note || "").trim(),
-            source: "manual"
+            source: "manual",
+            lines: parsedLines
           };
         })
         .filter(Boolean);
@@ -1325,7 +1540,8 @@
           condition: "",
           body,
           note: "从卡片正文中的明确分录代码块自动提取。",
-          source: "auto"
+          source: "auto",
+          lines: parseJournalBodyLines(body)
         }));
     }
 
@@ -1357,6 +1573,70 @@
         journalEntry.body,
         journalEntry.note
       ].filter(Boolean).join(" ");
+    }
+
+    function splitJournalDetail(text) {
+      const parts = String(text || "").trim().split(/\s{2,}/).filter(Boolean);
+      if (parts.length === 0) {
+        return { account: "", amount: "", note: "" };
+      }
+
+      const [account, amount = "", ...noteParts] = parts;
+      return {
+        account,
+        amount,
+        note: noteParts.join("  ")
+      };
+    }
+
+    function parseJournalBodyLines(body) {
+      const lines = String(body || "").split(/\n+/);
+      const parsed = [];
+      let currentSide = "";
+
+      lines.forEach((rawLine) => {
+        const text = rawLine.trim();
+        if (!text || /^```/.test(text)) {
+          return;
+        }
+
+        const sideMatch = text.match(/^(借|贷|借\/贷|借或贷)\s*[:：]\s*(.+)$/);
+        if (sideMatch) {
+          currentSide = sideMatch[1].startsWith("贷") ? "贷" : "借";
+          const detail = splitJournalDetail(sideMatch[2]);
+          if (detail.account) {
+            parsed.push({ side: currentSide, ...detail });
+          }
+          return;
+        }
+
+        if (!currentSide) {
+          return;
+        }
+
+        const detail = splitJournalDetail(text);
+        if (detail.account) {
+          parsed.push({ side: currentSide, ...detail });
+        }
+      });
+
+      return parsed;
+    }
+
+    function getJournalAccounts(journalEntry) {
+      return [...new Set((journalEntry.lines || [])
+        .map((line) => line.account)
+        .filter(Boolean))];
+    }
+
+    function getJournalItemSearchText(item) {
+      return normalizeText([
+        item.entry.question,
+        item.entry.topic,
+        item.entry.difficulty,
+        getJournalText(item.journalEntry),
+        ...item.accounts
+      ].join(" "));
     }
 
     function createJournalEntryElement(journalEntry) {
@@ -1464,6 +1744,10 @@
         sort: typeof rawState.sort === "string" ? rawState.sort : defaultState.sort,
         quizMode: typeof rawState.quizMode === "boolean" ? rawState.quizMode : defaultState.quizMode,
         journalMode: typeof rawState.journalMode === "boolean" ? rawState.journalMode : defaultState.journalMode,
+        journalSearch: typeof rawState.journalSearch === "string" ? rawState.journalSearch : defaultState.journalSearch,
+        journalSide: typeof rawState.journalSide === "string" ? rawState.journalSide : defaultState.journalSide,
+        journalAccount: typeof rawState.journalAccount === "string" ? rawState.journalAccount : defaultState.journalAccount,
+        journalSource: typeof rawState.journalSource === "string" ? rawState.journalSource : defaultState.journalSource,
         randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId,
         randomEntrySource: typeof rawState.randomEntrySource === "string" ? rawState.randomEntrySource : defaultState.randomEntrySource
       };
@@ -1496,6 +1780,18 @@
       }
       if (params.has("journal")) {
         urlState.journalMode = params.get("journal") === "1";
+      }
+      if (params.has("jq")) {
+        urlState.journalSearch = normalizeText(params.get("jq"));
+      }
+      if (params.has("jside")) {
+        urlState.journalSide = params.get("jside");
+      }
+      if (params.has("jaccount")) {
+        urlState.journalAccount = params.get("jaccount");
+      }
+      if (params.has("jsource")) {
+        urlState.journalSource = params.get("jsource");
       }
       if (params.has("random")) {
         urlState.randomEntryId = params.get("random");
@@ -1539,6 +1835,10 @@
         sort: state.sort,
         quizMode: state.quizMode,
         journalMode: state.journalMode,
+        journalSearch: state.journalSearch,
+        journalSide: state.journalSide,
+        journalAccount: state.journalAccount,
+        journalSource: state.journalSource,
         randomEntryId: state.randomEntryId,
         randomEntrySource: state.randomEntrySource
       };
@@ -1573,6 +1873,18 @@
       }
       if (state.journalMode) {
         params.set("journal", "1");
+        if (state.journalSearch) {
+          params.set("jq", state.journalSearch);
+        }
+        if (state.journalSide !== "全部") {
+          params.set("jside", state.journalSide);
+        }
+        if (state.journalAccount !== "全部") {
+          params.set("jaccount", state.journalAccount);
+        }
+        if (state.journalSource !== "全部") {
+          params.set("jsource", state.journalSource);
+        }
       }
       if (state.randomEntryId) {
         params.set("random", state.randomEntryId);
@@ -1591,10 +1903,14 @@
       searchInput.value = state.search;
       sortSelect.value = state.sort;
       quizModeCheckbox.checked = state.quizMode;
+      contentTitle.textContent = state.journalMode ? "分录速查" : "知识卡片";
+      contentSubtitle.textContent = state.journalMode
+        ? "按科目、借贷方向和关键词快速定位分录，必要时回到来源知识点。"
+        : "按复习场景进入卡片，标记掌握度后会自动形成弱项清单。";
       journalLibraryButton.textContent = state.journalMode ? "返回卡片" : "分录库";
       journalLibraryButton.classList.toggle("active", state.journalMode);
       modeTip.textContent = state.journalMode
-        ? "分录库会自动汇总当前筛选范围内的分录；点击来源卡片可以回到完整知识点。"
+        ? "分录库会自动汇总当前筛选范围内的分录；搜索和科目筛选只影响分录视图。"
         : state.quizMode
         ? "自测模式下默认隐藏摘要和解析，先自己作答，再点按钮揭晓。"
         : "默认显示摘要，点击卡片按钮可展开完整解析；标记掌握度后可按弱项清单复习。";
@@ -1912,10 +2228,12 @@
     function renderResultsMeta(filteredEntries, visibleEntries) {
       clearNode(resultsMeta);
 
-      const visibleJournalCount = getJournalItems(visibleEntries).length;
+      const visibleJournalCount = getFilteredJournalItems(visibleEntries).length;
+      const visibleJournalSourceCount = new Set(getFilteredJournalItems(visibleEntries).map((item) => item.entry.id)).size;
+      const visibleJournalAccountCount = new Set(getFilteredJournalItems(visibleEntries).flatMap((item) => item.accounts)).size;
       const summary = document.createElement("div");
       summary.textContent = state.journalMode
-        ? `当前分录库显示 ${visibleJournalCount} 条分录，来自 ${visibleEntries.length} 个知识点。`
+        ? `当前分录速查显示 ${visibleJournalCount} 条分录，来自 ${visibleJournalSourceCount} 个知识点，涉及 ${visibleJournalAccountCount} 个科目。`
         : `当前显示 ${visibleEntries.length} / ${studyData.entries.length} 个知识点，筛选结果共 ${filteredEntries.length} 个。`;
       resultsMeta.appendChild(summary);
 
@@ -1959,6 +2277,18 @@
       if (state.journalMode) {
         statusRow.appendChild(buildStatusPill("分录库视图", "quiz"));
       }
+      if (state.journalMode && state.journalSearch) {
+        statusRow.appendChild(buildStatusPill(`分录关键词：${state.journalSearch}`));
+      }
+      if (state.journalMode && state.journalSide !== "全部") {
+        statusRow.appendChild(buildStatusPill(`方向：${state.journalSide}方`, "quiz"));
+      }
+      if (state.journalMode && state.journalAccount !== "全部") {
+        statusRow.appendChild(buildStatusPill(`科目：${state.journalAccount}`, "quiz"));
+      }
+      if (state.journalMode && state.journalSource !== "全部") {
+        statusRow.appendChild(buildStatusPill(state.journalSource === "auto" ? "自动提取" : "结构化", "quiz"));
+      }
       if (state.randomEntryId && visibleEntries.length === 1) {
         const randomText = state.randomEntrySource === "related"
           ? "相邻知识点"
@@ -1973,9 +2303,7 @@
       }
     }
 
-    function renderEmptyState(message, details) {
-      clearNode(cardList);
-
+    function createEmptyStateElement(message, details) {
       const empty = document.createElement("div");
       empty.className = "panel empty-state";
 
@@ -1987,6 +2315,12 @@
       paragraph.textContent = details;
       empty.appendChild(paragraph);
 
+      return empty;
+    }
+
+    function renderEmptyState(message, details) {
+      clearNode(cardList);
+      const empty = createEmptyStateElement(message, details);
       cardList.appendChild(empty);
     }
 
@@ -2211,54 +2545,408 @@
     }
 
     function getJournalItems(entries) {
-      return entries.flatMap((entry) => entry.journalEntries.map((journalEntry) => ({
-        entry,
-        journalEntry
-      })));
+      return entries.flatMap((entry) => entry.journalEntries.map((journalEntry, index) => {
+        const lines = Array.isArray(journalEntry.lines) ? journalEntry.lines : [];
+        const accounts = getJournalAccounts(journalEntry);
+        const item = {
+          id: `${entry.id}-${index}`,
+          entry,
+          journalEntry,
+          lines,
+          accounts
+        };
+        return {
+          ...item,
+          searchText: getJournalItemSearchText(item)
+        };
+      }));
+    }
+
+    function getFilteredJournalItems(entries) {
+      return getJournalItems(entries).filter((item) => {
+        const searchMatch = !state.journalSearch || item.searchText.includes(state.journalSearch);
+        const sideMatch = state.journalSide === "全部" || item.lines.some((line) => line.side === state.journalSide);
+        const accountMatch = state.journalAccount === "全部" || item.accounts.includes(state.journalAccount);
+        const sourceMatch = state.journalSource === "全部" || item.journalEntry.source === state.journalSource;
+        return searchMatch && sideMatch && accountMatch && sourceMatch;
+      });
+    }
+
+    function getJournalAccountItems(journalItems) {
+      const counts = new Map();
+      journalItems.forEach((item) => {
+        item.accounts.forEach((account) => {
+          counts.set(account, (counts.get(account) || 0) + 1);
+        });
+      });
+
+      return [...counts.entries()]
+        .map(([value, count]) => ({ value, count }))
+        .sort((left, right) => {
+          if (right.count !== left.count) {
+            return right.count - left.count;
+          }
+          return left.value.localeCompare(right.value, "zh-CN");
+        });
+    }
+
+    function getJournalStats(entries, journalItems) {
+      const sourceEntryIds = new Set(journalItems.map((item) => item.entry.id));
+      const accounts = new Set(journalItems.flatMap((item) => item.accounts));
+      return {
+        entries: entries.length,
+        journals: journalItems.length,
+        sourceEntries: sourceEntryIds.size,
+        accounts: accounts.size
+      };
+    }
+
+    function makeJournalFilterButton(label, active, onClick) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "chip";
+      button.classList.toggle("active", active);
+      button.textContent = label;
+      button.addEventListener("click", onClick);
+      return button;
+    }
+
+    function renderJournalToolbox(entries, allJournalItems, visibleJournalItems) {
+      const toolbox = document.createElement("div");
+      toolbox.className = "panel journal-toolbox";
+
+      const stats = getJournalStats(entries, visibleJournalItems);
+      const statsRow = document.createElement("div");
+      statsRow.className = "journal-stats";
+      [
+        [`${stats.journals}`, "当前分录"],
+        [`${stats.sourceEntries}`, "来源知识点"],
+        [`${stats.accounts}`, "涉及科目"]
+      ].forEach(([value, label]) => {
+        const stat = document.createElement("div");
+        stat.className = "journal-stat";
+
+        const strong = document.createElement("strong");
+        strong.textContent = value;
+        stat.appendChild(strong);
+
+        const span = document.createElement("span");
+        span.textContent = label;
+        stat.appendChild(span);
+
+        statsRow.appendChild(stat);
+      });
+      toolbox.appendChild(statsRow);
+
+      const grid = document.createElement("div");
+      grid.className = "journal-tool-grid";
+
+      const searchGroup = document.createElement("label");
+      searchGroup.className = "journal-filter-group";
+      const searchLabel = document.createElement("span");
+      searchLabel.className = "journal-filter-label";
+      searchLabel.textContent = "分录关键词";
+      searchGroup.appendChild(searchLabel);
+      const input = document.createElement("input");
+      input.id = "journal-search-input";
+      input.type = "search";
+      input.value = state.journalSearch;
+      input.placeholder = "搜索科目、金额、条件、来源题目";
+      input.addEventListener("input", (event) => {
+        const nextSearch = normalizeText(event.target.value);
+        window.clearTimeout(journalSearchInputDebounceTimer);
+        journalSearchInputDebounceTimer = window.setTimeout(() => {
+          const shouldRestoreFocus = document.activeElement === input;
+          setState({ journalSearch: nextSearch }, { clearRandom: false });
+          if (shouldRestoreFocus) {
+            window.requestAnimationFrame(() => {
+              const nextInput = document.querySelector("#journal-search-input");
+              if (nextInput) {
+                nextInput.focus();
+                nextInput.setSelectionRange(nextInput.value.length, nextInput.value.length);
+              }
+            });
+          }
+        }, SEARCH_DEBOUNCE_MS);
+      });
+      searchGroup.appendChild(input);
+      grid.appendChild(searchGroup);
+
+      const sideGroup = document.createElement("div");
+      sideGroup.className = "journal-filter-group";
+      const sideLabel = document.createElement("span");
+      sideLabel.className = "journal-filter-label";
+      sideLabel.textContent = "借贷方向";
+      sideGroup.appendChild(sideLabel);
+      const sideButtons = document.createElement("div");
+      sideButtons.className = "chip-list";
+      ["全部", "借", "贷"].forEach((side) => {
+        sideButtons.appendChild(makeJournalFilterButton(side, state.journalSide === side, () => {
+          setState({ journalSide: side }, { clearRandom: false });
+        }));
+      });
+      sideGroup.appendChild(sideButtons);
+      grid.appendChild(sideGroup);
+
+      const sourceGroup = document.createElement("div");
+      sourceGroup.className = "journal-filter-group";
+      const sourceLabel = document.createElement("span");
+      sourceLabel.className = "journal-filter-label";
+      sourceLabel.textContent = "分录来源";
+      sourceGroup.appendChild(sourceLabel);
+      const sourceButtons = document.createElement("div");
+      sourceButtons.className = "chip-list";
+      [
+        ["全部", "全部"],
+        ["manual", "结构化"],
+        ["auto", "自动提取"]
+      ].forEach(([value, label]) => {
+        sourceButtons.appendChild(makeJournalFilterButton(label, state.journalSource === value, () => {
+          setState({ journalSource: value }, { clearRandom: false });
+        }));
+      });
+      sourceGroup.appendChild(sourceButtons);
+      grid.appendChild(sourceGroup);
+
+      toolbox.appendChild(grid);
+
+      const accountPanel = document.createElement("div");
+      accountPanel.className = "journal-account-panel";
+      const accountLabel = document.createElement("span");
+      accountLabel.className = "journal-filter-label";
+      accountLabel.textContent = "科目索引";
+      accountPanel.appendChild(accountLabel);
+
+      const accountList = document.createElement("div");
+      accountList.className = "journal-account-list";
+      accountList.appendChild(makeJournalFilterButton("全部科目", state.journalAccount === "全部", () => {
+        setState({ journalAccount: "全部" }, { clearRandom: false });
+      }));
+
+      const accountItems = getJournalAccountItems(allJournalItems);
+      const visibleAccountItems = accountItems.slice(0, 36);
+      if (state.journalAccount !== "全部" && !visibleAccountItems.some((item) => item.value === state.journalAccount)) {
+        const activeItem = accountItems.find((item) => item.value === state.journalAccount);
+        if (activeItem) {
+          visibleAccountItems.push(activeItem);
+        }
+      }
+
+      visibleAccountItems.forEach((item) => {
+        accountList.appendChild(makeJournalFilterButton(`${item.value} (${item.count})`, state.journalAccount === item.value, () => {
+          setState({ journalAccount: item.value }, { clearRandom: false });
+        }));
+      });
+      accountPanel.appendChild(accountList);
+      toolbox.appendChild(accountPanel);
+
+      const actions = document.createElement("div");
+      actions.className = "journal-card-actions";
+      const clearButton = document.createElement("button");
+      clearButton.type = "button";
+      clearButton.className = "inline-button";
+      clearButton.textContent = "清空分录筛选";
+      clearButton.addEventListener("click", () => {
+        setState({
+          journalSearch: "",
+          journalSide: "全部",
+          journalAccount: "全部",
+          journalSource: "全部"
+        }, { clearRandom: false });
+      });
+      actions.appendChild(clearButton);
+      toolbox.appendChild(actions);
+
+      return toolbox;
+    }
+
+    function renderJournalLineList(lines) {
+      const split = document.createElement("div");
+      split.className = "journal-split";
+
+      ["借", "贷"].forEach((side) => {
+        const panel = document.createElement("div");
+        panel.className = "journal-side-panel";
+
+        const title = document.createElement("h5");
+        title.textContent = `${side}方`;
+        panel.appendChild(title);
+
+        const sideLines = lines.filter((line) => line.side === side);
+        if (sideLines.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "journal-empty-side";
+          empty.textContent = "无";
+          panel.appendChild(empty);
+        } else {
+          const list = document.createElement("ul");
+          list.className = "journal-line-list";
+          sideLines.forEach((line) => {
+            const item = document.createElement("li");
+
+            const account = document.createElement("span");
+            account.className = "journal-line-account";
+            account.textContent = line.account;
+            item.appendChild(account);
+
+            const amount = document.createElement("span");
+            amount.className = "journal-line-amount";
+            amount.textContent = line.amount || "";
+            item.appendChild(amount);
+
+            if (line.note) {
+              const note = document.createElement("span");
+              note.className = "journal-line-note";
+              note.textContent = line.note;
+              item.appendChild(note);
+            }
+
+            list.appendChild(item);
+          });
+          panel.appendChild(list);
+        }
+
+        split.appendChild(panel);
+      });
+
+      return split;
+    }
+
+    function getJournalCopyText(item) {
+      const lineText = item.lines.length > 0
+        ? item.lines.map(formatJournalLine).join("\n")
+        : item.journalEntry.body;
+      return [
+        item.journalEntry.title || "分录",
+        item.journalEntry.condition ? `条件：${item.journalEntry.condition}` : "",
+        lineText,
+        item.journalEntry.note ? `备注：${item.journalEntry.note}` : "",
+        `来源：${item.entry.question}`
+      ].filter(Boolean).join("\n");
+    }
+
+    async function copyJournalItem(item, button) {
+      const originalText = button.textContent;
+      try {
+        await navigator.clipboard.writeText(getJournalCopyText(item));
+        button.textContent = "已复制";
+      } catch (error) {
+        button.textContent = "复制失败，请手动选择";
+      }
+
+      window.setTimeout(() => {
+        button.textContent = originalText;
+      }, 1600);
+    }
+
+    function renderJournalLibraryCard(item) {
+      const { entry, journalEntry, lines } = item;
+      const card = document.createElement("article");
+      card.className = "panel journal-library-card";
+
+      const header = document.createElement("div");
+      header.className = "journal-library-card-header";
+
+      const kicker = document.createElement("div");
+      kicker.className = "journal-card-kicker";
+      kicker.textContent = "来源知识点";
+      header.appendChild(kicker);
+
+      const titleBlock = document.createElement("div");
+      titleBlock.className = "journal-card-title";
+      const sourceTitle = document.createElement("h3");
+      sourceTitle.textContent = entry.question;
+      titleBlock.appendChild(sourceTitle);
+
+      const entryTitle = document.createElement("h4");
+      entryTitle.textContent = journalEntry.title || "分录";
+      titleBlock.appendChild(entryTitle);
+      header.appendChild(titleBlock);
+
+      const meta = document.createElement("div");
+      meta.className = "status-row";
+      meta.appendChild(buildStatusPill(entry.topic));
+      meta.appendChild(buildStatusPill(entry.difficulty));
+      meta.appendChild(buildStatusPill(journalEntry.source === "auto" ? "自动提取" : "结构化", "quiz"));
+      if (journalEntry.scope) {
+        meta.appendChild(buildStatusPill(journalEntry.scope));
+      }
+      header.appendChild(meta);
+      card.appendChild(header);
+
+      if (journalEntry.condition) {
+        const condition = document.createElement("p");
+        condition.className = "journal-entry-condition";
+        condition.textContent = journalEntry.condition;
+        card.appendChild(condition);
+      }
+
+      if (lines.length > 0) {
+        card.appendChild(renderJournalLineList(lines));
+      } else {
+        const body = document.createElement("pre");
+        body.className = "journal-entry-body";
+        body.textContent = journalEntry.body;
+        card.appendChild(body);
+      }
+
+      if (journalEntry.note) {
+        const note = document.createElement("p");
+        note.className = "journal-entry-note";
+        note.textContent = journalEntry.note;
+        card.appendChild(note);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "journal-card-actions";
+      const copyButton = document.createElement("button");
+      copyButton.type = "button";
+      copyButton.className = "inline-button";
+      copyButton.textContent = "复制分录";
+      copyButton.addEventListener("click", () => copyJournalItem(item, copyButton));
+      actions.appendChild(copyButton);
+
+      const sourceButton = document.createElement("button");
+      sourceButton.type = "button";
+      sourceButton.className = "inline-button";
+      sourceButton.textContent = "打开来源卡片";
+      sourceButton.addEventListener("click", () => openEntryFromJournal(entry.id));
+      actions.appendChild(sourceButton);
+      card.appendChild(actions);
+
+      return card;
     }
 
     function renderJournalLibrary(entries) {
       clearNode(cardList);
 
-      const journalItems = getJournalItems(entries);
-      if (journalItems.length === 0) {
-        renderEmptyState("当前筛选范围内没有分录", "换一个章节、标签或关键词，或者回到卡片视图继续复习。");
+      const allJournalItems = getJournalItems(entries);
+      const visibleJournalItems = getFilteredJournalItems(entries);
+      const workbench = document.createElement("div");
+      workbench.className = "journal-workbench";
+      workbench.appendChild(renderJournalToolbox(entries, allJournalItems, visibleJournalItems));
+
+      if (allJournalItems.length === 0) {
+        workbench.appendChild(createEmptyStateElement("当前筛选范围内没有分录", "换一个章节、标签或关键词，或者回到卡片视图继续复习。"));
+        cardList.appendChild(workbench);
+        return;
+      }
+
+      if (visibleJournalItems.length === 0) {
+        workbench.appendChild(createEmptyStateElement("没有找到匹配分录", "清空分录筛选，或者换一个科目、方向、关键词。"));
+        cardList.appendChild(workbench);
         return;
       }
 
       const list = document.createElement("div");
       list.className = "journal-library-list";
 
-      journalItems.forEach(({ entry, journalEntry }) => {
-        const card = document.createElement("article");
-        card.className = "panel journal-library-card";
-
-        const title = document.createElement("h3");
-        title.textContent = entry.question;
-        card.appendChild(title);
-
-        const meta = document.createElement("div");
-        meta.className = "status-row";
-        meta.appendChild(buildStatusPill(entry.topic));
-        meta.appendChild(buildStatusPill(entry.difficulty));
-        card.appendChild(meta);
-
-        card.appendChild(createJournalEntryElement(journalEntry));
-
-        const actions = document.createElement("div");
-        actions.className = "card-actions";
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "inline-button";
-        button.textContent = "打开来源卡片";
-        button.addEventListener("click", () => openEntryFromJournal(entry.id));
-        actions.appendChild(button);
-        card.appendChild(actions);
-
-        list.appendChild(card);
+      visibleJournalItems.forEach((item) => {
+        list.appendChild(renderJournalLibraryCard(item));
       });
 
-      cardList.appendChild(list);
+      workbench.appendChild(list);
+      cardList.appendChild(workbench);
     }
 
     function renderResults() {
@@ -2348,6 +3036,21 @@
       const allowedSorts = new Set(["default", "updated-desc", "reviewed-desc", "reviewed-asc", "question-asc"]);
       if (!allowedSorts.has(state.sort)) {
         state.sort = "default";
+      }
+
+      const allowedJournalSides = new Set(["全部", "借", "贷"]);
+      if (!allowedJournalSides.has(state.journalSide)) {
+        state.journalSide = "全部";
+      }
+
+      const allowedJournalSources = new Set(["全部", "manual", "auto"]);
+      if (!allowedJournalSources.has(state.journalSource)) {
+        state.journalSource = "全部";
+      }
+
+      const journalAccounts = new Set(getJournalItems(studyData.entries).flatMap((item) => item.accounts));
+      if (state.journalAccount !== "全部" && !journalAccounts.has(state.journalAccount)) {
+        state.journalAccount = "全部";
       }
 
       if (state.randomEntryId && !studyData.entries.some((entry) => entry.id === state.randomEntryId)) {
