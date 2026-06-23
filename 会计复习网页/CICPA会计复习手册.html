@@ -36,12 +36,15 @@
         linear-gradient(180deg, rgba(169, 77, 42, 0.07) 1px, transparent 1px),
         linear-gradient(180deg, #faf6ef 0%, var(--bg) 100%);
       background-size: 36px 36px, 36px 36px, auto;
+      overflow-x: hidden;
+      overflow-wrap: break-word;
     }
 
     button,
     input,
     select {
       font: inherit;
+      max-width: 100%;
     }
 
     .page-shell {
@@ -195,6 +198,12 @@
       margin-top: 22px;
     }
 
+    .content,
+    .controls,
+    .toolbar-copy {
+      min-width: 0;
+    }
+
     .panel {
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -233,6 +242,10 @@
     }
 
     .close-filters {
+      display: none;
+    }
+
+    .mobile-filter-toggle {
       display: none;
     }
 
@@ -1539,6 +1552,44 @@
         grid-template-columns: 1fr;
       }
 
+      .mobile-filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 16px;
+        border: 1px solid rgba(182, 84, 42, 0.18);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--brand-deep);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mobile-filter-toggle::after {
+        content: "+";
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .controls.filter-open .mobile-filter-toggle::after {
+        content: "-";
+      }
+
+      .filter-panel {
+        display: none;
+        margin-top: 16px;
+      }
+
+      .controls.filter-open .filter-panel {
+        display: block;
+      }
+
+      .filter-panel section:first-child {
+        margin-top: 0;
+      }
+
       .metric-strip {
         display: flex;
         overflow-x: auto;
@@ -1603,6 +1654,10 @@
       .cloud-sync-actions {
         width: 100%;
         grid-template-columns: 1fr;
+      }
+
+      .question-title {
+        font-size: 21px;
       }
     }
   </style>
@@ -1669,85 +1724,89 @@
           <button id="close-filters" class="ghost-button close-filters" type="button">关闭</button>
         </div>
 
-        <section>
-          <h2>章节导航</h2>
-          <div id="chapter-filters" class="chapter-list"></div>
-        </section>
+        <button id="filter-panel-toggle" class="mobile-filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">筛选与复习设置</button>
 
-        <section>
-          <h2>专题筛选</h2>
-          <div id="topic-filters" class="filter-list"></div>
-        </section>
+        <div id="filter-panel" class="filter-panel">
+          <section>
+            <h2>章节导航</h2>
+            <div id="chapter-filters" class="chapter-list"></div>
+          </section>
 
-        <section>
-          <h2>标签筛选</h2>
-          <div id="tag-filters" class="chip-list"></div>
-        </section>
+          <section>
+            <h2>专题筛选</h2>
+            <div id="topic-filters" class="filter-list"></div>
+          </section>
 
-        <section>
-          <h2>复习策略</h2>
-          <label class="field-label" for="sort-select">排序方式</label>
-          <select id="sort-select">
-            <option value="default">默认顺序</option>
-            <option value="updated-desc">最近更新优先</option>
-            <option value="reviewed-desc">最近复习优先</option>
-            <option value="reviewed-asc">久未复习优先</option>
-            <option value="question-asc">题目字顺</option>
-          </select>
-        </section>
+          <section>
+            <h2>标签筛选</h2>
+            <div id="tag-filters" class="chip-list"></div>
+          </section>
 
-        <section>
-          <h2>弱项复习</h2>
-          <div id="review-filters" class="chip-list">
-            <button class="chip active" type="button" data-review-filter="全部">全部</button>
-            <button class="chip" type="button" data-review-filter="daily">今日任务</button>
-            <button class="chip" type="button" data-review-filter="unreviewed">未复习</button>
-            <button class="chip" type="button" data-review-filter="weak">薄弱</button>
-            <button class="chip" type="button" data-review-filter="high-risk">高频易错未掌握</button>
-            <button class="chip" type="button" data-review-filter="stale">7 天没复习</button>
-            <button class="chip" type="button" data-review-filter="favorite-open">收藏未掌握</button>
-          </div>
-        </section>
+          <section>
+            <h2>复习策略</h2>
+            <label class="field-label" for="sort-select">排序方式</label>
+            <select id="sort-select">
+              <option value="default">默认顺序</option>
+              <option value="updated-desc">最近更新优先</option>
+              <option value="reviewed-desc">最近复习优先</option>
+              <option value="reviewed-asc">久未复习优先</option>
+              <option value="question-asc">题目字顺</option>
+            </select>
+          </section>
 
-        <section>
-          <h2>复习方式</h2>
-          <label class="toggle-line" for="quiz-mode">
-            <input id="quiz-mode" type="checkbox">
-            <span>开启自测模式，先思考再看解析</span>
-          </label>
-          <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
-        </section>
+          <section>
+            <h2>弱项复习</h2>
+            <div id="review-filters" class="chip-list">
+              <button class="chip active" type="button" data-review-filter="全部">全部</button>
+              <button class="chip" type="button" data-review-filter="daily">今日任务</button>
+              <button class="chip" type="button" data-review-filter="unreviewed">未复习</button>
+              <button class="chip" type="button" data-review-filter="weak">薄弱</button>
+              <button class="chip" type="button" data-review-filter="high-risk">高频易错未掌握</button>
+              <button class="chip" type="button" data-review-filter="stale">7 天没复习</button>
+              <button class="chip" type="button" data-review-filter="favorite-open">收藏未掌握</button>
+            </div>
+          </section>
 
-        <section class="cloud-sync-box">
-          <h2>云端同步</h2>
-          <div class="cloud-sync-grid">
-            <label class="field-label" for="gist-token-input">GitHub Token（仅保存在本机）</label>
-            <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
-            <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
-            <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
-          </div>
-          <label class="toggle-line" for="gist-auto-sync">
-            <input id="gist-auto-sync" type="checkbox">
-            <span>打开页面自动拉取，标记后自动推送</span>
-          </label>
-          <div class="cloud-sync-actions">
-            <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
-            <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
-            <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
-            <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
-          </div>
-          <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只存在当前浏览器，不会写入项目文件。</p>
-        </section>
+          <section>
+            <h2>复习方式</h2>
+            <label class="toggle-line" for="quiz-mode">
+              <input id="quiz-mode" type="checkbox">
+              <span>开启自测模式，先思考再看解析</span>
+            </label>
+            <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
+          </section>
 
-        <section class="memory-box">
-          <h2>复习建议</h2>
-          <ul>
-            <li>先看结论，再看原因，最后背口诀。</li>
-            <li>易错点优先在做题前后各复习一次。</li>
-            <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
-            <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
-          </ul>
-        </section>
+          <section class="cloud-sync-box">
+            <h2>云端同步</h2>
+            <div class="cloud-sync-grid">
+              <label class="field-label" for="gist-token-input">GitHub Token（仅保存在本机）</label>
+              <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
+              <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
+              <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
+            </div>
+            <label class="toggle-line" for="gist-auto-sync">
+              <input id="gist-auto-sync" type="checkbox">
+              <span>打开页面自动拉取，标记后自动推送</span>
+            </label>
+            <div class="cloud-sync-actions">
+              <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
+              <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
+              <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
+              <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
+            </div>
+            <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只存在当前浏览器，不会写入项目文件。</p>
+          </section>
+
+          <section class="memory-box">
+            <h2>复习建议</h2>
+            <ul>
+              <li>先看结论，再看原因，最后背口诀。</li>
+              <li>易错点优先在做题前后各复习一次。</li>
+              <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
+              <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
+            </ul>
+          </section>
+        </div>
       </aside>
 
       <section class="content">
@@ -1835,7 +1894,7 @@
   </template>
 
   <script src="./study-data.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
     const STORAGE_KEY = "cicpa-review-state";
     const PROGRESS_STORAGE_KEY = "cicpa-review-progress";
@@ -1897,6 +1956,8 @@
     ];
 
     const searchInput = document.querySelector("#search-input");
+    const controlsPanel = document.querySelector(".controls");
+    const filterPanelToggle = document.querySelector("#filter-panel-toggle");
     const chapterFilters = document.querySelector("#chapter-filters");
     const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
@@ -1949,9 +2010,13 @@
     let journalSearchInputDebounceTimer = 0;
     let cloudSyncDebounceTimer = 0;
     const TAG_GROUP_COLLAPSED_LIMIT = 8;
-    const hasMermaid = typeof window.mermaid !== "undefined";
+    let mermaidInitialized = false;
 
-    if (hasMermaid) {
+    function initializeMermaid() {
+      if (mermaidInitialized || typeof window.mermaid === "undefined") {
+        return mermaidInitialized;
+      }
+
       window.mermaid.initialize({
         startOnLoad: false,
         theme: "base",
@@ -1966,6 +2031,8 @@
           fontFamily: "Microsoft YaHei, PingFang SC, sans-serif"
         }
       });
+      mermaidInitialized = true;
+      return true;
     }
 
     function normalizeViewMode(value) {
@@ -2715,7 +2782,7 @@
     }
 
     async function renderMermaidDiagrams(nodes = []) {
-      if (!hasMermaid || !nodes.length) {
+      if (!initializeMermaid() || !nodes.length) {
         return;
       }
 
@@ -4739,6 +4806,11 @@
     }
 
     function bindEvents() {
+      filterPanelToggle.addEventListener("click", () => {
+        const isOpen = controlsPanel.classList.toggle("filter-open");
+        filterPanelToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
       searchInput.addEventListener("input", (event) => {
         const nextSearch = normalizeText(event.target.value);
         window.clearTimeout(searchInputDebounceTimer);
@@ -4881,6 +4953,15 @@
         dataSource.textContent = "数据源加载失败";
         renderErrorState(error.message || "请检查 study-data.js 是否存在且格式正确。");
       }
+    }
+
+    const mermaidScript = document.querySelector('script[src*="mermaid"]');
+    if (mermaidScript) {
+      mermaidScript.addEventListener("load", () => {
+        if (initializeMermaid()) {
+          renderResults();
+        }
+      });
     }
 
     boot();
