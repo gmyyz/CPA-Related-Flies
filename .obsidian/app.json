@@ -2,5 +2,9 @@
   "attachmentFolderPath": "附件",
   "newFileLocation": "current",
   "promptDelete": false,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "userIgnoreFilters": [
+    "README.md",
+    "会计复习网页/"
+  ]
 }
