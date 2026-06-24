@@ -1,3 +1,6 @@
 .idea/
 .DS_Store
 Thumbs.db
+.obsidian/workspace*.json
+.obsidian/cache
+.obsidian/plugins/*/data.json

@@ -1,12 +1,15 @@
-# CPA 仓库终端操作手册
+# CPA 知识库与仓库操作手册
 
-这个仓库主要用于维护 CPA 学习资料，尤其是：
+这个仓库现在同时作为 Obsidian CPA 知识库和网页复习资料仓库，主要维护：
 
+- `00-首页/CPA 知识库总览.md`
+- `01-会计/会计 MOC.md`
+- `01-会计/01-章节笔记/`
+- `01-会计/03-问答/学习问答汇总.md`
 - `会计复习网页/CICPA会计复习手册.html`
 - `会计复习网页/study-data.js`
-- `会计复习网页/学习问答汇总.md`
 
-以后你可以直接在终端里，按这份手册操作。
+以后可以直接用 Obsidian 打开本仓库根目录作为 Vault，也可以在终端里按这份手册操作 Git。
 
 ---
 
@@ -27,7 +30,7 @@ cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
 先拉取远程最新内容：
 
 ```bash
-git pull origin main
+git pull --ff-only
 ```
 
 如果你只是想先看看当前状态，也可以先执行：
@@ -87,7 +90,7 @@ git push origin main
 如果你只想提交 Markdown 问答汇总：
 
 ```bash
-git add "会计复习网页/学习问答汇总.md"
+git add "01-会计/03-问答/学习问答汇总.md"
 git commit -m "更新会计学习问答汇总"
 git push origin main
 ```
@@ -100,7 +103,7 @@ git push origin main
 
 ```bash
 cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
-git pull origin main
+git pull --ff-only
 git status
 # 然后开始修改文件
 ```
@@ -184,7 +187,7 @@ git status
 ### 先拉最新代码再推
 
 ```bash
-git pull origin main
+git pull --ff-only
 git push origin main
 ```
 
@@ -200,7 +203,7 @@ git push origin main
 
 ```bash
 cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
-git pull origin main
+git pull --ff-only
 git add .
 git commit -m "更新 CPA 资料"
 git push origin main
@@ -233,6 +236,22 @@ https://github.com/gmyyz/CPA-Related-Flies
 ```bash
 main
 ```
+
+### 12.1 Obsidian Vault 结构
+
+```text
+00-首页/                     知识库入口
+01-会计/                     会计科目资料
+01-会计/01-章节笔记/          完整知识点笔记
+01-会计/02-专题索引/          分录、易错点、计算题、口诀等跨章节入口
+01-会计/03-问答/              问答式学习资料
+20-复习网页/                  网页入口说明
+90-模板/                     笔记模板
+99-系统/                     Git 同步和系统说明
+会计复习网页/                 静态网页和网页卡片数据
+```
+
+Obsidian 打开本仓库根目录即可，不需要再使用单独的 `CPA Notes` 文件夹。
 
 ---
 
@@ -317,8 +336,10 @@ git diff --check
 | --- | --- | --- |
 | `会计复习网页/CICPA会计复习手册.html` | 网页外壳、样式、交互逻辑、章节筛选定义 | 新增章节筛选、调整页面样式或交互 |
 | `会计复习网页/study-data.js` | 网页知识卡片主数据源 | 新增、修改、删除知识卡片 |
-| `会计复习网页/学习问答汇总.md` | 学习问答的 Markdown 汇总 | 作为网页内容的文字来源或备份 |
-| `*.md` 知识点文件 | 按章节整理的专题笔记 | 先沉淀知识点，再转成网页卡片 |
+| `01-会计/03-问答/学习问答汇总.md` | 学习问答的 Markdown 汇总 | 作为网页内容的文字来源或备份 |
+| `01-会计/01-章节笔记/*.md` | 按章节整理的专题笔记 | 先沉淀知识点，再转成网页卡片 |
+| `00-首页/CPA 知识库总览.md` | Obsidian 知识库入口 | 维护学习入口和近期重点 |
+| `01-会计/02-专题索引/*.md` | 跨章节复习索引 | 整理分录、易错点、计算题、口诀 |
 
 通常新增知识点时，优先修改 `study-data.js`。只有新增专题筛选、页面结构或交互时，才修改 HTML。
 
@@ -430,7 +451,7 @@ git diff --check
 只提交网页相关内容时，建议明确列文件：
 
 ```bash
-git add "借款费用知识点.md"
+git add "01-会计/01-章节笔记/借款费用知识点.md"
 git add "会计复习网页/study-data.js"
 git add "会计复习网页/CICPA会计复习手册.html"
 git add "README.md"
@@ -456,7 +477,7 @@ git pull --rebase origin main
 
 ### 14.10 Markdown 到网页卡片迁移规则
 
-从 `*.md` 知识点文件迁移到 `会计复习网页/study-data.js` 时，不能只迁移标题和一句摘要。网页卡片可以压缩表达，但不能遗漏 MD 中的核心考试信息。
+从 `01-会计/01-章节笔记/*.md` 知识点文件迁移到 `会计复习网页/study-data.js` 时，不能只迁移标题和一句摘要。网页卡片可以压缩表达，但不能遗漏 MD 中的核心考试信息。
 
 迁移时按以下规则检查：
 
