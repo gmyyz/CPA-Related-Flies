@@ -1,0 +1,154 @@
+---
+name: "cpa-webpage-card-sync"
+description: "When updating the CPA review webpage from Markdown notes, enforce this repo's README rules for study-data.js cards, chapter filters, journalEntries, and coverage checks."
+---
+
+# CPA Webpage Card Sync
+
+Use this skill whenever the user asks to整理到网页、同步到网页、更新会计复习网页、把 Markdown 知识点迁移到 `会计复习网页/study-data.js`，或新增 CPA 复习网页专题卡片。
+
+## Core Files
+
+- `*.md` knowledge files are the complete notes.
+- `会计复习网页/study-data.js` is the main webpage card data source.
+- `会计复习网页/CICPA会计复习手册.html` contains the page shell, interactions, and `chapterDefinitions`.
+- `会计复习网页/学习问答汇总.md` is a Markdown summary or backup source, not the primary webpage data file.
+
+## Default Workflow
+
+1. Read the relevant Markdown knowledge file and identify every `##` second-level section.
+2. Check existing `study-data.js` cards for the same topic before adding new cards.
+3. Convert Markdown into cards in `window.studyData.entries`.
+4. For a new topic, add a matching item to `chapterDefinitions` in `CICPA会计复习手册.html`.
+5. Run validation commands.
+6. Report coverage: Markdown sections, webpage cards, journalEntries, duplicate IDs, and any intentional merges.
+
+## Card Field Rules
+
+Each card should normally include:
+
+```js
+{
+  id: "unique-english-id",
+  updatedAt: "YYYY-MM-DD",
+  topic: "专题名称",
+  difficulty: "高频基础 | 高频提高 | 高频易错 | 高频综合",
+  question: "卡片标题或问题",
+  summary: "一句话总结",
+  conclusion: ["核心结论"],
+  reasoning: ["判断逻辑、计算过程、表格或例题"],
+  memory: ["口诀或速记"],
+  pitfalls: ["易错点"],
+  tags: ["专题", "关键词", "Markdown同步"]
+}
+```
+
+Keep cards concise enough for review, but do not drop exam-critical facts.
+
+## Markdown Migration Coverage Rules
+
+Do not migrate only a title and short summary.
+
+For each `##` section in the Markdown file, ensure one of these is true:
+
+- It has a corresponding webpage card.
+- It is explicitly merged into a nearby card, and that card includes the section's core conclusion, judgment rule, example clue, pitfalls, and memory cue.
+
+High-risk omissions that must be checked one by one:
+
+- tables
+- formulas
+- numeric examples
+- journal entries
+- mnemonics
+- special presentation or measurement rules
+- prompts such as `提示`、`点拨`、`易错点`
+
+For comprehensive sections, preserve at least:
+
+- `核心结论`
+- `判断逻辑`
+- key formula or numeric example
+- `易错点`
+- `记忆口诀`
+
+## Journal Entry Rules
+
+If a card has important accounting entries, write structured `journalEntries`; do not rely only on entries embedded in `reasoning`.
+
+Recommended shape:
+
+```js
+journalEntries: [
+  {
+    title: "确认资本化利息",
+    scope: "在建工程",
+    condition: "符合资本化条件",
+    lines: [
+      { side: "借", account: "在建工程", amount: "152.42" },
+      { side: "贷", account: "应付利息", amount: "180" }
+    ],
+    note: "说明金额口径或易错点。"
+  }
+]
+```
+
+Use `body` only when the entry is too irregular for structured lines.
+
+## Chapter Filter Rule
+
+When adding a new `topic`, update `chapterDefinitions` in `CICPA会计复习手册.html`:
+
+```js
+{ id: "topic-id", title: "专题名称", topics: ["专题名称"] }
+```
+
+Then verify that the topic appears in the webpage filter and that topic filtering returns the expected cards.
+
+## Validation Commands
+
+Always run at least:
+
+```powershell
+node --check "会计复习网页/study-data.js"
+git diff --check -- "会计复习网页/study-data.js" "会计复习网页/CICPA会计复习手册.html"
+```
+
+Also run a data-load check with Node when possible:
+
+```js
+const fs = require("fs");
+const vm = require("vm");
+const text = fs.readFileSync("会计复习网页/study-data.js", "utf8");
+const sandbox = { window: {} };
+vm.createContext(sandbox);
+vm.runInContext(text, sandbox);
+const entries = sandbox.window.studyData.entries;
+```
+
+Check total cards, cards for the target topic, duplicate IDs, and cards with `journalEntries`.
+
+## Project-Specific File Safety
+
+This workspace has shown cases where some write methods created files starting with `%TSD-Header-###%` instead of normal text. After creating or rewriting Markdown or skill files, verify the file can be read as plain text and that the first bytes are not `%TSD-Header-###%`.
+
+Useful checks:
+
+```powershell
+Get-Content -Path "path\to\file.md" -TotalCount 5
+Format-Hex -Path "path\to\file.md" -Count 16
+```
+
+If a file becomes TSD-wrapped accidentally, rewrite it as UTF-8 plain text and verify again.
+
+## Final Report Checklist
+
+When done, summarize:
+
+- files changed
+- Markdown section coverage
+- number of webpage cards added or updated
+- whether `chapterDefinitions` was updated
+- whether `journalEntries` were added
+- validation command results
+- any intentionally uncommitted or unrelated files left untouched
