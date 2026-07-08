@@ -631,6 +631,10 @@
       gap: 16px;
     }
 
+    .qa-card {
+      scroll-margin-top: 132px;
+    }
+
     .dashboard-workbench {
       display: grid;
       gap: 14px;
@@ -2038,6 +2042,7 @@
     let journalSearchInputDebounceTimer = 0;
     let cloudSyncDebounceTimer = 0;
     const TAG_GROUP_COLLAPSED_LIMIT = 8;
+    const hiddenTags = new Set(["Markdown同步"]);
     let mermaidInitialized = false;
 
     function initializeMermaid() {
@@ -2129,6 +2134,9 @@
 
       entries.forEach((entry) => {
         [...new Set(entry.tags)].forEach((tag) => {
+          if (hiddenTags.has(tag)) {
+            return;
+          }
           counts.set(tag, (counts.get(tag) || 0) + 1);
         });
       });
@@ -3552,11 +3560,15 @@
       }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
-        const card = document.querySelector(`[data-entry-id="${entryId}"]`);
-        if (card) {
-          card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollEntryIntoView(entryId);
       });
+    }
+
+    function scrollEntryIntoView(entryId) {
+      const card = document.querySelector(`[data-entry-id="${entryId}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function renderCards(entries) {
@@ -3708,10 +3720,7 @@
       }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
-        const card = document.querySelector(`[data-entry-id="${entryId}"]`);
-        if (card) {
-          card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollEntryIntoView(entryId);
       });
     }
 
@@ -4486,10 +4495,7 @@
       }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
-        const card = document.querySelector(`[data-entry-id="${entryId}"]`);
-        if (card) {
-          card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollEntryIntoView(entryId);
       });
     }
 
@@ -4688,7 +4694,7 @@
         ...studyData.entries.map((entry) => entry.topic),
         ...studyData.entries.map((entry) => entry.difficulty),
         ...studyData.entries.flatMap((entry) => entry.tags)
-      ]);
+      ]).filter((tag) => !hiddenTags.has(tag));
 
       tagGroups = [
         { id: "keywords", title: "常用关键词", items: keywordTagItems, collapsedLimit: TAG_GROUP_COLLAPSED_LIMIT },
@@ -4832,10 +4838,7 @@
       setState({ viewMode: "cards", journalMode: false, randomEntryId: pickedEntry.id, randomEntrySource: "random" }, { clearRandom: false });
 
       window.requestAnimationFrame(() => {
-        const card = document.querySelector(`[data-entry-id="${pickedEntry.id}"]`);
-        if (card) {
-          card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollEntryIntoView(pickedEntry.id);
       });
     }
 
