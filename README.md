@@ -252,7 +252,7 @@ main
 会计复习网页/study-data.js
 ```
 
-HTML 文件 `会计复习网页/CICPA会计复习手册.html` 已经内置了“卡片分录模块”和“分录库”的渲染逻辑。新增知识点时，原则上只改 `study-data.js`；除非要改页面样式或交互，否则不要动 HTML 里的分录库代码。
+新增知识点时，原则上只改 `study-data.js`。页面样式、交互和章节筛选的唯一源码入口是 `会计复习网页/src/`；`会计复习网页/CICPA会计复习手册.html` 是构建生成物，不得直接编辑。
 
 ### 13.1 分录不要只散落在正文里
 
@@ -308,10 +308,11 @@ journalEntries: [
 
 ```bash
 node --check "会计复习网页/study-data.js"
+npm run check
 git diff --check
 ```
 
-如果改了网页交互逻辑，要运行 `npm run check`，并尽量用浏览器打开生成后的本地网页做一次页面检查。
+如果新增了专题筛选或修改了网页交互，还要用浏览器打开生成后的本地网页，检查章节、卡片和分录视图。
 
 ---
 
@@ -392,7 +393,7 @@ journalEntries: [
 
 ### 14.5 新增章节筛选
 
-如果新增了一个全新 `topic`，例如 `借款费用`，需要在 HTML 中找到：
+如果新增了一个全新 `topic`，例如 `借款费用`，需要在 `会计复习网页/src/js/app/00-runtime.js` 中找到：
 
 ```js
 const chapterDefinitions = [
@@ -404,7 +405,7 @@ const chapterDefinitions = [
 { id: "borrowing-costs", title: "借款费用", topics: ["借款费用"] },
 ```
 
-这样网页顶部章节筛选才会显示新专题。
+然后运行 `npm run check` 重新生成 HTML 成品。打开网页确认章节筛选能显示新专题，并且筛选结果数量正确。
 
 ### 14.6 检查命令
 
@@ -412,10 +413,11 @@ const chapterDefinitions = [
 
 ```bash
 node --check "会计复习网页/study-data.js"
+npm run check
 git diff --check
 ```
 
-如果修改了网页源码，必须运行 `npm run check`，再直接打开生成后的本地网页验证。
+如果新增了专题筛选或修改了网页源码，再直接打开生成后的本地网页验证。
 
 ### 14.7 本地验证
 
@@ -491,7 +493,7 @@ git pull --rebase origin main
    - `记忆口诀`
 5. 如果 MD 中存在关键会计分录，优先写入 `journalEntries`，不要只放在正文段落里。
 6. 如果 MD 中有 Mermaid 图或思维导图，网页卡片中的 `diagram` 应保留主要分支；图中细分节点不能被压缩到只剩总标题。
-7. 如果新增或补齐了一个全新专题，除了写入 `study-data.js`，还要确认 HTML 的章节筛选中能看到该专题。
+7. 如果新增或补齐了一个全新专题，除了写入 `study-data.js`，还要更新 `会计复习网页/src/js/app/00-runtime.js` 中的 `chapterDefinitions`，运行构建后确认章节筛选中能看到该专题。
 
 迁移完成后，建议做一次覆盖审计：
 
