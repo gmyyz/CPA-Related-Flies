@@ -1,0 +1,153 @@
+.mobile-command-bar {
+      display: none;
+    }
+
+    .qa-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qa-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30px -30px auto;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216, 169, 70, 0.18), transparent 70%);
+    }
+
+    .qa-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .topic-badge,
+    .difficulty-badge,
+    .tag {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .topic-badge {
+      background: rgba(47, 125, 107, 0.12);
+      color: var(--mint);
+      border-radius: 999px;
+    }
+
+    .difficulty-badge {
+      background: rgba(216, 169, 70, 0.18);
+      color: #8a6519;
+      border-radius: 999px;
+    }
+
+    .card-meta {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .question-title {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.4;
+    }
+
+    .question-summary,
+    .question-hint {
+      position: relative;
+      z-index: 1;
+      margin: 10px 0 0;
+      line-height: 1.75;
+    }
+
+    .question-hint {
+      font-style: italic;
+    }
+
+    .card-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .mastery-actions {
+      justify-content: flex-end;
+    }
+
+    .mastery-button {
+      border: 1px solid rgba(28, 22, 15, 0.12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--ink);
+      cursor: pointer;
+      padding: 8px 12px;
+      font-size: 13px;
+      transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+    }
+
+    .mastery-button.active {
+      border-color: transparent;
+      background: var(--mint);
+      color: #fff;
+    }
+
+    .mastery-button.weak.active {
+      background: var(--danger);
+    }
+
+    .mastery-button.favorite.active {
+      background: var(--gold);
+      color: #3b2a09;
+    }
+
+    .card-details[hidden] {
+      display: none;
+    }
+
+    .section-block {
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(28, 22, 15, 0.12);
+    }
+
+    .related-list {
+      align-items: stretch;
+    }
+
+    .journal-block {
+      border-top-style: solid;
+      border-top-color: rgba(182, 84, 42, 0.2);
+    }
+
+    .journal-list,
+    .journal-library-list {
+      display: grid;
+      gap: 12px;
+    }

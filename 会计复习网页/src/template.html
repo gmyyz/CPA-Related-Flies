@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!-- 由 npm run build 生成；请修改 会计复习网页/src 下的源码。 -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CICPA 会计复习手册</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b6542a'/%3E%3Cpath d='M18 18h28v28H18z' fill='%23fff7ec'/%3E%3Cpath d='M24 27h16M24 36h16' stroke='%232f7d6b' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+/* __CPA_INLINE_CSS__ */
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="app-command">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <span class="brand-symbol">会</span>
+          <div>
+            <h1>CICPA 会计复习手册</h1>
+            <p class="brand-subtitle">学习看板 · 知识卡片 · 分录速查</p>
+          </div>
+        </div>
+        <div class="system-meta">
+          <span id="entry-count">0 个知识点</span>
+          <span id="updated-at">更新时间 -</span>
+          <span id="data-source">数据源加载中</span>
+        </div>
+      </div>
+
+      <div class="command-search">
+        <label class="field-label" for="search-input">全局关键词</label>
+        <input id="search-input" type="search" placeholder="搜索题目、结论、口诀、标签、分录">
+      </div>
+
+      <div class="view-switch" aria-label="视图切换">
+        <button id="dashboard-view" type="button" data-view-mode="dashboard">看板</button>
+        <button id="cards-view" type="button" data-view-mode="cards">卡片</button>
+        <button id="journal-library" type="button" data-view-mode="journal">分录</button>
+      </div>
+
+      <div class="command-actions">
+        <button id="random-entry" class="accent-button" type="button">随机抽题</button>
+        <button id="restore-session" class="ghost-button" type="button" hidden>恢复筛选</button>
+        <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
+      </div>
+
+    </header>
+
+    <div class="quick-actions" aria-label="复习快捷入口">
+      <button class="quick-action" type="button" data-quick-action="daily">
+        <strong>今日任务</strong>
+        <span>按薄弱、久未复习、未复习生成一轮今日复习清单。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="pitfalls">
+        <strong>高频易错</strong>
+        <span>直接进入考试最容易混淆的卡片。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="random-quiz">
+        <strong>随机自测</strong>
+        <span>隐藏答案，随机抽一题先自己作答。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="journal-library">
+        <strong>分录库</strong>
+        <span>集中查看当前筛选范围内的分录，先抓借贷方向。</span>
+      </button>
+    </div>
+
+    <main class="layout">
+      <aside class="panel controls">
+        <div class="controls-header">
+          <h2 class="controls-title">筛选控制台</h2>
+          <button id="close-filters" class="ghost-button close-filters" type="button">关闭</button>
+        </div>
+
+        <button id="filter-panel-toggle" class="mobile-filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">筛选与复习设置</button>
+
+        <div id="filter-panel" class="filter-panel">
+          <section>
+            <h2>章节导航</h2>
+            <div id="chapter-filters" class="chapter-list"></div>
+          </section>
+
+          <section>
+            <h2>标签筛选</h2>
+            <div id="tag-filters" class="chip-list"></div>
+          </section>
+
+          <section>
+            <h2>复习策略</h2>
+            <label class="field-label" for="sort-select">排序方式</label>
+            <select id="sort-select">
+              <option value="default">默认顺序</option>
+              <option value="updated-desc">最近更新优先</option>
+              <option value="reviewed-desc">最近复习优先</option>
+              <option value="reviewed-asc">久未复习优先</option>
+              <option value="question-asc">题目字顺</option>
+            </select>
+          </section>
+
+          <section>
+            <h2>弱项复习</h2>
+            <div id="review-filters" class="chip-list">
+              <button class="chip active" type="button" data-review-filter="全部">全部</button>
+              <button class="chip" type="button" data-review-filter="daily">今日任务</button>
+              <button class="chip" type="button" data-review-filter="unreviewed">未复习</button>
+              <button class="chip" type="button" data-review-filter="weak">薄弱</button>
+              <button class="chip" type="button" data-review-filter="high-risk">高频易错未掌握</button>
+              <button class="chip" type="button" data-review-filter="stale">7 天没复习</button>
+              <button class="chip" type="button" data-review-filter="favorite-open">收藏未掌握</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>复习方式</h2>
+            <label class="toggle-line" for="quiz-mode">
+              <input id="quiz-mode" type="checkbox">
+              <span>开启自测模式，先思考再看解析</span>
+            </label>
+            <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
+          </section>
+
+          <section class="cloud-sync-box">
+            <h2>云端同步</h2>
+            <div class="cloud-sync-grid">
+              <label class="field-label" for="gist-token-input">GitHub Token（仅本次打开期间使用）</label>
+              <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
+              <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
+              <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
+            </div>
+            <label class="toggle-line" for="gist-auto-sync">
+              <input id="gist-auto-sync" type="checkbox">
+              <span>打开页面自动拉取，标记后自动推送</span>
+            </label>
+            <div class="cloud-sync-actions">
+              <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
+              <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
+              <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
+              <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
+            </div>
+            <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只保存在当前页面内存，不会写入项目文件。</p>
+          </section>
+
+          <section class="memory-box">
+            <h2>复习建议</h2>
+            <ul>
+              <li>先看结论，再看原因，最后背口诀。</li>
+              <li>易错点优先在做题前后各复习一次。</li>
+              <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
+              <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
+            </ul>
+          </section>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="panel toolbar">
+          <div class="toolbar-copy">
+            <h2 id="content-title">知识卡片</h2>
+            <p id="content-subtitle">按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
+            <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
+          </div>
+          <div class="toolbar-actions">
+          </div>
+        </div>
+
+        <div id="results-meta" class="results-meta"></div>
+        <div id="card-list" class="card-list"></div>
+      </section>
+    </main>
+
+    <nav class="mobile-command-bar" aria-label="移动端快捷操作">
+      <button type="button" data-mobile-action="dashboard">看板</button>
+      <button type="button" data-mobile-action="filters">筛选</button>
+      <button type="button" data-mobile-action="journal">分录</button>
+      <button type="button" data-mobile-action="random">随机</button>
+    </nav>
+  </div>
+
+  <template id="card-template">
+    <article class="panel qa-card">
+      <div class="qa-topline">
+        <div class="badge-group">
+          <span class="topic-badge"></span>
+          <span class="difficulty-badge"></span>
+        </div>
+        <span class="card-meta"></span>
+      </div>
+      <h3 class="question-title"></h3>
+      <p class="question-summary"></p>
+      <p class="question-hint">自测模式已开启：先独立作答，再点击“查看解析”。</p>
+      <div class="card-actions">
+        <button class="inline-button toggle-details" type="button"></button>
+        <div class="mastery-actions">
+          <button class="mastery-button reviewed" type="button" data-mastery-action="reviewed">复习过</button>
+          <button class="mastery-button known" type="button" data-mastery-action="known">已掌握</button>
+          <button class="mastery-button weak" type="button" data-mastery-action="weak">薄弱</button>
+          <button class="mastery-button favorite" type="button" data-mastery-action="favorite">收藏</button>
+        </div>
+      </div>
+      <div class="card-details" hidden>
+        <div class="section-block">
+          <h4>结论</h4>
+          <ul class="bullet conclusion-list"></ul>
+        </div>
+        <div class="section-block journal-block" hidden>
+          <h4>分录</h4>
+          <div class="journal-list"></div>
+        </div>
+        <div class="section-block">
+          <h4>原因</h4>
+          <ul class="bullet reasoning-list"></ul>
+        </div>
+        <div class="section-block">
+          <h4>口诀</h4>
+          <ul class="bullet memory-list"></ul>
+        </div>
+        <div class="section-block">
+          <h4>易错点</h4>
+          <ul class="bullet pitfalls-list"></ul>
+        </div>
+        <div class="section-block related-block" hidden>
+          <h4>相邻知识点</h4>
+          <div class="related-list"></div>
+        </div>
+        <div class="section-block diagram-block" hidden>
+          <h4>思维导图</h4>
+          <div class="diagram-shell">
+            <div class="mermaid mermaid-chart"></div>
+            <div class="diagram-fallback" hidden></div>
+          </div>
+        </div>
+      </div>
+      <div class="tag-row"></div>
+    </article>
+  </template>
+
+  <script src="./study-data.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+/* __CPA_INLINE_APP__ */
+  </script>
+</body>
+</html>

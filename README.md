@@ -311,7 +311,7 @@ node --check "会计复习网页/study-data.js"
 git diff --check
 ```
 
-如果改了 HTML 交互逻辑，还要检查 HTML 内联脚本是否能解析，并尽量用 Codex 的 Browser 插件打开本地网页做一次页面检查。
+如果改了网页交互逻辑，要运行 `npm run check`，并尽量用浏览器打开生成后的本地网页做一次页面检查。
 
 ---
 
@@ -323,19 +323,20 @@ git diff --check
 
 | 文件 | 用途 | 常见维护动作 |
 | --- | --- | --- |
-| `会计复习网页/CICPA会计复习手册.html` | 网页外壳、样式、交互逻辑、章节筛选定义 | 新增章节筛选、调整页面样式或交互 |
+| `会计复习网页/src/` | 网页外壳、模块化样式、领域逻辑、服务和视图源码 | 新增章节筛选、调整页面样式或交互 |
+| `会计复习网页/CICPA会计复习手册.html` | `npm run build` 生成的离线单文件成品 | 不直接编辑，构建后用于双击打开和 Git 备份 |
 | `会计复习网页/study-data.js` | 网页知识卡片主数据源 | 新增、修改、删除知识卡片 |
 | `会计复习网页/学习问答汇总.md` | 学习问答的 Markdown 汇总 | 作为网页内容的文字来源或备份 |
 | `01-会计/01-章节笔记/*.md` | 按章节整理的专题笔记 | 先沉淀知识点，再转成网页卡片 |
 
-通常新增知识点时，优先修改 `study-data.js`。只有新增专题筛选、页面结构或交互时，才修改 HTML。
+通常新增知识点时，优先修改 `study-data.js`。只有新增专题筛选、页面结构或交互时，才修改 `会计复习网页/src/`，然后运行构建命令更新 HTML 成品。
 
 ### 14.2 新增知识卡片流程
 
 1. 先在对应章节的 Markdown 文件中整理知识点。
 2. 将知识点拆成网页卡片，写入 `会计复习网页/study-data.js` 的 `entries` 数组。
-3. 如果是全新专题，在 `CICPA会计复习手册.html` 的 `chapterDefinitions` 中新增章节筛选。
-4. 运行语法检查。
+3. 如果是全新专题，在 `会计复习网页/src/js/app/00-runtime.js` 的 `chapterDefinitions` 中新增章节筛选。
+4. 运行 `npm run check`，生成并验证 HTML 成品。
 5. 打开本地网页验证搜索、筛选、卡片展示是否正常。
 6. 提交并推送到 GitHub。
 
@@ -414,11 +415,18 @@ node --check "会计复习网页/study-data.js"
 git diff --check
 ```
 
-如果修改了 HTML，可以再检查 HTML 中的内联脚本是否有明显语法问题，或直接打开本地网页验证。
+如果修改了网页源码，必须运行 `npm run check`，再直接打开生成后的本地网页验证。
 
 ### 14.7 本地验证
 
-网页是静态页面，通常可以直接打开：
+首次开发或源码变更后先安装依赖并构建：
+
+```bash
+npm install
+npm run check
+```
+
+生成后的网页仍是静态单文件，可以直接打开：
 
 ```text
 会计复习网页/CICPA会计复习手册.html
@@ -440,7 +448,9 @@ git diff --check
 ```bash
 git add "01-会计/01-章节笔记/借款费用知识点.md"
 git add "会计复习网页/study-data.js"
+git add "会计复习网页/src"
 git add "会计复习网页/CICPA会计复习手册.html"
+git add "package.json" "package-lock.json"
 git add "README.md"
 git commit -m "补充借款费用复习内容"
 git push origin main
@@ -461,6 +471,8 @@ git pull --rebase origin main
 - 新增专题时，同步补章节筛选。
 - 提交前不要顺手提交无关 PDF、临时输出目录或备份文件。
 - 改网页逻辑时，尽量保留已有数据结构，避免影响旧卡片。
+- 不要直接编辑生成后的 `CICPA会计复习手册.html`；所有样式和逻辑改动从 `会计复习网页/src/` 开始。
+- `npm run build` 只生成成品；`npm test` 运行单元和数据检查；提交前统一运行 `npm run check`。
 
 ### 14.10 Markdown 到网页卡片迁移规则
 

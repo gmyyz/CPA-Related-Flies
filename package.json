@@ -1,0 +1,14 @@
+{
+  "name": "cpa-related-review-page",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ./会计复习网页/scripts/build.mjs",
+    "build:check": "node ./会计复习网页/scripts/build.mjs --check",
+    "test": "node --test ./会计复习网页/tests/*.test.mjs",
+    "check": "npm run build && npm test && npm run build:check"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.6"
+  }
+}

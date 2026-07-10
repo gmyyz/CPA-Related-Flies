@@ -1,0 +1,314 @@
+.journal-workbench {
+      display: grid;
+      gap: 14px;
+    }
+
+    .journal-toolbox {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .journal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .journal-stat {
+      padding: 12px;
+      border: 1px solid rgba(47, 125, 107, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .journal-stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .journal-stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .journal-tool-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr);
+      gap: 12px;
+      align-items: end;
+    }
+
+    .journal-filter-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-filter-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .journal-account-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-account-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 116px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .journal-account-list .chip {
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
+    .journal-entry {
+      border: 1px solid rgba(182, 84, 42, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 247, 236, 0.72);
+      overflow: hidden;
+    }
+
+    .journal-entry-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(182, 84, 42, 0.12);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .journal-entry-title {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .journal-entry-meta {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .journal-entry-body {
+      margin: 0;
+      padding: 12px 14px;
+      overflow-x: auto;
+      color: #312418;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre;
+    }
+
+    .journal-entry-condition,
+    .journal-entry-note {
+      margin: 0;
+      padding: 10px 14px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .journal-entry-note {
+      padding-top: 0;
+      padding-bottom: 12px;
+    }
+
+    .journal-library-card {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .journal-library-card h3 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.45;
+    }
+
+    .journal-library-card .journal-entry {
+      margin-top: 4px;
+    }
+
+    .journal-library-card-header {
+      display: grid;
+      gap: 10px;
+    }
+
+    .journal-card-kicker {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .journal-card-title {
+      display: grid;
+      gap: 6px;
+    }
+
+    .journal-card-title h4 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .journal-split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .journal-side-panel {
+      min-width: 0;
+      border: 1px solid rgba(28, 22, 15, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+    }
+
+    .journal-side-panel h5 {
+      margin: 0;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(28, 22, 15, 0.08);
+      color: var(--brand-deep);
+      font-size: 13px;
+    }
+
+    .journal-line-list {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .journal-line-list li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 10px 12px;
+      border-top: 1px solid rgba(28, 22, 15, 0.06);
+      line-height: 1.5;
+    }
+
+    .journal-line-list li:first-child {
+      border-top: 0;
+    }
+
+    .journal-line-account {
+      min-width: 0;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .journal-line-amount {
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      white-space: nowrap;
+    }
+
+    .journal-line-note {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .journal-empty-side {
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .journal-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .related-button {
+      flex: 1 1 220px;
+      border: 1px solid rgba(28, 22, 15, 0.1);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    .related-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(182, 84, 42, 0.28);
+    }
+
+    .related-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .related-button span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag {
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .diagram-block[hidden] {
+      display: none;
+    }
+
+    .diagram-shell {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid rgba(28, 22, 15, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      overflow-x: auto;
+    }
+
+    .diagram-fallback {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .empty-state,
+    .error-state {
+      padding: 38px;
+      text-align: center;
+    }
+
+    .empty-state h3,
+    .error-state h3 {
+      margin: 0 0 8px;
+    }
+
+    .error-state {
+      color: var(--danger);
+    }
