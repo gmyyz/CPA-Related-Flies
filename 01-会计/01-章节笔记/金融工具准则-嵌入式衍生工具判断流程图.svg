@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="3200" viewBox="0 0 2400 3200">
+<defs>
+  <marker id="arrow" markerWidth="16" markerHeight="16" refX="13" refY="8" orient="auto" markerUnits="strokeWidth">
+    <path d="M 1 1 L 15 8 L 1 15 z" fill="#d4552d"/>
+  </marker>
+  <style>
+    .bg { fill:#fffaf6; }
+    .title { font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif; font-size:64px; font-weight:700; fill:#26221f; }
+    .sub { font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif; font-size:32px; fill:#72645d; }
+    .box { fill:#fff; stroke:#f08a62; stroke-width:5; rx:22; }
+    .box-soft { fill:#fff0e9; stroke:#f08a62; stroke-width:5; rx:22; }
+    .green { fill:#edf8f1; stroke:#41996a; stroke-width:5; rx:22; }
+    .red { fill:#fff0ef; stroke:#d4552d; stroke-width:5; rx:22; }
+    .note { fill:#fff8df; stroke:#d6a848; stroke-width:4; rx:22; }
+    .decision { fill:#fff; stroke:#d4552d; stroke-width:5; }
+    .line { stroke:#d4552d; stroke-width:5; fill:none; marker-end:url(#arrow); }
+    .text { font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif; font-size:34px; fill:#2d2a26; }
+    .small { font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif; font-size:27px; fill:#4a403b; }
+    .label { font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif; font-size:30px; font-weight:700; fill:#d4552d; }
+  </style>
+</defs>
+<rect class="bg" width="2400" height="3200"/>
+<text x="1200" y="95" text-anchor="middle" class="title">嵌入式衍生工具判断流程图</text>
+<text x="1200" y="148" text-anchor="middle" class="sub">先判断真假嵌入，再判断真嵌入以后要不要分拆</text>
+
+<rect x="720" y="220" width="960" height="140" class="box-soft"/>
+<text x="1200.0" y="280.0" text-anchor="middle" class="text">
+<tspan x="1200.0" dy="0">合同安排中出现衍生特征</tspan>
+<tspan x="1200.0" dy="42">如利率、汇率、股票价格、商品价格、指数等变量</tspan>
+</text>
+<line x1="1200" y1="360" x2="1200" y2="445" class="line"/>
+<rect x="820" y="445" width="760" height="105" class="box"/>
+<text x="1200.0" y="507.5" text-anchor="middle" class="text">
+<tspan x="1200.0" dy="0">第一步：判断是否满足真正嵌入</tspan>
+</text>
+<line x1="1200" y1="550" x2="1200" y2="650" class="line"/>
+<polygon points="1200,650.0 1580.0,825 1200,1000.0 820.0,825" class="decision"/>
+<text x="1200" y="773" text-anchor="middle" class="text">
+<tspan x="1200" dy="0">是否同时满足？</tspan>
+<tspan x="1200" dy="42">1. 写入主合同条款</tspan>
+<tspan x="1200" dy="42">2. 不能独立转让</tspan>
+<tspan x="1200" dy="42">3. 交易对手相同</tspan>
+</text>
+<path d="M 820 825 C 520 825 430 1010 430 1185" class="line"/>
+<text x="560" y="775" text-anchor="middle" class="label">否，任一不满足</text>
+<rect x="160" y="1185" width="540" height="130" class="red"/>
+<text x="430.0" y="1240.0" text-anchor="middle" class="text">
+<tspan x="430.0" dy="0">不是嵌入式衍生工具</tspan>
+<tspan x="430.0" dy="42">作为单独存在的衍生工具处理</tspan>
+</text>
+<line x1="430" y1="1315" x2="430" y2="1415" class="line"/>
+<rect x="150" y="1415" width="560" height="155" class="box"/>
+<text x="430.0" y="1482.5" text-anchor="middle" class="text">
+<tspan x="430.0" dy="0">通常按 FVTPL</tspan>
+<tspan x="430.0" dy="42">衍生金融资产 / 衍生金融负债</tspan>
+</text>
+<line x1="1200" y1="1000" x2="1200" y2="1110" class="line"/>
+<text x="1405" y="1060" text-anchor="middle" class="label">是，三项都满足</text>
+<rect x="820" y="1110" width="760" height="130" class="green"/>
+<text x="1200.0" y="1165.0" text-anchor="middle" class="text">
+<tspan x="1200.0" dy="0">是真正的嵌入式衍生工具</tspan>
+<tspan x="1200.0" dy="42">进入“拆不拆”判断</tspan>
+</text>
+<line x1="1200" y1="1240" x2="1200" y2="1335" class="line"/>
+<polygon points="1200,1335.0 1540.0,1485 1200,1635.0 860.0,1485" class="decision"/>
+<text x="1200" y="1493" text-anchor="middle" class="text">
+<tspan x="1200" dy="0">主合同是否为金融资产？</tspan>
+</text>
+<path d="M 860 1485 C 690 1485 610 1625 610 1760" class="line"/>
+<text x="705" y="1438" text-anchor="middle" class="label">是金融资产</text>
+<rect x="300" y="1760" width="620" height="140" class="green"/>
+<text x="610.0" y="1820.0" text-anchor="middle" class="text">
+<tspan x="610.0" dy="0">不分拆</tspan>
+<tspan x="610.0" dy="42">整个混合合同作为一项金融资产</tspan>
+</text>
+<line x1="610" y1="1900" x2="610" y2="2015" class="line"/>
+<rect x="280" y="2015" width="660" height="155" class="box"/>
+<text x="610.0" y="2082.5" text-anchor="middle" class="text">
+<tspan x="610.0" dy="0">整体适用金融资产分类规则</tspan>
+<tspan x="610.0" dy="42">摊余成本 / FVOCI / FVTPL</tspan>
+</text>
+<line x1="1200" y1="1635" x2="1200" y2="1735" class="line"/>
+<text x="1410" y="1700" text-anchor="middle" class="label">不是金融资产</text>
+<rect x="850" y="1735" width="700" height="110" class="box"/>
+<text x="1200.0" y="1800.0" text-anchor="middle" class="text">
+<tspan x="1200.0" dy="0">继续判断是否需要分拆</tspan>
+</text>
+<line x1="1200" y1="1845" x2="1200" y2="1945" class="line"/>
+<polygon points="1200,1945.0 1560.0,2110 1200,2275.0 840.0,2110" class="decision"/>
+<text x="1200" y="2098" text-anchor="middle" class="text">
+<tspan x="1200" dy="0">经济特征和风险</tspan>
+<tspan x="1200" dy="42">是否紧密相关？</tspan>
+</text>
+<path d="M 840 2110 C 660 2110 590 2250 590 2390" class="line"/>
+<text x="685" y="2065" text-anchor="middle" class="label">紧密相关</text>
+<rect x="315" y="2390" width="550" height="145" class="green"/>
+<text x="590.0" y="2452.5" text-anchor="middle" class="text">
+<tspan x="590.0" dy="0">不分拆</tspan>
+<tspan x="590.0" dy="42">例：贷款利率按市场利率浮动</tspan>
+</text>
+<line x1="1200" y1="2275" x2="1200" y2="2375" class="line"/>
+<text x="1405" y="2330" text-anchor="middle" class="label">不紧密相关</text>
+<polygon points="1200,2375.0 1580.0,2535 1200,2695.0 820.0,2535" class="decision"/>
+<text x="1200" y="2523" text-anchor="middle" class="text">
+<tspan x="1200" dy="0">具有相同条款的单独工具</tspan>
+<tspan x="1200" dy="42">是否符合衍生工具定义？</tspan>
+</text>
+<path d="M 820 2535 C 690 2535 650 2635 650 2745" class="line"/>
+<text x="730" y="2495" text-anchor="middle" class="label">不符合</text>
+<rect x="420" y="2745" width="460" height="105" class="green"/>
+<text x="650.0" y="2807.5" text-anchor="middle" class="text">
+<tspan x="650.0" dy="0">不分拆</tspan>
+</text>
+<line x1="1200" y1="2695" x2="1200" y2="2790" class="line"/>
+<text x="1325" y="2748" text-anchor="middle" class="label">符合</text>
+<polygon points="1200,2785.0 1580.0,2925 1200,3065.0 820.0,2925" class="decision"/>
+<text x="1200" y="2913" text-anchor="middle" class="text">
+<tspan x="1200" dy="0">混合合同是否已经整体</tspan>
+<tspan x="1200" dy="42">以公允价值计量且变动计入损益？</tspan>
+</text>
+<path d="M 1580 2925 C 1760 2925 1810 3010 1810 3100" class="line"/>
+<text x="1715" y="2885" text-anchor="middle" class="label">是</text>
+<rect x="1580" y="3100" width="460" height="85" class="green"/>
+<text x="1810.0" y="3152.5" text-anchor="middle" class="text">
+<tspan x="1810.0" dy="0">不分拆</tspan>
+</text>
+<path d="M 1200 3065 C 1200 3110 1110 3130 1000 3130" class="line"/>
+<text x="1125" y="3095" text-anchor="middle" class="label">否</text>
+<rect x="710" y="3088" width="580" height="95" class="red"/>
+<text x="1000.0" y="3125.5" text-anchor="middle" class="small">
+<tspan x="1000.0" dy="0">分拆：主合同按适用准则</tspan>
+<tspan x="1000.0" dy="42">嵌入式衍生工具通常按 FVTPL</tspan>
+</text>
+<rect x="1500" y="2445" width="620" height="155" class="note"/>
+<text x="1810.0" y="2512.5" text-anchor="middle" class="small">
+<tspan x="1810.0" dy="0">最终口诀</tspan>
+<tspan x="1810.0" dy="42">不紧密、像衍生、未整体公允，才分拆</tspan>
+</text>
+</svg>

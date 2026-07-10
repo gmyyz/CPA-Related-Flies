@@ -173,7 +173,6 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
       margin-top: 14px;
-      grid-column: 1 / -1;
     }
 
     .quick-action {
@@ -238,8 +237,8 @@
     .controls {
       align-self: start;
       position: sticky;
-      top: 102px;
-      max-height: calc(100vh - 122px);
+      top: 116px;
+      max-height: calc(100vh - 136px);
       overflow-y: auto;
     }
 
@@ -525,9 +524,10 @@
 
     .toolbar {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 16px;
+      padding-block: 14px;
     }
 
     .toolbar p,
@@ -540,12 +540,22 @@
     }
 
     .toolbar-copy {
-      display: grid;
-      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 14px;
     }
 
     .toolbar-copy h2 {
       margin-bottom: 0;
+    }
+
+    .toolbar-copy p {
+      margin: 0;
+    }
+
+    .mode-tip {
+      font-size: 13px;
     }
 
     .toolbar-actions {
@@ -1719,28 +1729,29 @@
       <div class="command-actions">
         <button id="random-entry" class="accent-button" type="button">随机抽题</button>
         <button id="restore-session" class="ghost-button" type="button" hidden>恢复筛选</button>
-        <button id="clear-filters" class="ghost-button" type="button">清空</button>
+        <button id="clear-filters" class="ghost-button" type="button">清空筛选</button>
       </div>
 
-      <div class="quick-actions" aria-label="复习快捷入口">
-        <button class="quick-action" type="button" data-quick-action="daily">
-          <strong>今日任务</strong>
-          <span>按薄弱、久未复习、未复习生成一轮今日复习清单。</span>
-        </button>
-        <button class="quick-action" type="button" data-quick-action="pitfalls">
-          <strong>高频易错</strong>
-          <span>直接进入考试最容易混淆的卡片。</span>
-        </button>
-        <button class="quick-action" type="button" data-quick-action="random-quiz">
-          <strong>随机自测</strong>
-          <span>隐藏答案，随机抽一题先自己作答。</span>
-        </button>
-        <button class="quick-action" type="button" data-quick-action="journal-library">
-          <strong>分录库</strong>
-          <span>集中查看当前筛选范围内的分录，先抓借贷方向。</span>
-        </button>
-      </div>
     </header>
+
+    <div class="quick-actions" aria-label="复习快捷入口">
+      <button class="quick-action" type="button" data-quick-action="daily">
+        <strong>今日任务</strong>
+        <span>按薄弱、久未复习、未复习生成一轮今日复习清单。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="pitfalls">
+        <strong>高频易错</strong>
+        <span>直接进入考试最容易混淆的卡片。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="random-quiz">
+        <strong>随机自测</strong>
+        <span>隐藏答案，随机抽一题先自己作答。</span>
+      </button>
+      <button class="quick-action" type="button" data-quick-action="journal-library">
+        <strong>分录库</strong>
+        <span>集中查看当前筛选范围内的分录，先抓借贷方向。</span>
+      </button>
+    </div>
 
     <main class="layout">
       <aside class="panel controls">
@@ -1755,11 +1766,6 @@
           <section>
             <h2>章节导航</h2>
             <div id="chapter-filters" class="chapter-list"></div>
-          </section>
-
-          <section>
-            <h2>专题筛选</h2>
-            <div id="topic-filters" class="filter-list"></div>
           </section>
 
           <section>
@@ -1837,10 +1843,8 @@
       <section class="content">
         <div class="panel toolbar">
           <div class="toolbar-copy">
-            <div>
-              <h2 id="content-title">知识卡片</h2>
-              <p id="content-subtitle">按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
-            </div>
+            <h2 id="content-title">知识卡片</h2>
+            <p id="content-subtitle">按复习场景进入卡片，标记掌握度后会自动形成弱项清单。</p>
             <p class="mode-tip" id="mode-tip">默认显示摘要，点击卡片按钮可展开完整解析。</p>
           </div>
           <div class="toolbar-actions">
@@ -1990,7 +1994,6 @@
     const controlsPanel = document.querySelector(".controls");
     const filterPanelToggle = document.querySelector("#filter-panel-toggle");
     const chapterFilters = document.querySelector("#chapter-filters");
-    const topicFilters = document.querySelector("#topic-filters");
     const tagFilters = document.querySelector("#tag-filters");
     const sortSelect = document.querySelector("#sort-select");
     const quizModeCheckbox = document.querySelector("#quiz-mode");
@@ -3252,10 +3255,6 @@
         button.classList.toggle("active", button.dataset.value === state.chapter);
       });
       keepActiveChapterVisible();
-
-      topicFilters.querySelectorAll("button").forEach((button) => {
-        button.classList.toggle("active", button.dataset.value === state.topic);
-      });
 
       tagFilters.querySelectorAll("button").forEach((button) => {
         button.classList.toggle("active", button.dataset.value === state.tag);
@@ -4705,11 +4704,6 @@
 
       renderChapterFilters();
 
-      renderFilterButtons(topicFilters, topics, state.topic, "filter-button", (value) => {
-        const chapter = value === "全部" ? null : getChapterForTopic(value);
-        setState({ topic: value, chapter: chapter?.id || state.chapter });
-      });
-
       renderGroupedTagFilters();
     }
 
@@ -4844,7 +4838,11 @@
 
     function clearAllFilters() {
       uiState.expandedIds.clear();
-      Object.assign(state, defaultState);
+      const viewMode = state.viewMode;
+      Object.assign(state, defaultState, {
+        viewMode,
+        journalMode: viewMode === "journal"
+      });
       syncControls();
       updateActiveFilterButtons();
       syncPersistence();
