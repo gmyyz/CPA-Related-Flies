@@ -120,35 +120,43 @@
             <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
           </section>
 
-          <section class="cloud-sync-box">
-            <h2>云端同步</h2>
-            <div class="cloud-sync-grid">
-              <label class="field-label" for="gist-token-input">GitHub Token（仅本次打开期间使用）</label>
-              <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
-              <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
-              <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
-            </div>
-            <label class="toggle-line" for="gist-auto-sync">
-              <input id="gist-auto-sync" type="checkbox">
-              <span>打开页面自动拉取，标记后自动推送</span>
-            </label>
-            <div class="cloud-sync-actions">
-              <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
-              <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
-              <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
-              <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
-            </div>
-            <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只保存在当前页面内存，不会写入项目文件。</p>
-          </section>
+          <section class="advanced-settings">
+            <button id="advanced-settings-toggle" class="advanced-settings-toggle" type="button" aria-expanded="false" aria-controls="advanced-settings-panel">
+              <span>高级设置</span>
+              <span class="advanced-settings-hint">云端同步与复习建议</span>
+            </button>
+            <div id="advanced-settings-panel" class="advanced-settings-panel" hidden>
+              <section class="cloud-sync-box">
+                <h2>云端同步</h2>
+                <div class="cloud-sync-grid">
+                  <label class="field-label" for="gist-token-input">GitHub Token（仅本次打开期间使用）</label>
+                  <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
+                  <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
+                  <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
+                </div>
+                <label class="toggle-line" for="gist-auto-sync">
+                  <input id="gist-auto-sync" type="checkbox">
+                  <span>打开页面自动拉取，标记后自动推送</span>
+                </label>
+                <div class="cloud-sync-actions">
+                  <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
+                  <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
+                  <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
+                  <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
+                </div>
+                <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只保存在当前页面内存，不会写入项目文件。</p>
+              </section>
 
-          <section class="memory-box">
-            <h2>复习建议</h2>
-            <ul>
-              <li>先看结论，再看原因，最后背口诀。</li>
-              <li>易错点优先在做题前后各复习一次。</li>
-              <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
-              <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
-            </ul>
+              <section class="memory-box">
+                <h2>复习建议</h2>
+                <ul>
+                  <li>先看结论，再看原因，最后背口诀。</li>
+                  <li>易错点优先在做题前后各复习一次。</li>
+                  <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
+                  <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
+                </ul>
+              </section>
+            </div>
           </section>
         </div>
       </aside>
@@ -164,7 +172,7 @@
           </div>
         </div>
 
-        <div id="results-meta" class="results-meta"></div>
+        <div id="results-meta" class="results-meta" role="status" aria-live="polite" aria-atomic="true"></div>
         <div id="card-list" class="card-list"></div>
       </section>
     </main>
