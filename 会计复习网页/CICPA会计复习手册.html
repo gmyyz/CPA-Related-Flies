@@ -48,6 +48,14 @@
       max-width: 100%;
     }
 
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 3px solid rgba(169, 77, 42, 0.42);
+      outline-offset: 3px;
+    }
+
     .page-shell {
       width: min(1440px, calc(100% - 32px));
       margin: 0 auto;
@@ -173,14 +181,14 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
     .quick-action {
-      min-height: 88px;
+      min-height: 72px;
       border: 1px solid rgba(28, 22, 15, 0.1);
       border-radius: 8px;
-      padding: 14px;
+      padding: 11px 13px;
       background: rgba(255, 255, 255, 0.72);
       color: var(--ink);
       cursor: pointer;
@@ -197,22 +205,22 @@
 
     .quick-action strong {
       display: block;
-      margin-bottom: 8px;
-      font-size: 18px;
+      margin-bottom: 5px;
+      font-size: 16px;
     }
 
     .quick-action span {
       display: block;
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.45;
     }
 
     .layout {
       display: grid;
       grid-template-columns: 300px minmax(0, 1fr);
       gap: 14px;
-      margin-top: 22px;
+      margin-top: 14px;
     }
 
     .content,
@@ -238,8 +246,8 @@
     .controls {
       align-self: start;
       position: sticky;
-      top: 116px;
-      max-height: calc(100vh - 136px);
+      top: 132px;
+      max-height: calc(100vh - 148px);
       overflow-y: auto;
     }
 
@@ -350,7 +358,7 @@
     .chapter-list {
       display: grid;
       grid-template-columns: 1fr;
-      max-height: 360px;
+      max-height: min(32vh, 300px);
       overflow-y: auto;
       overscroll-behavior: contain;
       padding-right: 4px;
@@ -469,6 +477,55 @@
     .cloud-sync-box {
       display: grid;
       gap: 12px;
+    }
+
+    .advanced-settings-toggle {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      width: 100%;
+      border: 1px solid rgba(28, 22, 15, 0.1);
+      border-radius: 8px;
+      padding: 11px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .advanced-settings-toggle::after {
+      content: "+";
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+      color: var(--brand);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .advanced-settings-toggle[aria-expanded="true"]::after {
+      content: "−";
+    }
+
+    .advanced-settings-hint {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .advanced-settings-panel {
+      margin-top: 14px;
+    }
+
+    .advanced-settings-panel > section + section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .advanced-settings-panel[hidden] {
+      display: none;
     }
 
     .cloud-sync-grid {
@@ -644,6 +701,17 @@
 
     .qa-card {
       scroll-margin-top: 132px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
     }
 
 .dashboard-workbench {
@@ -1808,35 +1876,43 @@
             <p class="field-label">快捷入口负责切场景，这里只保留一种常用开关，避免筛选叠在一起。</p>
           </section>
 
-          <section class="cloud-sync-box">
-            <h2>云端同步</h2>
-            <div class="cloud-sync-grid">
-              <label class="field-label" for="gist-token-input">GitHub Token（仅本次打开期间使用）</label>
-              <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
-              <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
-              <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
-            </div>
-            <label class="toggle-line" for="gist-auto-sync">
-              <input id="gist-auto-sync" type="checkbox">
-              <span>打开页面自动拉取，标记后自动推送</span>
-            </label>
-            <div class="cloud-sync-actions">
-              <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
-              <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
-              <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
-              <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
-            </div>
-            <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只保存在当前页面内存，不会写入项目文件。</p>
-          </section>
+          <section class="advanced-settings">
+            <button id="advanced-settings-toggle" class="advanced-settings-toggle" type="button" aria-expanded="false" aria-controls="advanced-settings-panel">
+              <span>高级设置</span>
+              <span class="advanced-settings-hint">云端同步与复习建议</span>
+            </button>
+            <div id="advanced-settings-panel" class="advanced-settings-panel" hidden>
+              <section class="cloud-sync-box">
+                <h2>云端同步</h2>
+                <div class="cloud-sync-grid">
+                  <label class="field-label" for="gist-token-input">GitHub Token（仅本次打开期间使用）</label>
+                  <input id="gist-token-input" type="password" placeholder="粘贴仅含 gist 权限的 token">
+                  <label class="field-label" for="gist-id-input">Gist ID（首次推送后自动生成）</label>
+                  <input id="gist-id-input" type="text" placeholder="已有同步文件时粘贴 gist id">
+                </div>
+                <label class="toggle-line" for="gist-auto-sync">
+                  <input id="gist-auto-sync" type="checkbox">
+                  <span>打开页面自动拉取，标记后自动推送</span>
+                </label>
+                <div class="cloud-sync-actions">
+                  <button id="save-gist-sync" class="inline-button" type="button">保存连接</button>
+                  <button id="sync-gist-now" class="inline-button" type="button">双向同步</button>
+                  <button id="pull-gist-progress" class="inline-button" type="button">拉取云端</button>
+                  <button id="push-gist-progress" class="inline-button" type="button">推送本机</button>
+                </div>
+                <p id="cloud-sync-status" class="cloud-sync-status">未连接云端。Token 只保存在当前页面内存，不会写入项目文件。</p>
+              </section>
 
-          <section class="memory-box">
-            <h2>复习建议</h2>
-            <ul>
-              <li>先看结论，再看原因，最后背口诀。</li>
-              <li>易错点优先在做题前后各复习一次。</li>
-              <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
-              <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
-            </ul>
+              <section class="memory-box">
+                <h2>复习建议</h2>
+                <ul>
+                  <li>先看结论，再看原因，最后背口诀。</li>
+                  <li>易错点优先在做题前后各复习一次。</li>
+                  <li>考前一周按标签搜“少数股东损益”“内部交易”等高频关键词。</li>
+                  <li>想抽查掌握程度时，先开自测模式，再点随机抽题。</li>
+                </ul>
+              </section>
+            </div>
           </section>
         </div>
       </aside>
@@ -1852,7 +1928,7 @@
           </div>
         </div>
 
-        <div id="results-meta" class="results-meta"></div>
+        <div id="results-meta" class="results-meta" role="status" aria-live="polite" aria-atomic="true"></div>
         <div id="card-list" class="card-list"></div>
       </section>
     </main>
@@ -2019,6 +2095,8 @@
   const pullGistProgressButton = document.querySelector("#pull-gist-progress");
   const pushGistProgressButton = document.querySelector("#push-gist-progress");
   const cloudSyncStatus = document.querySelector("#cloud-sync-status");
+  const advancedSettingsToggle = document.querySelector("#advanced-settings-toggle");
+  const advancedSettingsPanel = document.querySelector("#advanced-settings-panel");
   const quickActionButtons = document.querySelectorAll("[data-quick-action]");
   const cardTemplate = document.querySelector("#card-template");
   const state = {
@@ -3480,6 +3558,7 @@
       const journalList = fragment.querySelector(".journal-list");
       const diagramBlock = fragment.querySelector(".diagram-block");
       const isExpanded = uiState.expandedIds.has(entry.id);
+      const detailsId = `card-details-${entry.id}`;
       const progress = getProgress(entry.id);
       const reviewText = formatReviewDate(progress.reviewedAt);
       article.dataset.entryId = entry.id;
@@ -3492,6 +3571,8 @@
       hint.hidden = !(state.quizMode && !isExpanded);
       toggleButton.textContent = isExpanded ? "收起详情" : state.quizMode ? "查看解析" : "展开详情";
       toggleButton.setAttribute("aria-expanded", String(isExpanded));
+      toggleButton.setAttribute("aria-controls", detailsId);
+      details.id = detailsId;
       toggleButton.addEventListener("click", () => {
         if (uiState.expandedIds.has(entry.id)) {
           uiState.expandedIds.delete(entry.id);
@@ -4401,6 +4482,11 @@
     renderResults();
   }
   function bindEvents() {
+    advancedSettingsToggle.addEventListener("click", () => {
+      const isExpanded = advancedSettingsToggle.getAttribute("aria-expanded") === "true";
+      advancedSettingsToggle.setAttribute("aria-expanded", String(!isExpanded));
+      advancedSettingsPanel.hidden = isExpanded;
+    });
     filterPanelToggle.addEventListener("click", () => {
       const isOpen = controlsPanel.classList.toggle("filter-open");
       filterPanelToggle.setAttribute("aria-expanded", String(isOpen));

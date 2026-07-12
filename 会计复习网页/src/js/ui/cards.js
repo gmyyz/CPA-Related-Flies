@@ -56,6 +56,7 @@ function renderCards(entries) {
     const journalList = fragment.querySelector(".journal-list");
     const diagramBlock = fragment.querySelector(".diagram-block");
     const isExpanded = uiState.expandedIds.has(entry.id);
+    const detailsId = `card-details-${entry.id}`;
     const progress = getProgress(entry.id);
     const reviewText = formatReviewDate(progress.reviewedAt);
     article.dataset.entryId = entry.id;
@@ -68,6 +69,8 @@ function renderCards(entries) {
     hint.hidden = !(state.quizMode && !isExpanded);
     toggleButton.textContent = isExpanded ? "收起详情" : state.quizMode ? "查看解析" : "展开详情";
     toggleButton.setAttribute("aria-expanded", String(isExpanded));
+    toggleButton.setAttribute("aria-controls", detailsId);
+    details.id = detailsId;
     toggleButton.addEventListener("click", () => {
       if (uiState.expandedIds.has(entry.id)) {
         uiState.expandedIds.delete(entry.id);

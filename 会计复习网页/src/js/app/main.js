@@ -72,6 +72,11 @@ function clearAllFilters() {
   renderResults();
 }
 function bindEvents() {
+  advancedSettingsToggle.addEventListener("click", () => {
+    const isExpanded = advancedSettingsToggle.getAttribute("aria-expanded") === "true";
+    advancedSettingsToggle.setAttribute("aria-expanded", String(!isExpanded));
+    advancedSettingsPanel.hidden = isExpanded;
+  });
   filterPanelToggle.addEventListener("click", () => {
     const isOpen = controlsPanel.classList.toggle("filter-open");
     filterPanelToggle.setAttribute("aria-expanded", String(isOpen));
