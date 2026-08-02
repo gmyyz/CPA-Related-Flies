@@ -40,6 +40,100 @@ function scrollEntryIntoView(entryId) {
     card.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
+function renderSourceNotes(container, markdown) {
+  clearNode(container);
+  let list = null;
+  let listType = "";
+  let codeLines = null;
+  let codeClassName = "";
+  let tableLines = [];
+  const appendTextBlock = (tagName, text, className = "") => {
+    const element = document.createElement(tagName);
+    element.className = className;
+    element.textContent = text;
+    container.appendChild(element);
+  };
+  const closeList = () => {
+    list = null;
+    listType = "";
+  };
+  const flushTable = () => {
+    if (tableLines.length === 0) {
+      return;
+    }
+    const rows = tableLines.filter((row) => !/^\|\s*:?-{3,}/.test(row));
+    const table = document.createElement("table");
+    table.className = "source-notes-table";
+    rows.forEach((row, rowIndex) => {
+      const tr = document.createElement("tr");
+      row.split("|").slice(1, -1).forEach((cell) => {
+        const cellElement = document.createElement(rowIndex === 0 ? "th" : "td");
+        cellElement.textContent = cell.trim();
+        tr.appendChild(cellElement);
+      });
+      table.appendChild(tr);
+    });
+    container.appendChild(table);
+    tableLines = [];
+  };
+  markdown.split(/\r?\n/).forEach((rawLine, index) => {
+    const line = rawLine.trimEnd();
+    if (line.startsWith("```")) {
+      if (codeLines) {
+        appendTextBlock("pre", codeLines.join("\n"), codeClassName);
+        codeLines = null;
+        codeClassName = "";
+      } else {
+        closeList();
+        codeLines = [];
+        codeClassName = line.trim() === "```red" ? "source-notes-key-point" : "";
+      }
+      return;
+    }
+    if (codeLines) {
+      codeLines.push(line);
+      return;
+    }
+    if (line.startsWith("|")) {
+      closeList();
+      tableLines.push(line);
+      return;
+    }
+    flushTable();
+    const keyPoint = line.match(/^【红字】(.+)$/);
+    if (keyPoint) {
+      appendTextBlock("p", keyPoint[1], "source-notes-key-point");
+      return;
+    }
+    const heading = line.match(/^(#{3,6})\s+(.+)$/);
+    if (heading) {
+      closeList();
+      appendTextBlock(heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+      return;
+    }
+    const item = line.match(/^[-*]\s+(.+)$/) || line.match(/^\d+\.\s+(.+)$/);
+    if (item) {
+      const nextListType = /^\d+\./.test(line) ? "ol" : "ul";
+      if (!list || listType !== nextListType) {
+        list = document.createElement(nextListType);
+        listType = nextListType;
+        container.appendChild(list);
+      }
+      const listItem = document.createElement("li");
+      listItem.textContent = item[1];
+      list.appendChild(listItem);
+      return;
+    }
+    closeList();
+    if (line.trim()) {
+      appendTextBlock(index === 0 ? "h5" : "p", line);
+    }
+  });
+  if (codeLines) {
+    appendTextBlock("pre", codeLines.join("\n"));
+  }
+  flushTable();
+}
 function renderCards(entries) {
   clearNode(cardList);
   const mermaidNodes = [];
@@ -55,6 +149,8 @@ function renderCards(entries) {
     const journalBlock = fragment.querySelector(".journal-block");
     const journalList = fragment.querySelector(".journal-list");
     const diagramBlock = fragment.querySelector(".diagram-block");
+    const sourceNotesBlock = fragment.querySelector(".source-notes-block");
+    const sourceNotes = window.markdownSections?.[entry.id];
     const isExpanded = uiState.expandedIds.has(entry.id);
     const detailsId = `card-details-${entry.id}`;
     const progress = getProgress(entry.id);
@@ -72,12 +168,17 @@ function renderCards(entries) {
     toggleButton.setAttribute("aria-controls", detailsId);
     details.id = detailsId;
     toggleButton.addEventListener("click", () => {
+      const cardTop = article.getBoundingClientRect().top;
       if (uiState.expandedIds.has(entry.id)) {
         uiState.expandedIds.delete(entry.id);
       } else {
         uiState.expandedIds.add(entry.id);
       }
       renderResults();
+      const rerenderedCard = document.querySelector(`[data-entry-id="${entry.id}"]`);
+      if (rerenderedCard) {
+        window.scrollBy(0, rerenderedCard.getBoundingClientRect().top - cardTop);
+      }
     });
     fragment.querySelectorAll("[data-mastery-action]").forEach((button) => {
       const action = button.dataset.masteryAction;
@@ -106,6 +207,10 @@ function renderCards(entries) {
       });
     });
     details.hidden = !isExpanded;
+    if (sourceNotes) {
+      sourceNotesBlock.hidden = false;
+      renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes);
+    }
     const sections = [
       [".conclusion-list", entry.conclusion],
       [".reasoning-list", entry.reasoning],
