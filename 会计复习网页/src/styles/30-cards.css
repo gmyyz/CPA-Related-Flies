@@ -137,6 +137,91 @@
       border-top: 1px dashed rgba(28, 22, 15, 0.12);
     }
 
+    .source-notes {
+      padding: 16px;
+      overflow-wrap: anywhere;
+      line-height: 1.75;
+      color: var(--ink);
+      background: rgba(255, 250, 243, 0.7);
+      border: 1px solid rgba(28, 22, 15, 0.12);
+      border-radius: 12px;
+    }
+
+    .source-notes > :first-child {
+      margin-top: 0;
+    }
+
+    .source-notes > :last-child {
+      margin-bottom: 0;
+    }
+
+    .source-notes h5,
+    .source-notes h6 {
+      margin: 24px 0 10px;
+      color: var(--ink);
+    }
+
+    .source-notes h5 {
+      font-size: 16px;
+    }
+
+    .source-notes h6 {
+      font-size: 14px;
+    }
+
+    .source-notes p {
+      margin: 10px 0;
+    }
+
+    .source-notes .source-notes-key-point {
+      padding: 10px 12px;
+      color: #b42318;
+      font-weight: 700;
+      background: #fff1f0;
+      border-left: 4px solid #d92d20;
+      border-radius: 6px;
+    }
+
+    .source-notes pre.source-notes-key-point {
+      font-family: inherit;
+    }
+
+    .source-notes ul,
+    .source-notes ol {
+      margin: 8px 0;
+      padding-left: 24px;
+    }
+
+    .source-notes pre {
+      margin: 12px 0;
+      padding: 12px 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font: 13px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace;
+      background: rgba(28, 22, 15, 0.06);
+      border-radius: 8px;
+    }
+
+    .source-notes-table {
+      width: 100%;
+      margin: 12px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .source-notes-table th,
+    .source-notes-table td {
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid rgba(28, 22, 15, 0.12);
+    }
+
+    .source-notes-table th {
+      background: rgba(28, 22, 15, 0.06);
+      font-weight: 700;
+    }
+
     .related-list {
       align-items: stretch;
     }
