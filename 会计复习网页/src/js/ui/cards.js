@@ -40,18 +40,89 @@ function scrollEntryIntoView(entryId) {
     card.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
-function renderSourceNotes(container, markdown) {
+function isSafeMarkdownUrl(url) {
+  return /^(?:https?:|mailto:|\.\.?\/|\/|#)/i.test(url);
+}
+function appendInlineMarkdown(container, text) {
+  const tokenPattern = /<mark>(.*?)<\/mark>|<br\s*\/?>|`([^`]+)`|\*\*([^*]+)\*\*|__([^_]+)__|\[([^\]]+)\]\(([^)]+)\)/gi;
+  let lastIndex = 0;
+  for (const match of text.matchAll(tokenPattern)) {
+    if (match.index > lastIndex) {
+      container.append(document.createTextNode(text.slice(lastIndex, match.index)));
+    }
+    if (match[1] !== undefined) {
+      const mark = document.createElement("mark");
+      appendInlineMarkdown(mark, match[1]);
+      container.appendChild(mark);
+    } else if (match[0].toLowerCase().startsWith("<br")) {
+      container.appendChild(document.createElement("br"));
+    } else if (match[2] !== undefined) {
+      const code = document.createElement("code");
+      code.textContent = match[2];
+      container.appendChild(code);
+    } else if (match[3] !== undefined || match[4] !== undefined) {
+      const strong = document.createElement("strong");
+      strong.textContent = match[3] ?? match[4];
+      container.appendChild(strong);
+    } else {
+      const [label, url] = [match[5], match[6].trim()];
+      if (isSafeMarkdownUrl(url)) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = label;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        container.appendChild(link);
+      } else {
+        container.append(document.createTextNode(match[0]));
+      }
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    container.append(document.createTextNode(text.slice(lastIndex)));
+  }
+}
+function appendMarkdownElement(container, tagName, text, className = "") {
+  const element = document.createElement(tagName);
+  element.className = className;
+  appendInlineMarkdown(element, text);
+  container.appendChild(element);
+  return element;
+}
+function renderSourceNotes(container, markdown, mermaidNodes) {
   clearNode(container);
   let list = null;
   let listType = "";
-  let codeLines = null;
+  let codeBlock = null;
   let codeClassName = "";
   let tableLines = [];
-  const appendTextBlock = (tagName, text, className = "") => {
-    const element = document.createElement(tagName);
-    element.className = className;
-    element.textContent = text;
-    container.appendChild(element);
+  const flushCodeBlock = () => {
+    if (!codeBlock) {
+      return;
+    }
+    const source = codeBlock.lines.join("\n");
+    if (codeBlock.language === "mermaid") {
+      const shell = document.createElement("div");
+      shell.className = "source-notes-mermaid diagram-shell";
+      const chart = document.createElement("div");
+      chart.className = "mermaid mermaid-chart";
+      chart.textContent = source;
+      const fallback = document.createElement("pre");
+      fallback.className = "diagram-fallback";
+      fallback.hidden = true;
+      fallback.textContent = source;
+      shell.append(chart, fallback);
+      container.appendChild(shell);
+      mermaidNodes.push(chart);
+    } else {
+      const className = codeBlock.language === "red" ? "source-notes-key-point" : "";
+      const pre = document.createElement("pre");
+      pre.className = className;
+      pre.textContent = source;
+      container.appendChild(pre);
+    }
+    codeBlock = null;
   };
   const closeList = () => {
     list = null;
@@ -68,7 +139,7 @@ function renderSourceNotes(container, markdown) {
       const tr = document.createElement("tr");
       row.split("|").slice(1, -1).forEach((cell) => {
         const cellElement = document.createElement(rowIndex === 0 ? "th" : "td");
-        cellElement.textContent = cell.trim();
+        appendInlineMarkdown(cellElement, cell.trim());
         tr.appendChild(cellElement);
       });
       table.appendChild(tr);
@@ -79,19 +150,16 @@ function renderSourceNotes(container, markdown) {
   markdown.split(/\r?\n/).forEach((rawLine, index) => {
     const line = rawLine.trimEnd();
     if (line.startsWith("```")) {
-      if (codeLines) {
-        appendTextBlock("pre", codeLines.join("\n"), codeClassName);
-        codeLines = null;
-        codeClassName = "";
+      if (codeBlock) {
+        flushCodeBlock();
       } else {
         closeList();
-        codeLines = [];
-        codeClassName = line.trim() === "```red" ? "source-notes-key-point" : "";
+        codeBlock = { language: line.slice(3).trim().toLowerCase(), lines: [] };
       }
       return;
     }
-    if (codeLines) {
-      codeLines.push(line);
+    if (codeBlock) {
+      codeBlock.lines.push(line);
       return;
     }
     if (line.startsWith("|")) {
@@ -102,16 +170,42 @@ function renderSourceNotes(container, markdown) {
     flushTable();
     const keyPoint = line.match(/^【红字】(.+)$/);
     if (keyPoint) {
-      appendTextBlock("p", keyPoint[1], "source-notes-key-point");
+      appendMarkdownElement(container, "p", keyPoint[1], "source-notes-key-point");
       return;
     }
     const heading = line.match(/^(#{3,6})\s+(.+)$/);
     if (heading) {
       closeList();
-      appendTextBlock(heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+      appendMarkdownElement(container, heading[1].length <= 3 ? "h5" : "h6", heading[2]);
       return;
     }
-    const item = line.match(/^[-*]\s+(.+)$/) || line.match(/^\d+\.\s+(.+)$/);
+    if (/^\s{0,3}(?:\*{3,}|-{3,}|_{3,})\s*$/.test(line)) {
+      closeList();
+      container.appendChild(document.createElement("hr"));
+      return;
+    }
+    const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+    if (image && isSafeMarkdownUrl(image[2].trim())) {
+      closeList();
+      const figure = document.createElement("figure");
+      figure.className = "source-notes-image";
+      const imageElement = document.createElement("img");
+      imageElement.src = image[2].trim();
+      imageElement.alt = image[1];
+      figure.appendChild(imageElement);
+      if (image[1]) {
+        appendMarkdownElement(figure, "figcaption", image[1]);
+      }
+      container.appendChild(figure);
+      return;
+    }
+    const quote = line.match(/^>\s+(.+)$/);
+    if (quote) {
+      closeList();
+      appendMarkdownElement(container, "blockquote", quote[1]);
+      return;
+    }
+    const item = line.match(/^[-*+]\s+(.+)$/) || line.match(/^\d+\.\s+(.+)$/);
     if (item) {
       const nextListType = /^\d+\./.test(line) ? "ol" : "ul";
       if (!list || listType !== nextListType) {
@@ -120,18 +214,16 @@ function renderSourceNotes(container, markdown) {
         container.appendChild(list);
       }
       const listItem = document.createElement("li");
-      listItem.textContent = item[1];
+      appendInlineMarkdown(listItem, item[1]);
       list.appendChild(listItem);
       return;
     }
     closeList();
     if (line.trim()) {
-      appendTextBlock(index === 0 ? "h5" : "p", line);
+      appendMarkdownElement(container, index === 0 ? "h5" : "p", line);
     }
   });
-  if (codeLines) {
-    appendTextBlock("pre", codeLines.join("\n"));
-  }
+  flushCodeBlock();
   flushTable();
 }
 function renderCards(entries) {
@@ -209,7 +301,7 @@ function renderCards(entries) {
     details.hidden = !isExpanded;
     if (sourceNotes) {
       sourceNotesBlock.hidden = false;
-      renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes);
+      renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes);
     }
     const sections = [
       [".conclusion-list", entry.conclusion],

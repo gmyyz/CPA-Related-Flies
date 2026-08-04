@@ -14,8 +14,20 @@ const revenueEntryIds = [
   "revenue-five-step-and-control", "revenue-contract-formation-five-conditions", "revenue-distinct-performance-obligation", "revenue-contract-combination-vs-po-combination", "revenue-performance-and-control", "revenue-over-time-three-criteria", "revenue-point-in-time-control-indicators", "revenue-transaction-price-variable-consideration-ip-royalty", "revenue-transaction-price-significant-financing", "revenue-transaction-price-noncash-consideration", "revenue-transaction-price-consideration-payable-to-customer", "revenue-allocation-subsequent-changes", "revenue-material-right-rebates-points", "revenue-contract-costs-fulfillment-acquisition-impairment", "revenue-transportation-costs", "revenue-sales-with-right-of-return", "revenue-principal-vs-agent", "revenue-ip-license-special-rules", "revenue-repurchase-arrangements", "revenue-customer-unexercised-rights", "revenue-nonrefundable-upfront-fee", "revenue-refund-liability-vs-other-payables"
 ];
 
+function rewriteRelativeMarkdownUrls(markdown, sourcePath) {
+  const sourceDirectory = path.dirname(sourcePath);
+  const relativeDirectory = path.relative(pageDir, sourceDirectory).split(path.sep).join("/") || ".";
+  return markdown.replace(/(!?\[[^\]]*\])\(([^)]+)\)/g, (match, label, rawUrl) => {
+    const url = rawUrl.trim();
+    if (!url || /^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(url)) {
+      return match;
+    }
+    return `${label}(${path.posix.normalize(path.posix.join(relativeDirectory, url))})`;
+  });
+}
+
 async function readRevenueNotes() {
-  const markdown = await readFile(revenueNotesPath, "utf8");
+  const markdown = rewriteRelativeMarkdownUrls(await readFile(revenueNotesPath, "utf8"), revenueNotesPath);
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题"));
   if (sections.length !== revenueEntryIds.length) {
     throw new Error(`收入 Markdown 专题数量（${sections.length}）与网页卡片数量（${revenueEntryIds.length}）不一致。`);
@@ -26,7 +38,8 @@ async function readRevenueNotes() {
 async function readOtherMarkdownNotes() {
   const notes = {};
   for (const { path: sourcePath, entryIds } of markdownNoteSources) {
-    const markdown = await readFile(path.resolve(pageDir, ...sourcePath), "utf8");
+    const resolvedPath = path.resolve(pageDir, ...sourcePath);
+    const markdown = rewriteRelativeMarkdownUrls(await readFile(resolvedPath, "utf8"), resolvedPath);
     const sections = markdown.split(/^## /m).slice(1).map((section) => section.trim());
     if (sections.length !== entryIds.length) {
       throw new Error(`Markdown 专题数量（${sections.length}）与卡片映射数量（${entryIds.length}）不一致：${sourcePath.at(-1)}`);
@@ -39,7 +52,7 @@ async function readOtherMarkdownNotes() {
 }
 
 async function readFinancialNotes() {
-  const markdown = await readFile(financialNotesPath, "utf8");
+  const markdown = rewriteRelativeMarkdownUrls(await readFile(financialNotesPath, "utf8"), financialNotesPath);
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题")).map((section) => section.trim());
   const entries = sections.map((section, index) => {
     const title = section.split(/\r?\n/, 1)[0];
