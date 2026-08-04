@@ -173,6 +173,65 @@
       margin: 10px 0;
     }
 
+    .source-notes hr {
+      margin: 18px 0;
+      border: 0;
+      border-top: 1px solid rgba(28, 22, 15, 0.16);
+    }
+
+    .source-notes blockquote {
+      margin: 12px 0;
+      padding: 10px 14px;
+      color: rgba(28, 22, 15, 0.8);
+      background: rgba(47, 125, 107, 0.08);
+      border-left: 4px solid var(--mint);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .source-notes code {
+      padding: 1px 5px;
+      font: 0.92em ui-monospace, SFMono-Regular, Consolas, monospace;
+      background: rgba(28, 22, 15, 0.08);
+      border-radius: 4px;
+    }
+
+    .source-notes mark {
+      padding: 1px 3px;
+      color: inherit;
+      background: #fff0a8;
+    }
+
+    .source-notes a {
+      color: var(--mint);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .source-notes-image {
+      margin: 16px 0;
+    }
+
+    .source-notes-image img {
+      display: block;
+      width: min(100%, 920px);
+      height: auto;
+      margin: 0 auto;
+      border: 1px solid rgba(28, 22, 15, 0.14);
+      border-radius: 10px;
+    }
+
+    .source-notes-image figcaption {
+      margin-top: 7px;
+      color: rgba(28, 22, 15, 0.68);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .source-notes-mermaid {
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+
     .source-notes .source-notes-key-point {
       padding: 10px 12px;
       color: #b42318;
