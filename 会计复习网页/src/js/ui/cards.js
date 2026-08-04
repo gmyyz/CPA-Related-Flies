@@ -44,28 +44,33 @@ function isSafeMarkdownUrl(url) {
   return /^(?:https?:|mailto:|\.\.?\/|\/|#)/i.test(url);
 }
 function appendInlineMarkdown(container, text) {
-  const tokenPattern = /<mark>(.*?)<\/mark>|<br\s*\/?>|`([^`]+)`|\*\*([^*]+)\*\*|__([^_]+)__|\[([^\]]+)\]\(([^)]+)\)/gi;
+  const tokenPattern = /<span class="text-danger">([\s\S]*?)<\/span>|<mark>(.*?)<\/mark>|<br\s*\/?>|`([^`]+)`|\*\*([^*]+)\*\*|__([^_]+)__|\[([^\]]+)\]\(([^)]+)\)/gi;
   let lastIndex = 0;
   for (const match of text.matchAll(tokenPattern)) {
     if (match.index > lastIndex) {
       container.append(document.createTextNode(text.slice(lastIndex, match.index)));
     }
     if (match[1] !== undefined) {
+      const span = document.createElement("span");
+      span.className = "text-danger";
+      appendInlineMarkdown(span, match[1]);
+      container.appendChild(span);
+    } else if (match[2] !== undefined) {
       const mark = document.createElement("mark");
-      appendInlineMarkdown(mark, match[1]);
+      appendInlineMarkdown(mark, match[2]);
       container.appendChild(mark);
     } else if (match[0].toLowerCase().startsWith("<br")) {
       container.appendChild(document.createElement("br"));
-    } else if (match[2] !== undefined) {
+    } else if (match[3] !== undefined) {
       const code = document.createElement("code");
-      code.textContent = match[2];
+      code.textContent = match[3];
       container.appendChild(code);
-    } else if (match[3] !== undefined || match[4] !== undefined) {
+    } else if (match[4] !== undefined || match[5] !== undefined) {
       const strong = document.createElement("strong");
-      strong.textContent = match[3] ?? match[4];
+      strong.textContent = match[4] ?? match[5];
       container.appendChild(strong);
     } else {
-      const [label, url] = [match[5], match[6].trim()];
+      const [label, url] = [match[6], match[7].trim()];
       if (isSafeMarkdownUrl(url)) {
         const link = document.createElement("a");
         link.href = url;

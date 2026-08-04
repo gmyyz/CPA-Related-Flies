@@ -137,6 +137,11 @@
       border-top: 1px dashed rgba(28, 22, 15, 0.12);
     }
 
+    .text-danger {
+      color: #b42318;
+      font-weight: 700;
+    }
+
     .source-notes {
       padding: 16px;
       overflow-wrap: anywhere;

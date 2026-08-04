@@ -1,9 +1,12 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 import { transform } from "esbuild";
 import { markdownNoteSources } from "./markdown-notes.mjs";
 
+const execFileAsync = promisify(execFile);
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const pageDir = path.resolve(scriptDir, "..");
 const sourceDir = path.join(pageDir, "src");
@@ -13,6 +16,16 @@ const financialNotesPath = path.resolve(pageDir, "..", "01-会计", "01-章节�
 const revenueEntryIds = [
   "revenue-five-step-and-control", "revenue-contract-formation-five-conditions", "revenue-distinct-performance-obligation", "revenue-contract-combination-vs-po-combination", "revenue-performance-and-control", "revenue-over-time-three-criteria", "revenue-point-in-time-control-indicators", "revenue-transaction-price-variable-consideration-ip-royalty", "revenue-transaction-price-significant-financing", "revenue-transaction-price-noncash-consideration", "revenue-transaction-price-consideration-payable-to-customer", "revenue-allocation-subsequent-changes", "revenue-material-right-rebates-points", "revenue-contract-costs-fulfillment-acquisition-impairment", "revenue-transportation-costs", "revenue-sales-with-right-of-return", "revenue-principal-vs-agent", "revenue-ip-license-special-rules", "revenue-repurchase-arrangements", "revenue-customer-unexercised-rights", "revenue-nonrefundable-upfront-fee", "revenue-refund-liability-vs-other-payables"
 ];
+
+async function readUtf8Text(filePath) {
+  const text = await readFile(filePath, "utf8");
+  if (!text.startsWith("%TSD-Header-###%")) {
+    return text;
+  }
+  const script = "import pathlib, sys; sys.stdout.write(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))";
+  const { stdout } = await execFileAsync("python", ["-c", script, filePath], { maxBuffer: 100 * 1024 * 1024 });
+  return stdout;
+}
 
 function rewriteRelativeMarkdownUrls(markdown, sourcePath) {
   const sourceDirectory = path.dirname(sourcePath);
@@ -27,7 +40,7 @@ function rewriteRelativeMarkdownUrls(markdown, sourcePath) {
 }
 
 async function readRevenueNotes() {
-  const markdown = rewriteRelativeMarkdownUrls(await readFile(revenueNotesPath, "utf8"), revenueNotesPath);
+  const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(revenueNotesPath), revenueNotesPath);
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题"));
   if (sections.length !== revenueEntryIds.length) {
     throw new Error(`收入 Markdown 专题数量（${sections.length}）与网页卡片数量（${revenueEntryIds.length}）不一致。`);
@@ -39,7 +52,7 @@ async function readOtherMarkdownNotes() {
   const notes = {};
   for (const { path: sourcePath, entryIds } of markdownNoteSources) {
     const resolvedPath = path.resolve(pageDir, ...sourcePath);
-    const markdown = rewriteRelativeMarkdownUrls(await readFile(resolvedPath, "utf8"), resolvedPath);
+    const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(resolvedPath), resolvedPath);
     const sections = markdown.split(/^## /m).slice(1).map((section) => section.trim());
     if (sections.length !== entryIds.length) {
       throw new Error(`Markdown 专题数量（${sections.length}）与卡片映射数量（${entryIds.length}）不一致：${sourcePath.at(-1)}`);
@@ -52,7 +65,7 @@ async function readOtherMarkdownNotes() {
 }
 
 async function readFinancialNotes() {
-  const markdown = rewriteRelativeMarkdownUrls(await readFile(financialNotesPath, "utf8"), financialNotesPath);
+  const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(financialNotesPath), financialNotesPath);
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题")).map((section) => section.trim());
   const entries = sections.map((section, index) => {
     const title = section.split(/\r?\n/, 1)[0];

@@ -1,7 +1,11 @@
 function createListItems(listElement, items) {
   items.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = item;
+    if (typeof appendInlineMarkdown === "function") {
+      appendInlineMarkdown(li, item);
+    } else {
+      li.textContent = item;
+    }
     listElement.appendChild(li);
   });
 }
