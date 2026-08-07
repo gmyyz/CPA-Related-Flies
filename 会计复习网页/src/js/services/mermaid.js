@@ -1,3 +1,29 @@
+let mermaidLoadPromise = null;
+function loadMermaid() {
+  if (typeof window.mermaid !== "undefined") {
+    return Promise.resolve(window.mermaid);
+  }
+  if (mermaidLoadPromise) {
+    return mermaidLoadPromise;
+  }
+  const source = document.querySelector("#mermaid-source")?.textContent?.trim();
+  if (!source) {
+    return Promise.reject(new Error("离线 Mermaid 资源不可用。"));
+  }
+  mermaidLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.text = source;
+    document.head.appendChild(script);
+    window.setTimeout(() => {
+      if (typeof window.mermaid !== "undefined") {
+        resolve(window.mermaid);
+      } else {
+        reject(new Error("离线 Mermaid 初始化失败。"));
+      }
+    }, 0);
+  });
+  return mermaidLoadPromise;
+}
 function initializeMermaid() {
   if (mermaidInitialized || typeof window.mermaid === "undefined") {
     return mermaidInitialized;
@@ -20,7 +46,22 @@ function initializeMermaid() {
   return true;
 }
 async function renderMermaidDiagrams(nodes = []) {
-  if (!initializeMermaid() || !nodes.length) {
+  if (!nodes.length) {
+    return;
+  }
+  try {
+    await loadMermaid();
+  } catch (error) {
+    nodes.forEach((node) => {
+      const fallback = node.parentElement.querySelector(".diagram-fallback");
+      if (fallback) {
+        fallback.hidden = false;
+        fallback.textContent = node.textContent || "思维导图加载失败。";
+      }
+    });
+    return;
+  }
+  if (!initializeMermaid()) {
     return;
   }
   nodes.forEach((node) => {

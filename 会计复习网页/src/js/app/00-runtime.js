@@ -6,6 +6,7 @@ const REVIEW_INTERVAL_DAYS = 7;
 const DAY_IN_MS = 24 * 60 * 60 * 1e3;
 const SEARCH_DEBOUNCE_MS = 180;
 const DAILY_TASK_LIMIT = 18;
+const CARD_PAGE_SIZE = 20;
 const defaultState = {
   viewMode: "dashboard",
   search: "",
@@ -102,7 +103,8 @@ const state = {
 };
 const uiState = {
   expandedIds: /* @__PURE__ */ new Set(),
-  expandedTagGroups: /* @__PURE__ */ new Set()
+  expandedTagGroups: /* @__PURE__ */ new Set(),
+  cardLimit: CARD_PAGE_SIZE
 };
 let studyData = null;
 let chapters = [];

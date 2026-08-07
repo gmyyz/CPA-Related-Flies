@@ -231,7 +231,22 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
   flushCodeBlock();
   flushTable();
 }
-function renderCards(entries) {
+function updateRenderedCardProgress(entryId) {
+  const card = cardList.querySelector(`[data-entry-id="${entryId}"]`);
+  if (!card) {
+    return;
+  }
+  const progress = getProgress(entryId);
+  const entry = studyData.entries.find((item) => item.id === entryId);
+  const meta = card.querySelector(".card-meta");
+  if (meta) {
+    meta.textContent = `更新于 ${entry?.updatedAt || "-"} · ${formatReviewDate(progress.reviewedAt)}`;
+  }
+  card.querySelector('[data-mastery-action="known"]')?.classList.toggle("active", progress.status === "known");
+  card.querySelector('[data-mastery-action="weak"]')?.classList.toggle("active", progress.status === "weak");
+  card.querySelector('[data-mastery-action="favorite"]')?.classList.toggle("active", progress.favorite);
+}
+function renderCards(entries, totalEntries = entries.length) {
   clearNode(cardList);
   const mermaidNodes = [];
   entries.forEach((entry) => {
@@ -309,7 +324,7 @@ function renderCards(entries) {
       });
     });
     details.hidden = !isExpanded;
-    if (sourceNotes) {
+    if (sourceNotes && isExpanded) {
       sourceNotesBlock.hidden = false;
       renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes);
     }
@@ -319,15 +334,17 @@ function renderCards(entries) {
       [".memory-list", entry.memory],
       [".pitfalls-list", entry.pitfalls]
     ];
-    sections.forEach(([selector, items]) => {
-      const list = fragment.querySelector(selector);
-      createListItems(list, items);
-    });
-    if (entry.journalEntries.length > 0) {
-      journalBlock.hidden = false;
-      entry.journalEntries.forEach((journalEntry) => {
-        journalList.appendChild(createJournalEntryElement(journalEntry));
+    if (isExpanded) {
+      sections.forEach(([selector, items]) => {
+        const list = fragment.querySelector(selector);
+        createListItems(list, items);
       });
+      if (entry.journalEntries.length > 0) {
+        journalBlock.hidden = false;
+        entry.journalEntries.forEach((journalEntry) => {
+          journalList.appendChild(createJournalEntryElement(journalEntry));
+        });
+      }
     }
     if (isExpanded) {
       const relatedEntries = getRelatedEntries(entry);
@@ -366,5 +383,17 @@ function renderCards(entries) {
     });
     cardList.appendChild(fragment);
   });
+  if (entries.length < totalEntries) {
+    const loadMore = document.createElement("button");
+    loadMore.type = "button";
+    loadMore.className = "load-more-cards ghost-button";
+    loadMore.textContent = `继续加载 ${Math.min(CARD_PAGE_SIZE, totalEntries - entries.length)} 条（剩余 ${totalEntries - entries.length} 条）`;
+    loadMore.addEventListener("click", () => {
+      uiState.cardLimit += CARD_PAGE_SIZE;
+      renderResults();
+      loadMore.focus();
+    });
+    cardList.appendChild(loadMore);
+  }
   renderMermaidDiagrams(mermaidNodes);
 }

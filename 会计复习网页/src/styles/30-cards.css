@@ -125,6 +125,13 @@
       color: #3b2a09;
     }
 
+    .load-more-cards {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 2px;
+      justify-content: center;
+    }
+
     .card-details[hidden] {
       display: none;
     }

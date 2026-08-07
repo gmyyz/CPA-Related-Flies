@@ -11,6 +11,8 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const pageDir = path.resolve(scriptDir, "..");
 const sourceDir = path.join(pageDir, "src");
 const outputPath = path.join(pageDir, "CICPA会计复习手册.html");
+const studyDataPath = path.join(pageDir, "study-data.js");
+const mermaidPath = path.resolve(pageDir, "..", "node_modules", "mermaid", "dist", "mermaid.min.js");
 const revenueNotesPath = path.resolve(pageDir, "..", "01-会计", "01-章节笔记", "收入准则知识点.md");
 const financialNotesPath = path.resolve(pageDir, "..", "01-会计", "01-章节笔记", "金融工具准则知识点.md");
 const revenueEntryIds = [
@@ -39,8 +41,48 @@ function rewriteRelativeMarkdownUrls(markdown, sourcePath) {
   });
 }
 
+function escapeInlineScript(text) {
+  return text.replace(/<\/script/gi, "<\\/script");
+}
+
+function getImageMimeType(filePath) {
+  const extension = path.extname(filePath).toLowerCase();
+  return {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".webp": "image/webp",
+    ".svg": "image/svg+xml"
+  }[extension] || "";
+}
+
+async function embedMarkdownImages(markdown) {
+  const imagePattern = /(!\[[^\]]*\]\()([^)]+)(\))/g;
+  const matches = [...markdown.matchAll(imagePattern)];
+  let output = markdown;
+  for (const match of matches) {
+    const rawUrl = match[2].trim();
+    if (!rawUrl || /^(?:[a-z][a-z\d+.-]*:|#)/i.test(rawUrl)) {
+      continue;
+    }
+    const filePath = path.resolve(pageDir, rawUrl);
+    const mimeType = getImageMimeType(filePath);
+    if (!mimeType) {
+      continue;
+    }
+    try {
+      const data = await readFile(filePath);
+      output = output.replace(match[0], `${match[1]}data:${mimeType};base64,${data.toString("base64")}${match[3]}`);
+    } catch (error) {
+      throw new Error(`Markdown 图片无法嵌入：${rawUrl}`);
+    }
+  }
+  return output;
+}
+
 async function readRevenueNotes() {
-  const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(revenueNotesPath), revenueNotesPath);
+  const markdown = await embedMarkdownImages(rewriteRelativeMarkdownUrls(await readUtf8Text(revenueNotesPath), revenueNotesPath));
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题"));
   if (sections.length !== revenueEntryIds.length) {
     throw new Error(`收入 Markdown 专题数量（${sections.length}）与网页卡片数量（${revenueEntryIds.length}）不一致。`);
@@ -52,7 +94,7 @@ async function readOtherMarkdownNotes() {
   const notes = {};
   for (const { path: sourcePath, entryIds } of markdownNoteSources) {
     const resolvedPath = path.resolve(pageDir, ...sourcePath);
-    const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(resolvedPath), resolvedPath);
+    const markdown = await embedMarkdownImages(rewriteRelativeMarkdownUrls(await readUtf8Text(resolvedPath), resolvedPath));
     const sections = markdown.split(/^## /m).slice(1).map((section) => section.trim());
     if (sections.length !== entryIds.length) {
       throw new Error(`Markdown 专题数量（${sections.length}）与卡片映射数量（${entryIds.length}）不一致：${sourcePath.at(-1)}`);
@@ -65,7 +107,7 @@ async function readOtherMarkdownNotes() {
 }
 
 async function readFinancialNotes() {
-  const markdown = rewriteRelativeMarkdownUrls(await readUtf8Text(financialNotesPath), financialNotesPath);
+  const markdown = await embedMarkdownImages(rewriteRelativeMarkdownUrls(await readUtf8Text(financialNotesPath), financialNotesPath));
   const sections = markdown.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题")).map((section) => section.trim());
   const entries = sections.map((section, index) => {
     const title = section.split(/\r?\n/, 1)[0];
@@ -118,13 +160,15 @@ async function readModules(files) {
 }
 
 async function buildPage() {
-  const [template, cssParts, jsParts, revenueNotes, otherNotes, financialNotes] = await Promise.all([
+  const [template, cssParts, jsParts, revenueNotes, otherNotes, financialNotes, studyData, mermaidSource] = await Promise.all([
     readFile(path.join(sourceDir, "template.html"), "utf8"),
     readModules(cssModules),
     readModules(jsModules),
     readRevenueNotes(),
     readOtherMarkdownNotes(),
-    readFinancialNotes()
+    readFinancialNotes(),
+    readFile(studyDataPath, "utf8"),
+    readFile(mermaidPath, "utf8")
   ]);
 
   const css = cssParts.map((part) => part.trimEnd()).join("\n\n");
@@ -142,15 +186,21 @@ async function buildPage() {
   const cssMarker = "/* __CPA_INLINE_CSS__ */";
   const jsMarker = "/* __CPA_INLINE_APP__ */";
   const revenueNotesMarker = "/* __CPA_REVENUE_NOTES__ */";
-  if (!template.includes(cssMarker) || !template.includes(jsMarker) || !template.includes(revenueNotesMarker)) {
-    throw new Error("模板缺少内联 CSS 或 JavaScript 占位符。");
+  const dataMarker = "/* __CPA_INLINE_DATA__ */";
+  const mermaidMarker = "/* __CPA_MERMAID_SOURCE__ */";
+  if (!template.includes(cssMarker) || !template.includes(jsMarker) || !template.includes(revenueNotesMarker) || !template.includes(dataMarker) || !template.includes(mermaidMarker)) {
+    throw new Error("模板缺少离线构建占位符。");
   }
 
   return template
-    .replace(cssMarker, css)
-    .replace(revenueNotesMarker, `window.markdownSections = ${JSON.stringify({ ...otherNotes, ...revenueNotes, ...financialNotes.notes })};\nwindow.studyData.entries.push(...${JSON.stringify(financialNotes.entries)});`)
-    .replace(jsMarker, result.code.trimEnd())
-    .replace(/\r\n/g, "\n");
+    .replace(cssMarker, () => css)
+    .replace(dataMarker, () => escapeInlineScript(studyData.trim()))
+    .replace(mermaidMarker, () => escapeInlineScript(mermaidSource.trim()))
+    .replace(revenueNotesMarker, () => `window.markdownSections = ${JSON.stringify({ ...otherNotes, ...revenueNotes, ...financialNotes.notes })};\nwindow.studyData.entries.push(...${JSON.stringify(financialNotes.entries)});`)
+    .replace(jsMarker, () => result.code.trimEnd())
+    .replace(/\r\n/g, "\n")
+    .replace(/^ +\t/gm, "\t")
+    .replace(/[ \t]+$/gm, "");
 }
 
 const output = await buildPage();

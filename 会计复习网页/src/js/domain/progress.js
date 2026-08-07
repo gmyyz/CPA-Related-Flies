@@ -90,5 +90,9 @@ function updateProgress(entryId, patch, options = {}) {
   progressState[entryId] = next;
   persistProgress();
   scheduleCloudAutoPush();
-  renderResults();
+  if (isDashboardView()) {
+    renderResults();
+  } else {
+    updateRenderedCardProgress(entryId);
+  }
 }

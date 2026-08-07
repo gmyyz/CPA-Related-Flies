@@ -11,8 +11,12 @@ function renderResults() {
     syncPersistence();
   }
   const visibleEntries = getVisibleEntries();
-  renderResultsMeta(filteredEntries, visibleEntries);
-  if (visibleEntries.length === 0) {
+  const cardEntries = isCardsView() && !state.randomEntryId
+    ? visibleEntries.slice(0, uiState.cardLimit)
+    : visibleEntries;
+  const entriesForView = isCardsView() ? cardEntries : visibleEntries;
+  renderResultsMeta(filteredEntries, entriesForView, visibleEntries.length);
+  if (entriesForView.length === 0) {
     renderEmptyState("没有找到匹配内容", "试试清空筛选，或者换一个关键词。");
     return;
   }
@@ -24,7 +28,7 @@ function renderResults() {
     renderDashboard(filteredEntries);
     return;
   }
-  renderCards(visibleEntries);
+  renderCards(cardEntries, visibleEntries.length);
 }
 function initializeFilters() {
   chapters = buildChapterOptions(studyData.entries);
@@ -61,6 +65,7 @@ function pickRandomEntry() {
 }
 function clearAllFilters() {
   uiState.expandedIds.clear();
+  uiState.cardLimit = CARD_PAGE_SIZE;
   const viewMode = state.viewMode;
   Object.assign(state, defaultState, {
     viewMode,

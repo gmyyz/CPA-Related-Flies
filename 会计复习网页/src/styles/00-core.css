@@ -78,7 +78,7 @@
     .brand-mark {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
     }
 
@@ -176,10 +176,10 @@
     }
 
     .quick-action {
-      min-height: 72px;
+      min-height: 58px;
       border: 1px solid rgba(28, 22, 15, 0.1);
       border-radius: 8px;
-      padding: 11px 13px;
+      padding: 10px 12px;
       background: rgba(255, 255, 255, 0.72);
       color: var(--ink);
       cursor: pointer;
@@ -195,15 +195,15 @@
     }
 
     .quick-action strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 16px;
+      display: inline;
+      font-size: 14px;
     }
 
     .quick-action span {
-      display: block;
+      display: inline;
+      margin-left: 6px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.45;
     }
 

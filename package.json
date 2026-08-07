@@ -9,6 +9,7 @@
     "check": "npm run build && npm test && npm run build:check"
   },
   "devDependencies": {
-    "esbuild": "0.25.6"
+    "esbuild": "0.25.6",
+    "mermaid": "^10.9.1"
   }
 }

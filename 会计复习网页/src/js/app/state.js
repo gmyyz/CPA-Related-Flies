@@ -12,6 +12,9 @@ function setState(patch, options = {}) {
     return;
   }
   Object.assign(state, patch);
+  if (options.resetCardLimit !== false) {
+    uiState.cardLimit = CARD_PAGE_SIZE;
+  }
   reconcileViewState();
   if (shouldClearRandom) {
     state.randomEntryId = null;

@@ -36,8 +36,11 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
 test("generated page contains the required offline contracts", async () => {
   const html = await readFile(path.join(pageDir, "CICPA会计复习手册.html"), "utf8");
   assert.match(html, /由 npm run build 生成/);
-  assert.match(html, /<script src="\.\/study-data\.js"><\/script>/);
-  assert.doesNotMatch(html, /__CPA_INLINE_(CSS|APP)__/);
+  assert.match(html, /window\.studyData\s*=/);
+  assert.match(html, /id="mermaid-source"/);
+  assert.doesNotMatch(html, /<script[^>]+src=/);
+  assert.doesNotMatch(html, /cdn\.jsdelivr\.net/);
+  assert.doesNotMatch(html, /\/\* __CPA_INLINE_(?:CSS|APP)__ \*\//);
   [
     "search-input", "dashboard-view", "cards-view", "journal-library", "clear-filters",
     "chapter-filters", "tag-filters", "card-list", "gist-token-input", "gist-id-input"
@@ -52,4 +55,6 @@ test("source template retains both build markers", async () => {
   const template = await readFile(path.join(sourceDir, "template.html"), "utf8");
   assert.match(template, /__CPA_INLINE_CSS__/);
   assert.match(template, /__CPA_INLINE_APP__/);
+  assert.match(template, /__CPA_INLINE_DATA__/);
+  assert.match(template, /__CPA_MERMAID_SOURCE__/);
 });
