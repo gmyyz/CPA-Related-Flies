@@ -11,7 +11,7 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   vm.runInContext(dataSource, dataContext);
   const entries = dataContext.window.studyData?.entries;
   assert.ok(Array.isArray(entries));
-  assert.equal(entries.length, 182);
+  assert.equal(entries.length, 196);
   assert.equal(new Set(entries.map((entry) => entry.id)).size, entries.length);
   entries.forEach((entry) => {
     assert.equal(typeof entry.id, "string");

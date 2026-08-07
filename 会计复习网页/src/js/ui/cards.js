@@ -178,10 +178,10 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
       appendMarkdownElement(container, "p", keyPoint[1], "source-notes-key-point");
       return;
     }
-    const heading = line.match(/^(#{3,6})\s+(.+)$/);
+    const heading = line.match(/^(#{2,6})\s+(.+)$/);
     if (heading) {
       closeList();
-      appendMarkdownElement(container, heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+      appendMarkdownElement(container, heading[1].length <= 2 ? "h4" : heading[1].length <= 3 ? "h5" : "h6", heading[2]);
       return;
     }
     if (/^\s{0,3}(?:\*{3,}|-{3,}|_{3,})\s*$/.test(line)) {
@@ -225,7 +225,7 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
     }
     closeList();
     if (line.trim()) {
-      appendMarkdownElement(container, index === 0 ? "h5" : "p", line);
+      appendMarkdownElement(container, "p", line);
     }
   });
   flushCodeBlock();
@@ -257,7 +257,8 @@ function renderCards(entries) {
     fragment.querySelector(".difficulty-badge").textContent = entry.difficulty;
     fragment.querySelector(".card-meta").textContent = `更新于 ${entry.updatedAt} · ${reviewText}`;
     fragment.querySelector(".question-title").textContent = entry.question;
-    summary.textContent = entry.summary;
+    clearNode(summary);
+    appendInlineMarkdown(summary, entry.summary);
     summary.hidden = state.quizMode && !isExpanded;
     hint.hidden = !(state.quizMode && !isExpanded);
     toggleButton.textContent = isExpanded

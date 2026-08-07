@@ -43,6 +43,7 @@ const chapterDefinitions = [
   { id: "employee-benefits", title: "第九章 职工薪酬", topics: ["应付职工薪酬"] },
   { id: "liabilities", title: "第八章 负债", topics: ["负债"] },
   { id: "borrowing-costs", title: "借款费用", topics: ["借款费用"] },
+  { id: "financial-reporting", title: "财务报告", topics: ["财务报告"] },
   { id: "consolidation", title: "合并财务报表", topics: ["合并财务报表"] },
   { id: "inventory", title: "存货", topics: ["存货"] },
   { id: "income-tax", title: "所得税费用", topics: ["所得税费用"] },
