@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import vm from "node:vm";
 import { loadSource, pageDir, sourceDir } from "./helpers/load-source.mjs";
+import { studyData } from "../data/index.mjs";
 
 test("study data has unique IDs, required fields, and chapter coverage", async () => {
   const dataSource = await readFile(path.join(pageDir, "study-data.js"), "utf8");
@@ -11,6 +12,7 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   vm.runInContext(dataSource, dataContext);
   const entries = dataContext.window.studyData?.entries;
   assert.ok(Array.isArray(entries));
+  assert.deepEqual(JSON.parse(JSON.stringify(studyData)), JSON.parse(JSON.stringify(dataContext.window.studyData)));
   assert.equal(entries.length, 201);
   assert.equal(new Set(entries.map((entry) => entry.id)).size, entries.length);
   entries.forEach((entry) => {

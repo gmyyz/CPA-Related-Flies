@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { transform } from "esbuild";
 import { markdownNoteSources } from "./markdown-notes.mjs";
+import { syncStudyData } from "./build-study-data.mjs";
 
 const execFileAsync = promisify(execFile);
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -203,8 +204,10 @@ async function buildPage() {
     .replace(/[ \t]+$/gm, "");
 }
 
+const checkOnly = process.argv.includes("--check");
+await syncStudyData({ check: checkOnly });
 const output = await buildPage();
-if (process.argv.includes("--check")) {
+if (checkOnly) {
   const current = (await readFile(outputPath, "utf8")).replace(/\r\n/g, "\n");
   if (current !== output) {
     console.error("生成文件不是最新版本，请运行 npm run build。");

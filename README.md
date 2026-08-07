@@ -4,7 +4,7 @@
 
 - `01-会计/01-章节笔记/`
 - `会计复习网页/CICPA会计复习手册.html`
-- `会计复习网页/study-data.js`
+- `会计复习网页/data/topics/`
 - `会计复习网页/学习问答汇总.md`
 
 以后可以直接在终端里，按这份手册操作 Git。
@@ -13,13 +13,14 @@
 
 ## 1. 先进入仓库
 
-你的仓库根目录是：
+在任意一台电脑上，先克隆仓库并进入克隆后的目录：
 
 ```bash
-cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
+git clone https://github.com/gmyyz/CPA-Related-Flies.git
+cd "CPA-Related-Flies"
 ```
 
-注意：路径里有空格，所以一定要加双引号。
+已克隆过时，只需要在终端进入你的实际仓库目录；路径含空格时加双引号。
 
 ---
 
@@ -100,7 +101,7 @@ git push origin main
 每次都按这个顺序走，最稳：
 
 ```bash
-cd "/Users/yyz/AI Agent/2.CPA/CPA-Related-Flies"
+cd "<你的 CPA-Related-Flies 仓库目录>"
 git pull --ff-only
 git status
 # 然后开始修改文件
@@ -249,10 +250,10 @@ main
 以后如果在新的对话或新的设备里继续维护网页，请先读这一节。网页的知识卡片数据主要维护在：
 
 ```text
-会计复习网页/study-data.js
+会计复习网页/data/topics/<专题>.mjs
 ```
 
-新增知识点时，原则上只改 `study-data.js`。页面样式、交互和章节筛选的唯一源码入口是 `会计复习网页/src/`；`会计复习网页/CICPA会计复习手册.html` 是构建生成物，不得直接编辑。
+新增知识点时，只改对应专题源文件，并在 `会计复习网页/data/index.mjs` 的 `entryOrder` 中登记卡片 ID。`study-data.js` 和 `CICPA会计复习手册.html` 都是构建生成物，不得直接编辑；页面样式、交互和章节筛选的唯一源码入口是 `会计复习网页/src/`。
 
 ### 13.1 分录不要只散落在正文里
 
@@ -307,7 +308,7 @@ journalEntries: [
 - 修改后运行：
 
 ```bash
-node --check "会计复习网页/study-data.js"
+npm run data:check
 npm run check
 git diff --check
 ```
@@ -326,20 +327,24 @@ git diff --check
 | --- | --- | --- |
 | `会计复习网页/src/` | 网页外壳、模块化样式、领域逻辑、服务和视图源码 | 新增章节筛选、调整页面样式或交互 |
 | `会计复习网页/CICPA会计复习手册.html` | `npm run build` 生成的离线单文件成品 | 不直接编辑，构建后用于双击打开和 Git 备份 |
-| `会计复习网页/study-data.js` | 网页知识卡片主数据源 | 新增、修改、删除知识卡片 |
+| `会计复习网页/data/topics/*.mjs` | 按专题拆分的卡片源 | 日常新增、修改、删除卡片时只打开对应专题文件 |
+| `会计复习网页/data/index.mjs` | 卡片顺序和专题源清单 | 新增卡片后登记 ID；不要粘贴卡片正文 |
+| `会计复习网页/data/meta.mjs` | 网页数据更新日期 | 内容变更后更新日期 |
+| `会计复习网页/study-data.js` | 兼容旧页面与工具的生成数据 | 不直接编辑，由 `npm run build` 自动生成 |
 | `会计复习网页/学习问答汇总.md` | 学习问答的 Markdown 汇总 | 作为网页内容的文字来源或备份 |
 | `01-会计/01-章节笔记/*.md` | 按章节整理的专题笔记 | 先沉淀知识点，再转成网页卡片 |
 
-通常新增知识点时，优先修改 `study-data.js`。只有新增专题筛选、页面结构或交互时，才修改 `会计复习网页/src/`，然后运行构建命令更新 HTML 成品。
+通常新增知识点时，只修改一个 `data/topics/*.mjs` 专题文件和 `data/index.mjs` 的 ID 清单。只有新增专题筛选、页面结构或交互时，才修改 `会计复习网页/src/`，然后运行构建命令更新生成物。
 
 ### 14.2 新增知识卡片流程
 
-1. 先在对应章节的 Markdown 文件中整理知识点。
-2. 将知识点拆成网页卡片，写入 `会计复习网页/study-data.js` 的 `entries` 数组。
-3. 如果是全新专题，在 `会计复习网页/src/js/app/00-runtime.js` 的 `chapterDefinitions` 中新增章节筛选。
-4. 运行 `npm run check`，生成并验证 HTML 成品。
-5. 打开本地网页验证搜索、筛选、卡片展示是否正常。
-6. 提交并推送到 GitHub。
+1. 在任意电脑首次使用时运行 `npm install`；每次修改前先运行 `git pull --ff-only origin main`。
+2. 在对应章节的 Markdown 文件中整理知识点。
+3. 只打开并编辑对应的 `会计复习网页/data/topics/<专题>.mjs`，新增一张完整卡片。
+4. 在 `会计复习网页/data/index.mjs` 的 `entryOrder` 中加入该卡片 ID；`study-data.js` 不要手改。
+5. 如果是全新专题，在 `会计复习网页/src/js/app/00-runtime.js` 的 `chapterDefinitions` 中新增章节筛选，并新建对应专题源文件。
+6. 更新 `会计复习网页/data/meta.mjs` 的日期，运行 `npm run check`。
+7. 打开本地网页验证搜索、筛选、卡片展示是否正常，再提交推送。
 
 ### 14.3 卡片字段约定
 
@@ -412,7 +417,7 @@ const chapterDefinitions = [
 修改数据文件后，至少运行：
 
 ```bash
-node --check "会计复习网页/study-data.js"
+npm run data:check
 npm run check
 git diff --check
 ```
@@ -449,6 +454,7 @@ npm run check
 
 ```bash
 git add "01-会计/01-章节笔记/借款费用知识点.md"
+git add "会计复习网页/data"
 git add "会计复习网页/study-data.js"
 git add "会计复习网页/src"
 git add "会计复习网页/CICPA会计复习手册.html"
@@ -458,13 +464,14 @@ git commit -m "补充借款费用复习内容"
 git push origin main
 ```
 
-如果远端有更新，先执行：
+不要对生成的单文件成品运行完整 `git diff`，它会制造大量无用上下文并消耗 AI token。日常只审阅手工源文件：
 
 ```bash
-git pull --rebase origin main
+git diff -- "会计复习网页/data/topics/<专题>.mjs" "会计复习网页/data/index.mjs" "会计复习网页/data/meta.mjs"
+git diff --stat
 ```
 
-再推送。
+若 `npm run check` 通过，`build:check` 已确认 `study-data.js` 和离线 HTML 与源一致。
 
 ### 14.9 维护原则
 
@@ -474,11 +481,11 @@ git pull --rebase origin main
 - 提交前不要顺手提交无关 PDF、临时输出目录或备份文件。
 - 改网页逻辑时，尽量保留已有数据结构，避免影响旧卡片。
 - 不要直接编辑生成后的 `CICPA会计复习手册.html`；所有样式和逻辑改动从 `会计复习网页/src/` 开始。
-- `npm run build` 只生成成品；`npm test` 运行单元和数据检查；提交前统一运行 `npm run check`。
+- `npm run build` 会先生成 `study-data.js`，再生成离线 HTML；`npm test` 运行单元和数据检查；提交前统一运行 `npm run check`。
 
 ### 14.10 Markdown 到网页卡片迁移规则
 
-从 `01-会计/01-章节笔记/*.md` 知识点文件迁移到 `会计复习网页/study-data.js` 时，不能只迁移标题和一句摘要。网页卡片可以压缩表达，但不能遗漏 MD 中的核心考试信息。
+从 `01-会计/01-章节笔记/*.md` 知识点文件迁移到对应的 `会计复习网页/data/topics/*.mjs` 时，不能只迁移标题和一句摘要。网页卡片可以压缩表达，但不能遗漏 MD 中的核心考试信息。
 
 迁移时按以下规则检查：
 
@@ -493,12 +500,12 @@ git pull --rebase origin main
    - `记忆口诀`
 5. 如果 MD 中存在关键会计分录，优先写入 `journalEntries`，不要只放在正文段落里。
 6. 如果 MD 中有 Mermaid 图或思维导图，网页卡片中的 `diagram` 应保留主要分支；图中细分节点不能被压缩到只剩总标题。
-7. 如果新增或补齐了一个全新专题，除了写入 `study-data.js`，还要更新 `会计复习网页/src/js/app/00-runtime.js` 中的 `chapterDefinitions`，运行构建后确认章节筛选中能看到该专题。
+7. 如果新增或补齐了一个全新专题，除了新建专题源文件并更新 `data/index.mjs`，还要更新 `会计复习网页/src/js/app/00-runtime.js` 中的 `chapterDefinitions`，运行构建后确认章节筛选中能看到该专题。
 
 迁移完成后，建议做一次覆盖审计：
 
 ```bash
-node --check "会计复习网页/study-data.js"
+npm run data:check
 git diff --check
 ```
 

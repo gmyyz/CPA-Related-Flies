@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "data:build": "node ./会计复习网页/scripts/build-study-data.mjs",
+    "data:check": "node ./会计复习网页/scripts/build-study-data.mjs --check",
     "build": "node ./会计复习网页/scripts/build.mjs",
     "build:check": "node ./会计复习网页/scripts/build.mjs --check",
     "test": "node --test ./会计复习网页/tests/*.test.mjs",
