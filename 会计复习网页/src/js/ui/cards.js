@@ -260,7 +260,11 @@ function renderCards(entries) {
     summary.textContent = entry.summary;
     summary.hidden = state.quizMode && !isExpanded;
     hint.hidden = !(state.quizMode && !isExpanded);
-    toggleButton.textContent = isExpanded ? "收起详情" : state.quizMode ? "查看解析" : "展开详情";
+    toggleButton.textContent = isExpanded
+      ? (sourceNotes ? "收起完整笔记" : "收起详情")
+      : state.quizMode
+        ? "查看解析"
+        : (sourceNotes ? "展开完整笔记" : "展开详情");
     toggleButton.setAttribute("aria-expanded", String(isExpanded));
     toggleButton.setAttribute("aria-controls", detailsId);
     details.id = detailsId;
