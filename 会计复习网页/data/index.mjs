@@ -22,6 +22,8 @@ import topic19 from "./topics/长期股权投资.mjs";
 import topic20 from "./topics/非货币性资产交换.mjs";
 import topic21 from "./topics/收入准则.mjs";
 import topic22 from "./topics/财务报告.mjs";
+import topic23 from "./topics/金融工具.mjs";
+import topic24 from "./topics/总论.mjs";
 
 import { updatedAt } from "./meta.mjs";
 
@@ -47,7 +49,9 @@ const entriesById = new Map([
   ...topic19,
   ...topic20,
   ...topic21,
-  ...topic22
+  ...topic22,
+  ...topic23,
+  ...topic24
 ].map((entry) => [entry.id, entry]));
 
 export const entryOrder = [
@@ -251,7 +255,11 @@ export const entryOrder = [
   "financial-reporting-annual-vs-interim-reporting",
   "financial-reporting-cash-flow-investing-items",
   "financial-reporting-cash-flow-financing-items",
-  "financial-reporting-cash-flow-exchange-rate-and-supplement"
+  "financial-reporting-cash-flow-exchange-rate-and-supplement",
+  "financial-instruments-fair-value-hedge-carrying-adjustment",
+  "financial-instruments-written-call-fixed-for-fixed-equity",
+  "overview-assumptions-constructive-obligation-error-vs-subsequent-event",
+  "overview-accounting-vs-sustainability-information-quality"
 ];
 
 export const studyData = {
