@@ -26,7 +26,10 @@ async function readUtf8Text(filePath) {
     return text;
   }
   const script = "import pathlib, sys; sys.stdout.write(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))";
-  const { stdout } = await execFileAsync("python", ["-c", script, filePath], { maxBuffer: 100 * 1024 * 1024 });
+  const { stdout } = await execFileAsync("python", ["-c", script, filePath], {
+    env: { ...process.env, PYTHONIOENCODING: "utf-8" },
+    maxBuffer: 100 * 1024 * 1024
+  });
   return stdout;
 }
 

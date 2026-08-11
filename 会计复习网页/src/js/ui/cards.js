@@ -43,6 +43,9 @@ function scrollEntryIntoView(entryId) {
 function isSafeMarkdownUrl(url) {
   return /^(?:https?:|mailto:|\.\.?\/|\/|#)/i.test(url);
 }
+function isSafeMarkdownImageUrl(url) {
+  return isSafeMarkdownUrl(url) || /^data:image\/(?:png|jpe?g|gif|webp|svg\+xml);base64,[a-z0-9+/=]+$/i.test(url);
+}
 function appendInlineMarkdown(container, text) {
   const tokenPattern = /<span class="text-danger">([\s\S]*?)<\/span>|<mark>(.*?)<\/mark>|<br\s*\/?>|`([^`]+)`|\*\*([^*]+)\*\*|__([^_]+)__|\[([^\]]+)\]\(([^)]+)\)/gi;
   let lastIndex = 0;
@@ -100,7 +103,6 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
   let list = null;
   let listType = "";
   let codeBlock = null;
-  let codeClassName = "";
   let tableLines = [];
   const flushCodeBlock = () => {
     if (!codeBlock) {
@@ -154,12 +156,17 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
   };
   markdown.split(/\r?\n/).forEach((rawLine, index) => {
     const line = rawLine.trimEnd();
-    if (line.startsWith("```")) {
+    const codeFence = line.match(/^(```|~~~)\s*([\w-]*)\s*$/);
+    if (codeFence) {
       if (codeBlock) {
-        flushCodeBlock();
+        if (codeBlock.fence === codeFence[1]) {
+          flushCodeBlock();
+        } else {
+          codeBlock.lines.push(line);
+        }
       } else {
         closeList();
-        codeBlock = { language: line.slice(3).trim().toLowerCase(), lines: [] };
+        codeBlock = { fence: codeFence[1], language: codeFence[2].toLowerCase(), lines: [] };
       }
       return;
     }
@@ -190,7 +197,7 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
       return;
     }
     const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
-    if (image && isSafeMarkdownUrl(image[2].trim())) {
+    if (image && isSafeMarkdownImageUrl(image[2].trim())) {
       closeList();
       const figure = document.createElement("figure");
       figure.className = "source-notes-image";

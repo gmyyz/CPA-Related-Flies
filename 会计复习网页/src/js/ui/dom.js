@@ -1,7 +1,7 @@
 function createListItems(listElement, items) {
   items.forEach((item) => {
     const li = document.createElement("li");
-    const hasBlockMarkdown = typeof item === "string" && /(?:\r?\n|^```|^\|)/.test(item);
+    const hasBlockMarkdown = typeof item === "string" && /(?:\r?\n|^```|^~~~|^\|)/.test(item);
     if (hasBlockMarkdown && typeof renderSourceNotes === "function") {
       renderSourceNotes(li, item, []);
     } else if (typeof appendInlineMarkdown === "function") {

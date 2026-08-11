@@ -6,6 +6,46 @@ import vm from "node:vm";
 import { loadSource, pageDir, sourceDir } from "./helpers/load-source.mjs";
 import { studyData } from "../data/index.mjs";
 
+function createTestDocument() {
+  const createNode = (tagName, textContent = "") => ({
+    tagName,
+    className: "",
+    hidden: false,
+    children: [],
+    parentNode: null,
+    _textContent: textContent,
+    get firstChild() {
+      return this.children[0] || null;
+    },
+    get textContent() {
+      return this.children.length > 0
+        ? this.children.map((child) => child.textContent).join("")
+        : this._textContent;
+    },
+    set textContent(value) {
+      this.children = [];
+      this._textContent = String(value);
+    },
+    append(...nodes) {
+      nodes.forEach((node) => this.appendChild(node));
+    },
+    appendChild(node) {
+      node.parentNode = this;
+      this.children.push(node);
+      return node;
+    },
+    removeChild(node) {
+      this.children = this.children.filter((child) => child !== node);
+      node.parentNode = null;
+      return node;
+    }
+  });
+  return {
+    createElement: (tagName) => createNode(tagName),
+    createTextNode: (text) => createNode("#text", text)
+  };
+}
+
 test("study data has unique IDs, required fields, and chapter coverage", async () => {
   const dataSource = await readFile(path.join(pageDir, "study-data.js"), "utf8");
   const dataContext = vm.createContext({ window: {} });
@@ -33,6 +73,50 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   const coveredTopics = new Set(api.chapterDefinitions.flatMap((chapter) => chapter.topics));
   const missingTopics = [...new Set(entries.map((entry) => entry.topic))].filter((topic) => !coveredTopics.has(topic));
   assert.deepEqual(missingTopics, []);
+});
+
+test("source note renderer supports tilde fenced code blocks", async () => {
+  const document = createTestDocument();
+  const { api } = await loadSource(
+    ["js/ui/dom.js", "js/ui/cards.js"],
+    ["renderSourceNotes"],
+    {
+      document,
+      studyData: { entries: [] },
+      uiState: { expandedIds: new Set() },
+      state: {},
+      cardList: document.createElement("div"),
+      renderMermaidDiagrams: () => {}
+    }
+  );
+  const container = document.createElement("div");
+  api.renderSourceNotes(container, "段落\n~~~text\n第一层\n第二层\n~~~\n结尾", []);
+
+  assert.deepEqual(container.children.map((child) => child.tagName), ["p", "pre", "p"]);
+  assert.equal(container.children[1].textContent, "第一层\n第二层");
+  assert.equal(container.textContent.includes("~~~text"), false);
+});
+
+test("source note renderer supports embedded data images", async () => {
+  const document = createTestDocument();
+  const { api } = await loadSource(
+    ["js/ui/dom.js", "js/ui/cards.js"],
+    ["renderSourceNotes"],
+    {
+      document,
+      studyData: { entries: [] },
+      uiState: { expandedIds: new Set() },
+      state: {},
+      cardList: document.createElement("div"),
+      renderMermaidDiagrams: () => {}
+    }
+  );
+  const container = document.createElement("div");
+  api.renderSourceNotes(container, "![流程图](data:image/png;base64,aGVsbG8=)", []);
+
+  assert.equal(container.children[0].tagName, "figure");
+  assert.equal(container.children[0].children[0].tagName, "img");
+  assert.equal(container.textContent.includes("data:image/png"), false);
 });
 
 test("generated page contains the required offline contracts", async () => {
