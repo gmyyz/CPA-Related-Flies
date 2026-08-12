@@ -344,6 +344,10 @@ function renderCards(entries, totalEntries = entries.length) {
     if (isExpanded) {
       sections.forEach(([selector, items]) => {
         const list = fragment.querySelector(selector);
+        const block = list.closest(".section-block");
+        if (block) {
+          block.hidden = items.length === 0;
+        }
         createListItems(list, items);
       });
       if (entry.journalEntries.length > 0) {
