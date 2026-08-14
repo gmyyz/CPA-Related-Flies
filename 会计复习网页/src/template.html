@@ -207,39 +207,57 @@
         </div>
       </div>
       <div class="card-details" hidden>
-        <div class="section-block">
-          <h4>结论</h4>
-          <ul class="bullet conclusion-list"></ul>
+        <div class="card-detail-tabs" role="tablist" aria-label="卡片内容">
+          <button class="card-detail-tab active" type="button" role="tab" aria-selected="true" data-detail-tab="overview">30 秒速览</button>
+          <button class="card-detail-tab notes-tab" type="button" role="tab" aria-selected="false" data-detail-tab="notes">完整笔记</button>
+          <button class="card-detail-tab journal-tab" type="button" role="tab" aria-selected="false" data-detail-tab="journal">分录</button>
         </div>
-        <div class="section-block source-notes-block" hidden>
-          <h4>完整章节笔记</h4>
-          <div class="source-notes"></div>
+        <div class="card-detail-pane" data-detail-pane="overview">
+          <div class="section-block">
+            <h4>核心结论</h4>
+            <ul class="bullet conclusion-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>判断逻辑</h4>
+            <ul class="bullet reasoning-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>记忆口诀</h4>
+            <ul class="bullet memory-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>易错点</h4>
+            <ul class="bullet pitfalls-list"></ul>
+          </div>
+          <div class="section-block related-block" hidden>
+            <h4>相邻知识点</h4>
+            <div class="related-list"></div>
+          </div>
+          <div class="section-block next-review-block" hidden>
+            <h4>下一步复习</h4>
+            <div class="next-review-actions"></div>
+          </div>
+          <div class="section-block diagram-block" hidden>
+            <h4>思维导图</h4>
+            <div class="diagram-shell">
+              <div class="mermaid mermaid-chart"></div>
+              <div class="diagram-fallback" hidden></div>
+            </div>
+          </div>
         </div>
-        <div class="section-block journal-block" hidden>
-          <h4>分录</h4>
-          <div class="journal-list"></div>
+        <div class="card-detail-pane source-notes-block" data-detail-pane="notes" hidden>
+          <div class="section-block">
+            <div class="source-notes-heading">
+              <h4>完整章节笔记</h4>
+              <nav class="source-notes-outline" aria-label="笔记目录"></nav>
+            </div>
+            <div class="source-notes"></div>
+          </div>
         </div>
-        <div class="section-block">
-          <h4>原因</h4>
-          <ul class="bullet reasoning-list"></ul>
-        </div>
-        <div class="section-block">
-          <h4>口诀</h4>
-          <ul class="bullet memory-list"></ul>
-        </div>
-        <div class="section-block">
-          <h4>易错点</h4>
-          <ul class="bullet pitfalls-list"></ul>
-        </div>
-        <div class="section-block related-block" hidden>
-          <h4>相邻知识点</h4>
-          <div class="related-list"></div>
-        </div>
-        <div class="section-block diagram-block" hidden>
-          <h4>思维导图</h4>
-          <div class="diagram-shell">
-            <div class="mermaid mermaid-chart"></div>
-            <div class="diagram-fallback" hidden></div>
+        <div class="card-detail-pane journal-block" data-detail-pane="journal" hidden>
+          <div class="section-block">
+            <h4>分录</h4>
+            <div class="journal-list"></div>
           </div>
         </div>
       </div>

@@ -218,7 +218,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
+      grid-template-columns: minmax(236px, 280px) minmax(0, 1fr);
       gap: 14px;
       margin-top: 14px;
     }
@@ -249,6 +249,7 @@
       top: 132px;
       max-height: calc(100vh - 148px);
       overflow-y: auto;
+      scrollbar-gutter: stable;
     }
 
     .controls-header {
@@ -1126,7 +1127,12 @@
       margin-top: 16px;
     }
 
+    .card-actions .toggle-details {
+      order: 2;
+    }
+
     .mastery-actions {
+      order: 1;
       justify-content: flex-end;
     }
 
@@ -1165,6 +1171,74 @@
 
     .card-details[hidden] {
       display: none;
+    }
+
+    .card-detail-tabs {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 4px;
+      margin-top: 18px;
+      padding: 4px;
+      overflow-x: auto;
+      border: 1px solid rgba(28, 22, 15, 0.1);
+      border-radius: 8px;
+      background: rgba(28, 22, 15, 0.04);
+    }
+
+    .card-detail-tab {
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .card-detail-tab.active {
+      background: var(--panel-strong);
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(83, 58, 31, 0.1);
+    }
+
+    .source-notes-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .source-notes-outline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .source-notes-outline-link,
+    .next-review-button {
+      border: 1px solid rgba(36, 111, 100, 0.2);
+      border-radius: 6px;
+      padding: 7px 9px;
+      background: rgba(36, 111, 100, 0.08);
+      color: var(--mint);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .next-review-actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .next-review-button {
+      width: fit-content;
+      max-width: 100%;
     }
 
     .section-block {
@@ -1900,6 +1974,15 @@
         flex-direction: column;
       }
 
+      .source-notes-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .source-notes-outline {
+        justify-content: flex-start;
+      }
+
       .toolbar-actions {
         justify-content: flex-start;
       }
@@ -2119,39 +2202,57 @@
         </div>
       </div>
       <div class="card-details" hidden>
-        <div class="section-block">
-          <h4>结论</h4>
-          <ul class="bullet conclusion-list"></ul>
+        <div class="card-detail-tabs" role="tablist" aria-label="卡片内容">
+          <button class="card-detail-tab active" type="button" role="tab" aria-selected="true" data-detail-tab="overview">30 秒速览</button>
+          <button class="card-detail-tab notes-tab" type="button" role="tab" aria-selected="false" data-detail-tab="notes">完整笔记</button>
+          <button class="card-detail-tab journal-tab" type="button" role="tab" aria-selected="false" data-detail-tab="journal">分录</button>
         </div>
-        <div class="section-block source-notes-block" hidden>
-          <h4>完整章节笔记</h4>
-          <div class="source-notes"></div>
+        <div class="card-detail-pane" data-detail-pane="overview">
+          <div class="section-block">
+            <h4>核心结论</h4>
+            <ul class="bullet conclusion-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>判断逻辑</h4>
+            <ul class="bullet reasoning-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>记忆口诀</h4>
+            <ul class="bullet memory-list"></ul>
+          </div>
+          <div class="section-block">
+            <h4>易错点</h4>
+            <ul class="bullet pitfalls-list"></ul>
+          </div>
+          <div class="section-block related-block" hidden>
+            <h4>相邻知识点</h4>
+            <div class="related-list"></div>
+          </div>
+          <div class="section-block next-review-block" hidden>
+            <h4>下一步复习</h4>
+            <div class="next-review-actions"></div>
+          </div>
+          <div class="section-block diagram-block" hidden>
+            <h4>思维导图</h4>
+            <div class="diagram-shell">
+              <div class="mermaid mermaid-chart"></div>
+              <div class="diagram-fallback" hidden></div>
+            </div>
+          </div>
         </div>
-        <div class="section-block journal-block" hidden>
-          <h4>分录</h4>
-          <div class="journal-list"></div>
+        <div class="card-detail-pane source-notes-block" data-detail-pane="notes" hidden>
+          <div class="section-block">
+            <div class="source-notes-heading">
+              <h4>完整章节笔记</h4>
+              <nav class="source-notes-outline" aria-label="笔记目录"></nav>
+            </div>
+            <div class="source-notes"></div>
+          </div>
         </div>
-        <div class="section-block">
-          <h4>原因</h4>
-          <ul class="bullet reasoning-list"></ul>
-        </div>
-        <div class="section-block">
-          <h4>口诀</h4>
-          <ul class="bullet memory-list"></ul>
-        </div>
-        <div class="section-block">
-          <h4>易错点</h4>
-          <ul class="bullet pitfalls-list"></ul>
-        </div>
-        <div class="section-block related-block" hidden>
-          <h4>相邻知识点</h4>
-          <div class="related-list"></div>
-        </div>
-        <div class="section-block diagram-block" hidden>
-          <h4>思维导图</h4>
-          <div class="diagram-shell">
-            <div class="mermaid mermaid-chart"></div>
-            <div class="diagram-fallback" hidden></div>
+        <div class="card-detail-pane journal-block" data-detail-pane="journal" hidden>
+          <div class="section-block">
+            <h4>分录</h4>
+            <div class="journal-list"></div>
           </div>
         </div>
       </div>
@@ -16734,7 +16835,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
     container.appendChild(element);
     return element;
   }
-  function renderSourceNotes(container, markdown, mermaidNodes) {
+  function renderSourceNotes(container, markdown, mermaidNodes, headingPrefix = "") {
     clearNode(container);
     let list = null;
     let listType = "";
@@ -16790,6 +16891,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       container.appendChild(table);
       tableLines = [];
     };
+    let headingIndex = 0;
     markdown.split(/\r?\n/).forEach((rawLine, index) => {
       const line = rawLine.trimEnd();
       const codeFence = line.match(/^(```|~~~)\s*([\w-]*)\s*$/);
@@ -16824,7 +16926,11 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       const heading = line.match(/^(#{2,6})\s+(.+)$/);
       if (heading) {
         closeList();
-        appendMarkdownElement(container, heading[1].length <= 2 ? "h4" : heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+        const headingElement = appendMarkdownElement(container, heading[1].length <= 2 ? "h4" : heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+        if (headingPrefix) {
+          headingElement.id = `${headingPrefix}-${headingIndex}`;
+        }
+        headingIndex += 1;
         return;
       }
       if (/^\s{0,3}(?:\*{3,}|-{3,}|_{3,})\s*$/.test(line)) {
@@ -16874,6 +16980,31 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
     flushCodeBlock();
     flushTable();
   }
+  function renderSourceNotesOutline(container, markdown, headingPrefix) {
+    clearNode(container);
+    const headings = markdown.split(/\r?\n/).map((line) => line.match(/^(#{2,4})\s+(.+)$/)).filter(Boolean);
+    headings.forEach((heading, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "source-notes-outline-link";
+      button.textContent = heading[2];
+      button.addEventListener("click", () => {
+        document.getElementById(`${headingPrefix}-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      container.appendChild(button);
+    });
+    container.hidden = headings.length === 0;
+  }
+  function getQuickReviewItems(entry) {
+    const summary = normalizeText(entry.summary);
+    return entry.conclusion.filter((item) => normalizeText(item) !== summary).slice(0, 3);
+  }
+  function getNextReviewEntry(entry) {
+    return getDailyTaskEntries(studyData.entries).find((candidate) => candidate.id !== entry.id) || studyData.entries.find((candidate) => candidate.topic === entry.topic && candidate.id !== entry.id) || studyData.entries.find((candidate) => candidate.id !== entry.id);
+  }
+  function getNextTopicEntry(entry) {
+    return studyData.entries.find((candidate) => candidate.topic === entry.topic && candidate.id !== entry.id);
+  }
   function updateRenderedCardProgress(entryId) {
     const card = cardList.querySelector(`[data-entry-id="${entryId}"]`);
     if (!card) {
@@ -16905,6 +17036,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       const journalList = fragment.querySelector(".journal-list");
       const diagramBlock = fragment.querySelector(".diagram-block");
       const sourceNotesBlock = fragment.querySelector(".source-notes-block");
+      const sourceNotesOutline = fragment.querySelector(".source-notes-outline");
       const sourceNotes = window.markdownSections?.[entry.id];
       const isExpanded = uiState.expandedIds.has(entry.id);
       const detailsId = `card-details-${entry.id}`;
@@ -16964,11 +17096,30 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       });
       details.hidden = !isExpanded;
       if (sourceNotes && isExpanded) {
-        sourceNotesBlock.hidden = false;
-        renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes);
+        renderSourceNotesOutline(sourceNotesOutline, sourceNotes, `${entry.id}-note`);
+        renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes, `${entry.id}-note`);
       }
+      const tabs = [...fragment.querySelectorAll("[data-detail-tab]")];
+      const panes = [...fragment.querySelectorAll("[data-detail-pane]")];
+      const availableTabs = /* @__PURE__ */ new Set(["overview"]);
+      if (sourceNotes) availableTabs.add("notes");
+      if (entry.journalEntries.length > 0) availableTabs.add("journal");
+      tabs.forEach((tab) => {
+        const tabName = tab.dataset.detailTab;
+        tab.hidden = !availableTabs.has(tabName);
+        tab.addEventListener("click", () => {
+          tabs.forEach((button) => {
+            const active = button === tab;
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-selected", String(active));
+          });
+          panes.forEach((pane) => {
+            pane.hidden = pane.dataset.detailPane !== tabName;
+          });
+        });
+      });
       const sections = [
-        [".conclusion-list", entry.conclusion],
+        [".conclusion-list", getQuickReviewItems(entry)],
         [".reasoning-list", entry.reasoning],
         [".memory-list", entry.memory],
         [".pitfalls-list", entry.pitfalls]
@@ -16983,7 +17134,6 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
           createListItems(list, items);
         });
         if (entry.journalEntries.length > 0) {
-          journalBlock.hidden = false;
           entry.journalEntries.forEach((journalEntry) => {
             journalList.appendChild(createJournalEntryElement(journalEntry));
           });
@@ -17006,6 +17156,29 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
             button.addEventListener("click", () => openRelatedEntry(relatedEntry.id));
             relatedList.appendChild(button);
           });
+        }
+      }
+      if (isExpanded) {
+        const nextReviewEntry = getNextReviewEntry(entry);
+        const nextReviewBlock = fragment.querySelector(".next-review-block");
+        const nextReviewActions = fragment.querySelector(".next-review-actions");
+        if (nextReviewEntry) {
+          nextReviewBlock.hidden = false;
+          const nextButton = document.createElement("button");
+          nextButton.type = "button";
+          nextButton.className = "next-review-button";
+          nextButton.textContent = `下一张优先复习：${nextReviewEntry.question}`;
+          nextButton.addEventListener("click", () => openRelatedEntry(nextReviewEntry.id));
+          nextReviewActions.appendChild(nextButton);
+        }
+        const nextTopicEntry = getNextTopicEntry(entry);
+        if (nextTopicEntry && nextTopicEntry.id !== nextReviewEntry?.id) {
+          const topicButton = document.createElement("button");
+          topicButton.type = "button";
+          topicButton.className = "next-review-button";
+          topicButton.textContent = `本专题练习：${nextTopicEntry.question}`;
+          topicButton.addEventListener("click", () => openRelatedEntry(nextTopicEntry.id));
+          nextReviewActions.appendChild(topicButton);
         }
       }
       if (entry.diagram && isExpanded) {

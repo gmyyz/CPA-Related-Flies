@@ -98,7 +98,7 @@ function appendMarkdownElement(container, tagName, text, className = "") {
   container.appendChild(element);
   return element;
 }
-function renderSourceNotes(container, markdown, mermaidNodes) {
+function renderSourceNotes(container, markdown, mermaidNodes, headingPrefix = "") {
   clearNode(container);
   let list = null;
   let listType = "";
@@ -154,6 +154,7 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
     container.appendChild(table);
     tableLines = [];
   };
+  let headingIndex = 0;
   markdown.split(/\r?\n/).forEach((rawLine, index) => {
     const line = rawLine.trimEnd();
     const codeFence = line.match(/^(```|~~~)\s*([\w-]*)\s*$/);
@@ -188,7 +189,11 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
     const heading = line.match(/^(#{2,6})\s+(.+)$/);
     if (heading) {
       closeList();
-      appendMarkdownElement(container, heading[1].length <= 2 ? "h4" : heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+      const headingElement = appendMarkdownElement(container, heading[1].length <= 2 ? "h4" : heading[1].length <= 3 ? "h5" : "h6", heading[2]);
+      if (headingPrefix) {
+        headingElement.id = `${headingPrefix}-${headingIndex}`;
+      }
+      headingIndex += 1;
       return;
     }
     if (/^\s{0,3}(?:\*{3,}|-{3,}|_{3,})\s*$/.test(line)) {
@@ -238,6 +243,33 @@ function renderSourceNotes(container, markdown, mermaidNodes) {
   flushCodeBlock();
   flushTable();
 }
+function renderSourceNotesOutline(container, markdown, headingPrefix) {
+  clearNode(container);
+  const headings = markdown.split(/\r?\n/).map((line) => line.match(/^(#{2,4})\s+(.+)$/)).filter(Boolean);
+  headings.forEach((heading, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "source-notes-outline-link";
+    button.textContent = heading[2];
+    button.addEventListener("click", () => {
+      document.getElementById(`${headingPrefix}-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    container.appendChild(button);
+  });
+  container.hidden = headings.length === 0;
+}
+function getQuickReviewItems(entry) {
+  const summary = normalizeText(entry.summary);
+  return entry.conclusion.filter((item) => normalizeText(item) !== summary).slice(0, 3);
+}
+function getNextReviewEntry(entry) {
+  return getDailyTaskEntries(studyData.entries).find((candidate) => candidate.id !== entry.id)
+    || studyData.entries.find((candidate) => candidate.topic === entry.topic && candidate.id !== entry.id)
+    || studyData.entries.find((candidate) => candidate.id !== entry.id);
+}
+function getNextTopicEntry(entry) {
+  return studyData.entries.find((candidate) => candidate.topic === entry.topic && candidate.id !== entry.id);
+}
 function updateRenderedCardProgress(entryId) {
   const card = cardList.querySelector(`[data-entry-id="${entryId}"]`);
   if (!card) {
@@ -269,6 +301,7 @@ function renderCards(entries, totalEntries = entries.length) {
     const journalList = fragment.querySelector(".journal-list");
     const diagramBlock = fragment.querySelector(".diagram-block");
     const sourceNotesBlock = fragment.querySelector(".source-notes-block");
+    const sourceNotesOutline = fragment.querySelector(".source-notes-outline");
     const sourceNotes = window.markdownSections?.[entry.id];
     const isExpanded = uiState.expandedIds.has(entry.id);
     const detailsId = `card-details-${entry.id}`;
@@ -332,11 +365,30 @@ function renderCards(entries, totalEntries = entries.length) {
     });
     details.hidden = !isExpanded;
     if (sourceNotes && isExpanded) {
-      sourceNotesBlock.hidden = false;
-      renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes);
+      renderSourceNotesOutline(sourceNotesOutline, sourceNotes, `${entry.id}-note`);
+      renderSourceNotes(sourceNotesBlock.querySelector(".source-notes"), sourceNotes, mermaidNodes, `${entry.id}-note`);
     }
+    const tabs = [...fragment.querySelectorAll("[data-detail-tab]")];
+    const panes = [...fragment.querySelectorAll("[data-detail-pane]")];
+    const availableTabs = new Set(["overview"]);
+    if (sourceNotes) availableTabs.add("notes");
+    if (entry.journalEntries.length > 0) availableTabs.add("journal");
+    tabs.forEach((tab) => {
+      const tabName = tab.dataset.detailTab;
+      tab.hidden = !availableTabs.has(tabName);
+      tab.addEventListener("click", () => {
+        tabs.forEach((button) => {
+          const active = button === tab;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-selected", String(active));
+        });
+        panes.forEach((pane) => {
+          pane.hidden = pane.dataset.detailPane !== tabName;
+        });
+      });
+    });
     const sections = [
-      [".conclusion-list", entry.conclusion],
+      [".conclusion-list", getQuickReviewItems(entry)],
       [".reasoning-list", entry.reasoning],
       [".memory-list", entry.memory],
       [".pitfalls-list", entry.pitfalls]
@@ -351,7 +403,6 @@ function renderCards(entries, totalEntries = entries.length) {
         createListItems(list, items);
       });
       if (entry.journalEntries.length > 0) {
-        journalBlock.hidden = false;
         entry.journalEntries.forEach((journalEntry) => {
           journalList.appendChild(createJournalEntryElement(journalEntry));
         });
@@ -374,6 +425,29 @@ function renderCards(entries, totalEntries = entries.length) {
           button.addEventListener("click", () => openRelatedEntry(relatedEntry.id));
           relatedList.appendChild(button);
         });
+      }
+    }
+    if (isExpanded) {
+      const nextReviewEntry = getNextReviewEntry(entry);
+      const nextReviewBlock = fragment.querySelector(".next-review-block");
+      const nextReviewActions = fragment.querySelector(".next-review-actions");
+      if (nextReviewEntry) {
+        nextReviewBlock.hidden = false;
+        const nextButton = document.createElement("button");
+        nextButton.type = "button";
+        nextButton.className = "next-review-button";
+        nextButton.textContent = `下一张优先复习：${nextReviewEntry.question}`;
+        nextButton.addEventListener("click", () => openRelatedEntry(nextReviewEntry.id));
+        nextReviewActions.appendChild(nextButton);
+      }
+      const nextTopicEntry = getNextTopicEntry(entry);
+      if (nextTopicEntry && nextTopicEntry.id !== nextReviewEntry?.id) {
+        const topicButton = document.createElement("button");
+        topicButton.type = "button";
+        topicButton.className = "next-review-button";
+        topicButton.textContent = `本专题练习：${nextTopicEntry.question}`;
+        topicButton.addEventListener("click", () => openRelatedEntry(nextTopicEntry.id));
+        nextReviewActions.appendChild(topicButton);
       }
     }
     if (entry.diagram && isExpanded) {

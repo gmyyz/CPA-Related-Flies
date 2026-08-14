@@ -244,6 +244,15 @@
         flex-direction: column;
       }
 
+      .source-notes-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .source-notes-outline {
+        justify-content: flex-start;
+      }
+
       .toolbar-actions {
         justify-content: flex-start;
       }
