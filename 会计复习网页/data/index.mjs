@@ -26,6 +26,7 @@ import topic23 from "./topics/金融工具.mjs";
 import topic24 from "./topics/总论.mjs";
 import topic25 from "./topics/政府会计.mjs";
 import topic26 from "./topics/外币折算.mjs";
+import topic27 from "./topics/债务重组.mjs";
 
 import { updatedAt } from "./meta.mjs";
 
@@ -55,7 +56,8 @@ const entriesById = new Map([
   ...topic23,
   ...topic24,
   ...topic25,
-  ...topic26
+  ...topic26,
+  ...topic27
 ].map((entry) => [entry.id, entry]));
 
 export const entryOrder = [
@@ -281,7 +283,19 @@ export const entryOrder = [
   "foreign-currency-fvoci-debt-vs-equity-complete-cases",
   "foreign-operation-surplus-reserve-current-period-rate",
   "foreign-operation-net-investment-monetary-item-consolidation",
-  "foreign-operation-disposal-translation-difference-control"
+  "foreign-operation-disposal-translation-difference-control",
+  "foreign-currency-capital-contribution-no-approximate-rate",
+  "foreign-currency-contract-assets-liabilities-provisions-classification",
+  "debt-restructuring-debt-to-equity-substance-and-use",
+  "debt-restructuring-creditor-share-investment-classification",
+  "debt-restructuring-creditor-assets-measurement-anchor",
+  "debt-restructuring-creditor-disposal-group-allocation",
+  "debt-restructuring-creditor-asset-held-for-sale-on-receipt",
+  "debt-restructuring-creditor-modified-terms-derecognition",
+  "debt-restructuring-debtor-asset-settlement-profit-classification",
+  "debt-restructuring-debtor-debt-to-equity-fair-value-order",
+  "debt-restructuring-debtor-modified-terms-ten-percent-test",
+  "debt-restructuring-creditor-nonfinancial-asset-taxes-cost"
 ];
 
 export const studyData = {
