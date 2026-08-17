@@ -61,6 +61,8 @@ const chapterDefinitions = [
   { id: "lease", title: "第十四章 租赁", topics: ["租赁"] },
   { id: "investment-property", title: "投资性房地产", topics: ["投资性房地产"] },
   { id: "government-grants", title: "政府补助", topics: ["政府补助"] },
+  { id: "government-accounting", title: "政府会计", topics: ["政府会计"] },
+  { id: "foreign-currency-translation", title: "外币折算", topics: ["外币折算"] },
   { id: "fair-value", title: "公允价值计量", topics: ["公允价值计量"] },
   { id: "non-monetary-exchange", title: "非货币性资产交换", topics: ["非货币性资产交换"] },
   { id: "revenue", title: "收入准则", topics: ["收入准则"] }
