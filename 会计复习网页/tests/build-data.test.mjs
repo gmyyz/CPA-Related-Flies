@@ -53,7 +53,7 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   const entries = dataContext.window.studyData?.entries;
   assert.ok(Array.isArray(entries));
   assert.deepEqual(JSON.parse(JSON.stringify(studyData)), JSON.parse(JSON.stringify(dataContext.window.studyData)));
-  assert.equal(entries.length, 213);
+  assert.equal(entries.length, 235);
   assert.equal(new Set(entries.map((entry) => entry.id)).size, entries.length);
   entries.forEach((entry) => {
     assert.equal(typeof entry.id, "string");

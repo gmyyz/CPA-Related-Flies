@@ -24,6 +24,9 @@ import topic21 from "./topics/收入准则.mjs";
 import topic22 from "./topics/财务报告.mjs";
 import topic23 from "./topics/金融工具.mjs";
 import topic24 from "./topics/总论.mjs";
+import topic25 from "./topics/政府会计.mjs";
+import topic26 from "./topics/外币折算.mjs";
+import topic27 from "./topics/债务重组.mjs";
 
 import { updatedAt } from "./meta.mjs";
 
@@ -51,12 +54,16 @@ const entriesById = new Map([
   ...topic21,
   ...topic22,
   ...topic23,
-  ...topic24
+  ...topic24,
+  ...topic25,
+  ...topic26,
+  ...topic27
 ].map((entry) => [entry.id, entry]));
 
 export const entryOrder = [
   "fixed-assets-inventory-surplus-loss-treatment",
   "inventory-surplus-cost-basis-natural-vs-other",
+  "inventory-foreign-currency-nrv-closing-rate-impairment",
   "share-based-payment-cash-vs-equity",
   "share-based-payment-employee-platform-substance",
   "share-based-payment-restricted-stock-option-types",
@@ -226,6 +233,7 @@ export const entryOrder = [
   "non-monetary-exchange-equity-investment-scope",
   "non-monetary-exchange-inbound-fair-value-fees-vs-output-vat",
   "revenue-five-step-and-control",
+  "revenue-contract-asset-foreign-currency-nonmonetary-vs-receivable",
   "revenue-contract-formation-five-conditions",
   "revenue-distinct-performance-obligation",
   "revenue-contract-combination-vs-po-combination",
@@ -267,7 +275,27 @@ export const entryOrder = [
   "financial-instruments-fair-value-hedge-carrying-adjustment",
   "financial-instruments-written-call-fixed-for-fixed-equity",
   "overview-assumptions-constructive-obligation-error-vs-subsequent-event",
-  "overview-accounting-vs-sustainability-information-quality"
+  "overview-accounting-vs-sustainability-information-quality",
+  "government-accounting-fiscal-authorized-payment-flow",
+  "foreign-currency-functional-currency-change-no-exchange-difference",
+  "foreign-currency-exchange-middle-rate-bank-buy-sell-rate",
+  "foreign-currency-fvtpl-nonmonetary-fair-value-and-fx",
+  "foreign-currency-fvoci-debt-vs-equity-complete-cases",
+  "foreign-operation-surplus-reserve-current-period-rate",
+  "foreign-operation-net-investment-monetary-item-consolidation",
+  "foreign-operation-disposal-translation-difference-control",
+  "foreign-currency-capital-contribution-no-approximate-rate",
+  "foreign-currency-contract-assets-liabilities-provisions-classification",
+  "debt-restructuring-debt-to-equity-substance-and-use",
+  "debt-restructuring-creditor-share-investment-classification",
+  "debt-restructuring-creditor-assets-measurement-anchor",
+  "debt-restructuring-creditor-disposal-group-allocation",
+  "debt-restructuring-creditor-asset-held-for-sale-on-receipt",
+  "debt-restructuring-creditor-modified-terms-derecognition",
+  "debt-restructuring-debtor-asset-settlement-profit-classification",
+  "debt-restructuring-debtor-debt-to-equity-fair-value-order",
+  "debt-restructuring-debtor-modified-terms-ten-percent-test",
+  "debt-restructuring-creditor-nonfinancial-asset-taxes-cost"
 ];
 
 export const studyData = {
