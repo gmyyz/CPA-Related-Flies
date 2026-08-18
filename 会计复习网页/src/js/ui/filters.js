@@ -204,8 +204,7 @@ function getFilteredEntries() {
   const filteredEntries = sortEntries(studyData.entries.filter(matchesFilters));
   return state.reviewFilter === "daily" ? filteredEntries.slice(0, DAILY_TASK_LIMIT) : filteredEntries;
 }
-function getVisibleEntries() {
-  const filteredEntries = getFilteredEntries();
+function getVisibleEntries(filteredEntries) {
   if (!state.randomEntryId) {
     return filteredEntries;
   }
@@ -214,9 +213,10 @@ function getVisibleEntries() {
 }
 function renderResultsMeta(filteredEntries, visibleEntries, totalVisibleEntries = visibleEntries.length) {
   clearNode(resultsMeta);
-  const visibleJournalCount = getFilteredJournalItems(visibleEntries).length;
-  const visibleJournalSourceCount = new Set(getFilteredJournalItems(visibleEntries).map((item) => item.entry.id)).size;
-  const visibleJournalAccountCount = new Set(getFilteredJournalItems(visibleEntries).flatMap((item) => item.accounts)).size;
+  const visibleJournalItems = isJournalView() ? getFilteredJournalItems(visibleEntries) : [];
+  const visibleJournalCount = visibleJournalItems.length;
+  const visibleJournalSourceCount = new Set(visibleJournalItems.map((item) => item.entry.id)).size;
+  const visibleJournalAccountCount = new Set(visibleJournalItems.flatMap((item) => item.accounts)).size;
   const summary = document.createElement("div");
   summary.textContent = isJournalView() ? `当前分录速查显示 ${visibleJournalCount} 条分录，来自 ${visibleJournalSourceCount} 个知识点，涉及 ${visibleJournalAccountCount} 个科目。` : isDashboardView() ? `看板正在分析 ${filteredEntries.length} / ${studyData.entries.length} 个知识点，统计会随筛选即时更新。` : `当前已加载 ${visibleEntries.length} / ${totalVisibleEntries} 个知识点，筛选结果共 ${filteredEntries.length} 个。`;
   resultsMeta.appendChild(summary);

@@ -10,7 +10,7 @@ function renderResults() {
     state.randomEntrySource = "";
     syncPersistence();
   }
-  const visibleEntries = getVisibleEntries();
+  const visibleEntries = getVisibleEntries(filteredEntries);
   const cardEntries = isCardsView() && !state.randomEntryId
     ? visibleEntries.slice(0, uiState.cardLimit)
     : visibleEntries;
