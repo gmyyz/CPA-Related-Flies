@@ -311,7 +311,9 @@ function renderCards(entries, totalEntries = entries.length) {
     fragment.querySelector(".topic-badge").textContent = entry.topic;
     fragment.querySelector(".difficulty-badge").textContent = entry.difficulty;
     fragment.querySelector(".card-meta").textContent = `更新于 ${entry.updatedAt} · ${reviewText}`;
-    fragment.querySelector(".question-title").textContent = entry.question;
+    const questionTitle = fragment.querySelector(".question-title");
+    questionTitle.textContent = entry.question;
+    questionTitle.classList.toggle("text-danger", entry.titleDanger === true);
     clearNode(summary);
     appendInlineMarkdown(summary, entry.summary);
     summary.hidden = state.quizMode && !isExpanded;
