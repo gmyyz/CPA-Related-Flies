@@ -117,7 +117,7 @@ function updateActiveFilterButtons() {
 }
 function matchesFilters(entry) {
   const chapter = getChapterById(state.chapter);
-  const chapterMatch = !chapter || chapter.id === "全部" || chapter.topics.includes(entry.topic);
+  const chapterMatch = chapterMatchesEntry(chapter, entry);
   const topicMatch = state.topic === "全部" || entry.topic === state.topic;
   const tagMatch = state.tag === "全部" || entry.topic === state.tag || entry.difficulty === state.tag || entry.tags.includes(state.tag);
   const reviewMatch = matchesReviewFilter(entry);
