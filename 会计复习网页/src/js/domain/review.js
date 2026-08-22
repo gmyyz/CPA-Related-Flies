@@ -19,6 +19,15 @@ function getChapterById(chapterId) {
 function getChapterForTopic(topic) {
   return chapters.find((chapter) => chapter.id !== "全部" && chapter.topics.includes(topic));
 }
+function chapterMatchesEntry(chapter, entry) {
+  if (!chapter || chapter.id === "全部") {
+    return true;
+  }
+  if (chapter.entryIds?.length) {
+    return chapter.entryIds.includes(entry.id);
+  }
+  return chapter.topics.includes(entry.topic);
+}
 function buildChapterOptions(entries) {
   const topicCounts = entries.reduce((counts, entry) => {
     counts.set(entry.topic, (counts.get(entry.topic) || 0) + 1);
@@ -31,9 +40,9 @@ function buildChapterOptions(entries) {
     topics: [topic]
   }));
   return [...chapterDefinitions, ...uncategorizedChapters].map((chapter) => {
-    const count = chapter.id === "全部" ? entries.length : chapter.topics.reduce((sum, topic) => sum + (topicCounts.get(topic) || 0), 0);
+    const count = entries.filter((entry) => chapterMatchesEntry(chapter, entry)).length;
     return { ...chapter, count };
-  }).filter((chapter) => chapter.id === "全部" || chapter.count > 0);
+  });
 }
 function buildTagItems(entries) {
   const counts = /* @__PURE__ */ new Map();
