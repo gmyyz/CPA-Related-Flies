@@ -12,11 +12,9 @@ node_modules/
 .tmp_pdf_pages/
 tmp_pdf_pages/
 
-# Local chapter PDFs kept outside version control
-/06 06第六章 长期股权投资与合营安排.pdf
-/13第十三章 金融工具与保险合同(PDF笔记版).pdf
-/14 14第十四章 租赁.pdf
-/21 第二十一章 债务重组.pdf
-/22 第二十二章 外币折算.pdf
-/28 28第二十八章 每股收益.pdf
-/30 30第三十章  政府及民间非营利组织会计.pdf
+# Local-only study assets and validation artifacts
+/01-会计/03.完整讲义/
+/.local-artifacts/
+/output/
+*.pdf
+*.xlsx

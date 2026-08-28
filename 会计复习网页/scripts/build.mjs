@@ -20,17 +20,21 @@ const revenueEntryIds = [
   "revenue-five-step-and-control", "revenue-contract-formation-five-conditions", "revenue-distinct-performance-obligation", "revenue-contract-combination-vs-po-combination", "revenue-performance-and-control", "revenue-over-time-three-criteria", "revenue-point-in-time-control-indicators", "revenue-transaction-price-variable-consideration-ip-royalty", "revenue-transaction-price-significant-financing", "revenue-transaction-price-noncash-consideration", "revenue-transaction-price-consideration-payable-to-customer", "revenue-allocation-subsequent-changes", "revenue-material-right-rebates-points", "revenue-contract-costs-fulfillment-acquisition-impairment", "revenue-transportation-costs", "revenue-sales-with-right-of-return", "revenue-principal-vs-agent", "revenue-ip-license-special-rules", "revenue-repurchase-arrangements", "revenue-customer-unexercised-rights", "revenue-nonrefundable-upfront-fee", "revenue-refund-liability-vs-other-payables"
 ];
 
+function normalizeLineEndings(text) {
+  return text.replace(/\r\n?/g, "\n");
+}
+
 async function readUtf8Text(filePath) {
   const text = await readFile(filePath, "utf8");
   if (!text.startsWith("%TSD-Header-###%")) {
-    return text;
+    return normalizeLineEndings(text);
   }
   const script = "import pathlib, sys; sys.stdout.write(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))";
   const { stdout } = await execFileAsync("python", ["-c", script, filePath], {
     env: { ...process.env, PYTHONIOENCODING: "utf-8" },
     maxBuffer: 100 * 1024 * 1024
   });
-  return stdout;
+  return normalizeLineEndings(stdout);
 }
 
 function rewriteRelativeMarkdownUrls(markdown, sourcePath) {
