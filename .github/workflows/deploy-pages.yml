@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build offline review page
-        run: npm run build
+      - name: Validate and build offline review page
+        run: npm run check
 
       - name: Prepare Pages artifact
         run: |
