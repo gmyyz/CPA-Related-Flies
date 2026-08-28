@@ -1,6 +1,294 @@
 // 此文件由 data/ 专题源自动生成；请编辑 data/topics/ 和 data/index.mjs，勿直接修改。
 window.studyData = {
-  "updatedAt": "2026-08-26",
+  "updatedAt": "2026-08-28",
+  "chapters": [
+    {
+      "id": "overview",
+      "title": "第一章 总论",
+      "fileName": "01-总论.md",
+      "topics": [
+        "总论"
+      ]
+    },
+    {
+      "id": "inventory",
+      "title": "第二章 存货",
+      "fileName": "02-存货.md",
+      "topics": [
+        "存货"
+      ]
+    },
+    {
+      "id": "fixed-assets",
+      "title": "第三章 固定资产",
+      "fileName": "03-固定资产.md",
+      "topics": [
+        "固定资产"
+      ]
+    },
+    {
+      "id": "intangible-assets",
+      "title": "第四章 无形资产",
+      "fileName": "04-无形资产.md",
+      "topics": [
+        "无形资产"
+      ]
+    },
+    {
+      "id": "investment-property",
+      "title": "第五章 投资性房地产",
+      "fileName": "05-投资性房地产.md",
+      "topics": [
+        "投资性房地产"
+      ]
+    },
+    {
+      "id": "long-term-equity-investments",
+      "title": "第六章 长期股权投资与合营安排",
+      "fileName": "06-长期股权投资与合营安排.md",
+      "topics": [
+        "长期股权投资"
+      ]
+    },
+    {
+      "id": "impairment",
+      "title": "第七章 资产减值",
+      "fileName": "07-资产减值.md",
+      "topics": [
+        "资产减值"
+      ]
+    },
+    {
+      "id": "liabilities",
+      "title": "第八章 负债",
+      "fileName": "08-负债.md",
+      "topics": [
+        "负债"
+      ]
+    },
+    {
+      "id": "employee-benefits",
+      "title": "第九章 职工薪酬",
+      "fileName": "09-职工薪酬.md",
+      "topics": [
+        "应付职工薪酬"
+      ]
+    },
+    {
+      "id": "share-based-payment",
+      "title": "第十章 股份支付",
+      "fileName": "10-股份支付.md",
+      "topics": [
+        "股份支付"
+      ]
+    },
+    {
+      "id": "borrowing-costs",
+      "title": "第十一章 借款费用",
+      "fileName": "11-借款费用.md",
+      "topics": [
+        "借款费用"
+      ]
+    },
+    {
+      "id": "contingencies",
+      "title": "第十二章 或有事项",
+      "fileName": "12-或有事项.md",
+      "topics": [
+        "或有事项"
+      ]
+    },
+    {
+      "id": "financial-instruments",
+      "title": "第十三章 金融工具与保险合同",
+      "fileName": "13-金融工具与保险合同.md",
+      "topics": [
+        "金融工具"
+      ]
+    },
+    {
+      "id": "lease",
+      "title": "第十四章 租赁",
+      "fileName": "14-租赁.md",
+      "topics": [
+        "租赁"
+      ]
+    },
+    {
+      "id": "held-for-sale",
+      "title": "第十五章 持有待售的非流动资产、处置组和终止经营",
+      "fileName": "15-持有待售和终止经营.md",
+      "topics": [
+        "持有待售和终止经营"
+      ]
+    },
+    {
+      "id": "owners-equity",
+      "title": "第十六章 所有者权益",
+      "fileName": "16-所有者权益.md",
+      "topics": []
+    },
+    {
+      "id": "revenue",
+      "title": "第十七章 收入、费用和利润",
+      "fileName": "17-收入费用和利润.md",
+      "topics": [
+        "收入准则"
+      ]
+    },
+    {
+      "id": "government-grants",
+      "title": "第十八章 政府补助",
+      "fileName": "18-政府补助.md",
+      "topics": [
+        "政府补助"
+      ]
+    },
+    {
+      "id": "income-tax",
+      "title": "第十九章 所得税",
+      "fileName": "19-所得税.md",
+      "topics": [
+        "所得税费用"
+      ]
+    },
+    {
+      "id": "non-monetary-exchange",
+      "title": "第二十章 非货币性资产交换",
+      "fileName": "20-非货币性资产交换.md",
+      "topics": [
+        "非货币性资产交换"
+      ]
+    },
+    {
+      "id": "debt-restructuring",
+      "title": "第二十一章 债务重组",
+      "fileName": "21-债务重组.md",
+      "topics": [
+        "债务重组"
+      ]
+    },
+    {
+      "id": "foreign-currency-translation",
+      "title": "第二十二章 外币折算",
+      "fileName": "22-外币折算.md",
+      "topics": [
+        "外币折算"
+      ]
+    },
+    {
+      "id": "financial-reporting",
+      "title": "第二十三章 财务报告",
+      "fileName": "23-财务报告.md",
+      "topics": [
+        "财务报告"
+      ],
+      "entryIds": [
+        "financial-reporting-offsetting-vs-net-presentation",
+        "financial-reporting-liability-current-noncurrent-presentation",
+        "financial-reporting-current-noncurrent-line-items-table",
+        "financial-reporting-prepaid-rent-vs-contract-liability-vat",
+        "financial-reporting-revenue-financial-instrument-line-items",
+        "financial-reporting-cash-flow-bill-discounting",
+        "financial-reporting-cash-flow-bill-endorsement-materials",
+        "financial-reporting-cash-flow-pledged-time-deposit",
+        "financial-reporting-cash-flow-lessee-lease-payments",
+        "financial-reporting-reportable-segment-new-and-continuing",
+        "financial-reporting-related-party-identification-framework",
+        "financial-reporting-related-party-consolidated-scope-disclosure",
+        "financial-reporting-related-party-group-boundary-associates",
+        "financial-reporting-annual-vs-interim-reporting",
+        "financial-reporting-cash-flow-investing-items",
+        "financial-reporting-cash-flow-financing-items",
+        "financial-reporting-cash-flow-exchange-rate-and-supplement"
+      ]
+    },
+    {
+      "id": "accounting-changes",
+      "title": "第二十四章 会计政策、会计估计及其变更和差错更正",
+      "fileName": "24-会计政策会计估计及差错更正.md",
+      "topics": [
+        "会计政策、会计估计及差错更正"
+      ]
+    },
+    {
+      "id": "subsequent-events",
+      "title": "第二十五章 资产负债表日后事项",
+      "fileName": "25-资产负债表日后事项.md",
+      "topics": [
+        "资产负债表日后事项"
+      ]
+    },
+    {
+      "id": "business-combinations",
+      "title": "第二十六章 企业合并",
+      "fileName": "26-企业合并.md",
+      "topics": [
+        "合并财务报表"
+      ],
+      "entryIds": [
+        "consolidation-common-control-retained-earnings-restore",
+        "consolidation-contingent-consideration-common-vs-noncommon",
+        "consolidation-contingent-consideration-own-shares-fixed-for-fixed",
+        "consolidation-contingent-consideration-profit-commitment",
+        "consolidation-indemnification-asset-litigation",
+        "consolidation-measurement-period-contingent-consideration-goodwill",
+        "consolidation-reverse-acquisition-cost-minority-interest",
+        "consolidation-deferred-tax-recognition-and-offsetting"
+      ]
+    },
+    {
+      "id": "consolidation",
+      "title": "第二十七章 合并财务报表",
+      "fileName": "27-合并财务报表.md",
+      "topics": [
+        "合并财务报表"
+      ],
+      "entryIds": [
+        "consolidation-downstream-minority-profit",
+        "consolidation-downstream-upstream-comparison",
+        "fixed-assets-internal-trade-core-logic",
+        "downstream-fixed-assets-depreciation",
+        "consolidation-variable-returns-control",
+        "consolidation-investment-income-profit-distribution-bridge",
+        "consolidation-workpaper-main-sequence-and-dependencies",
+        "consolidation-inventory-rollforward-opening-differences"
+      ]
+    },
+    {
+      "id": "earnings-per-share",
+      "title": "第二十八章 每股收益",
+      "fileName": "28-每股收益.md",
+      "topics": [
+        "财务报告"
+      ],
+      "entryIds": [
+        "financial-reporting-basic-eps-common-control-share-weighting",
+        "financial-reporting-diluted-eps-potential-shares-forward-repurchase",
+        "financial-reporting-basic-eps-restricted-stock-vesting-period",
+        "financial-reporting-diluted-eps-restricted-stock-treasury-stock-method",
+        "financial-reporting-diluted-eps-multiple-potential-ordinary-shares-order",
+        "financial-reporting-basic-eps-rights-issue-bonus-element",
+        "financial-reporting-eps-retrospective-recalculation-events"
+      ]
+    },
+    {
+      "id": "fair-value",
+      "title": "第二十九章 公允价值计量",
+      "fileName": "29-公允价值计量.md",
+      "topics": [
+        "公允价值计量"
+      ]
+    },
+    {
+      "id": "government-accounting",
+      "title": "第三十章 政府及民间非营利组织会计",
+      "fileName": "30-政府及民间非营利组织会计.md",
+      "topics": [
+        "政府会计"
+      ]
+    }
+  ],
   "entries": [
     {
       "id": "fixed-assets-inventory-surplus-loss-treatment",
@@ -375,7 +663,8 @@ window.studyData = {
         "权益结算",
         "资本公积",
         "应付职工薪酬"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-employee-platform-substance",
@@ -410,7 +699,8 @@ window.studyData = {
         "实质重于形式",
         "服务期",
         "代持"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-restricted-stock-option-types",
@@ -446,7 +736,8 @@ window.studyData = {
         "股票期权",
         "二类限制性股票",
         "权益结算"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-intrinsic-value-equity-settled",
@@ -479,7 +770,8 @@ window.studyData = {
         "内在价值",
         "资本公积",
         "重新计量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-early-settlement-cancellation",
@@ -512,7 +804,8 @@ window.studyData = {
         "结算",
         "加速可行权",
         "回购权益工具"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-vesting-conditions-value-quantity",
@@ -545,7 +838,8 @@ window.studyData = {
         "市场条件",
         "非市场条件",
         "非可行权条件"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-exercise-share-source",
@@ -578,7 +872,8 @@ window.studyData = {
         "库存股",
         "股本",
         "资本公积"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-modification-favorable",
@@ -636,7 +931,8 @@ window.studyData = {
         "缩短等待期",
         "延长服务期",
         "取消"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-cancel-settle-nonmarket-failure",
@@ -691,7 +987,8 @@ window.studyData = {
         "不利修改",
         "减少授予数量",
         "估计修正"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-replacement-awards",
@@ -724,7 +1021,8 @@ window.studyData = {
         "取消",
         "新授予",
         "现金补偿"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-cash-to-equity-modification",
@@ -764,7 +1062,8 @@ window.studyData = {
         "不利修改",
         "应付职工薪酬",
         "资本公积"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-multi-tier-performance-not-tranche",
@@ -797,7 +1096,8 @@ window.studyData = {
         "非市场条件",
         "预计等待期",
         "业绩条件"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-after-vesting-date",
@@ -1121,7 +1421,8 @@ window.studyData = {
         "回购义务",
         "利润分配",
         "管理费用"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "share-based-payment-exam-workflow-with-eps",
@@ -1243,7 +1544,8 @@ window.studyData = {
         "养老保险",
         "失业保险",
         "设定提存计划"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "employee-benefits-internal-retirement-termination-benefits",
@@ -1278,7 +1580,8 @@ window.studyData = {
         "辞退福利",
         "预计负债",
         "管理费用"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "employee-benefits-internal-retirement-provision-payroll-payable",
@@ -1314,7 +1617,8 @@ window.studyData = {
         "辞退福利",
         "会计科目",
         "管理费用"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "employee-benefits-termination-benefits-multiple-choice",
@@ -1353,7 +1657,8 @@ window.studyData = {
         "现值计量",
         "管理费用",
         "12个月"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "liabilities-consumption-tax-system-map",
@@ -1393,7 +1698,8 @@ window.studyData = {
         "税金及附加",
         "应交税费",
         "在建工程"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "liabilities-consumption-tax-entrusted-processing-three-cases",
@@ -1431,7 +1737,8 @@ window.studyData = {
         "应交税费",
         "应交消费税",
         "计税价格"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "liabilities-land-appreciation-tax-classification",
@@ -1575,7 +1882,8 @@ window.studyData = {
         "短期借款",
         "商业承兑汇票",
         "银行承兑汇票"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "liabilities-stamp-tax-and-farmland-occupation-tax",
@@ -1618,7 +1926,8 @@ window.studyData = {
         "耕地占用税",
         "税金及附加",
         "在建工程"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "consolidation-downstream-minority-profit",
@@ -1650,7 +1959,8 @@ window.studyData = {
         "少数股东损益",
         "内部交易抵销",
         "合并报表"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "consolidation-downstream-upstream-comparison",
@@ -1680,7 +1990,8 @@ window.studyData = {
         "逆流交易",
         "少数股东损益",
         "归母净利润"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fixed-assets-internal-trade-core-logic",
@@ -1847,7 +2158,8 @@ window.studyData = {
         "折旧调整",
         "少数股东损益",
         "顺流交易"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "consolidation-common-control-retained-earnings-restore",
@@ -1926,7 +2238,8 @@ window.studyData = {
         "最终控制方",
         "集团口径"
       ],
-      "diagram": "flowchart LR\n  A[同一控制下企业合并] --> B[视同合并主体以前一直存在]\n  B --> C[恢复项目看最终控制方集团口径]\n  C --> D[入集团前形成的项目通常不恢复]\n  C --> E[入集团后形成且归母的历史权益才恢复]\n  B --> F[比较报表追溯重列]\n  F --> G[前期无长期股权投资]\n  G --> H[被合并方净资产先进资本公积]\n  H --> I[再恢复历史权益的原列报属性]\n  F --> J[比较利润表纳入被合并方损益]\n  B --> K[当期长投与子公司权益抵销]\n  K --> L[盈余公积、未分配利润和其他综合收益被冲掉]\n  L --> M[归母留存收益：借资本公积贷盈余公积、未分配利润]\n  L --> N[归母其他综合收益：借资本公积贷其他综合收益]\n  K --> O[少数股东部分保留在少数股东权益]"
+      "diagram": "flowchart LR\n  A[同一控制下企业合并] --> B[视同合并主体以前一直存在]\n  B --> C[恢复项目看最终控制方集团口径]\n  C --> D[入集团前形成的项目通常不恢复]\n  C --> E[入集团后形成且归母的历史权益才恢复]\n  B --> F[比较报表追溯重列]\n  F --> G[前期无长期股权投资]\n  G --> H[被合并方净资产先进资本公积]\n  H --> I[再恢复历史权益的原列报属性]\n  F --> J[比较利润表纳入被合并方损益]\n  B --> K[当期长投与子公司权益抵销]\n  K --> L[盈余公积、未分配利润和其他综合收益被冲掉]\n  L --> M[归母留存收益：借资本公积贷盈余公积、未分配利润]\n  L --> N[归母其他综合收益：借资本公积贷其他综合收益]\n  K --> O[少数股东部分保留在少数股东权益]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-contingent-consideration-common-vs-noncommon",
@@ -1978,7 +2291,8 @@ window.studyData = {
         "金融工具",
         "公允价值变动损益"
       ],
-      "diagram": "flowchart LR\n  A[企业合并或有对价] --> B{同控还是非同控}\n  B -->|同一控制| C[长投成本按最终控制方账面价值]\n  C --> D[按或有事项确认预计负债或资产]\n  D --> E[结算差额调资本公积或留存收益]\n  B -->|非同一控制| F[购买日公允价值进合并成本]\n  F --> G{后续变化}\n  G -->|12个月内旧情况新证据| H[调整商誉]\n  G -->|其他变化| I[权益不处理或金融工具进损益]"
+      "diagram": "flowchart LR\n  A[企业合并或有对价] --> B{同控还是非同控}\n  B -->|同一控制| C[长投成本按最终控制方账面价值]\n  C --> D[按或有事项确认预计负债或资产]\n  D --> E[结算差额调资本公积或留存收益]\n  B -->|非同一控制| F[购买日公允价值进合并成本]\n  F --> G{后续变化}\n  G -->|12个月内旧情况新证据| H[调整商誉]\n  G -->|其他变化| I[权益不处理或金融工具进损益]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-contingent-consideration-own-shares-fixed-for-fixed",
@@ -2033,7 +2347,8 @@ window.studyData = {
         "金融工具",
         "权益工具"
       ],
-      "diagram": "flowchart LR\n  A[自身股份结算或有对价] --> B{购买日股数是否固定}\n  B -->|固定股数| C[权益性质]\n  C --> D[确认其他权益工具]\n  B -->|股数随业绩变动| E{收回还是增发}\n  E -->|收回自身股份| F[交易性金融资产]\n  E -->|增发自身股份| G[交易性金融负债]\n  F --> H[业绩确定后股数固定]\n  G --> H\n  H --> I[重分类为其他权益工具]\n  I --> J{实际结算}\n  J -->|收回注销| K[调整股本和资本公积]\n  J -->|实际增发| L[贷股本和资本公积]"
+      "diagram": "flowchart LR\n  A[自身股份结算或有对价] --> B{购买日股数是否固定}\n  B -->|固定股数| C[权益性质]\n  C --> D[确认其他权益工具]\n  B -->|股数随业绩变动| E{收回还是增发}\n  E -->|收回自身股份| F[交易性金融资产]\n  E -->|增发自身股份| G[交易性金融负债]\n  F --> H[业绩确定后股数固定]\n  G --> H\n  H --> I[重分类为其他权益工具]\n  I --> J{实际结算}\n  J -->|收回注销| K[调整股本和资本公积]\n  J -->|实际增发| L[贷股本和资本公积]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-contingent-consideration-profit-commitment",
@@ -2086,7 +2401,8 @@ window.studyData = {
         "12个月",
         "金融工具"
       ],
-      "diagram": "flowchart LR\n  A[非同控企业合并] --> B[购买日确认或有对价公允价值]\n  B --> C{购买日公允价值}\n  C -->|为0| D[不额外确认或有对价]\n  C -->|大于0| E[计入合并成本]\n  E --> F{后续变化}\n  D --> F\n  F -->|12个月内旧情况新证据| G[调整或有对价和商誉]\n  F -->|后续新情况或超12个月| H[不调长投或商誉]\n  H --> I[金融资产或负债按公允价值进损益]"
+      "diagram": "flowchart LR\n  A[非同控企业合并] --> B[购买日确认或有对价公允价值]\n  B --> C{购买日公允价值}\n  C -->|为0| D[不额外确认或有对价]\n  C -->|大于0| E[计入合并成本]\n  E --> F{后续变化}\n  D --> F\n  F -->|12个月内旧情况新证据| G[调整或有对价和商誉]\n  F -->|后续新情况或超12个月| H[不调长投或商誉]\n  H --> I[金融资产或负债按公允价值进损益]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-indemnification-asset-litigation",
@@ -2352,7 +2668,8 @@ window.studyData = {
         "公允价值",
         "虚拟发行"
       ],
-      "diagram": "flowchart LR\n  A[A发行股份取得B股权] --> B{交易后谁控制A}\n  B -->|B原股东控制| C[会计上B购买A]\n  C --> D[站在B角度计算合并成本]\n  D --> E[虚拟发行B股给A原股东]\n  E --> F[虚拟发行股数乘B股公允价值]\n  F --> G[取得A原股东权益的成本]\n  C --> H[B未换股部分]\n  H --> I[少数股东权益]\n  I --> J[不改变购买A的合并成本]"
+      "diagram": "flowchart LR\n  A[A发行股份取得B股权] --> B{交易后谁控制A}\n  B -->|B原股东控制| C[会计上B购买A]\n  C --> D[站在B角度计算合并成本]\n  D --> E[虚拟发行B股给A原股东]\n  E --> F[虚拟发行股数乘B股公允价值]\n  F --> G[取得A原股东权益的成本]\n  C --> H[B未换股部分]\n  H --> I[少数股东权益]\n  I --> J[不改变购买A的合并成本]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-variable-returns-control",
@@ -2403,7 +2720,8 @@ window.studyData = {
         "非货币利益",
         "高频基础"
       ],
-      "diagram": "flowchart LR\n  A[判断是否存在可变回报] --> B{因参与被投资方\n是否有经济利益或风险}\n  B -->|否| C[通常不存在可变回报]\n  B -->|是| D{该利益或风险\n是否随主体表现而改变}\n  D -->|是| E[存在可变回报]\n  D -->|否| F[进一步看经济实质\n及是否承担信用/存续风险]\n  E --> G[仍须判断是否有权力]\n  G --> H[能否用权力影响自身回报]\n  H --> I[三项同时满足才可能控制]"
+      "diagram": "flowchart LR\n  A[判断是否存在可变回报] --> B{因参与被投资方\n是否有经济利益或风险}\n  B -->|否| C[通常不存在可变回报]\n  B -->|是| D{该利益或风险\n是否随主体表现而改变}\n  D -->|是| E[存在可变回报]\n  D -->|否| F[进一步看经济实质\n及是否承担信用/存续风险]\n  E --> G[仍须判断是否有权力]\n  G --> H[能否用权力影响自身回报]\n  H --> I[三项同时满足才可能控制]",
+      "journalEntries": []
     },
     {
       "id": "consolidation-investment-income-profit-distribution-bridge",
@@ -2804,7 +3122,8 @@ window.studyData = {
         "商誉",
         "高频易错"
       ],
-      "diagram": "flowchart LR\n  A[购买日逐项识别资产和负债] --> B{暂时性差异类型}\n  B -->|应纳税| C[确认递延所得税负债]\n  B -->|可抵扣且很可能利用| D[确认递延所得税资产]\n  C --> E[分别保留确认依据]\n  D --> E\n  E --> F{满足净额列报条件？}\n  F -->|是| G[资产负债表按净额列示]\n  F -->|否| H[资产负债表分别列示]\n  I[仅因纳入合并报表] -.不构成条件.-> G"
+      "diagram": "flowchart LR\n  A[购买日逐项识别资产和负债] --> B{暂时性差异类型}\n  B -->|应纳税| C[确认递延所得税负债]\n  B -->|可抵扣且很可能利用| D[确认递延所得税资产]\n  C --> E[分别保留确认依据]\n  D --> E\n  E --> F{满足净额列报条件？}\n  F -->|是| G[资产负债表按净额列示]\n  F -->|否| H[资产负债表分别列示]\n  I[仅因纳入合并报表] -.不构成条件.-> G",
+      "journalEntries": []
     },
     {
       "id": "lease-commencement-date-vs-ready-for-intended-use",
@@ -2837,7 +3156,8 @@ window.studyData = {
         "使用权控制",
         "预定可使用状态",
         "免租期"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "lease-term-reassessment-controllable-changes",
@@ -2870,7 +3190,8 @@ window.studyData = {
         "续租选择权",
         "购买选择权",
         "合理确定"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "lease-net-investment-unguaranteed-residual-value",
@@ -2903,7 +3224,8 @@ window.studyData = {
         "未担保余值",
         "残值",
         "出租人"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "lease-unguaranteed-residual-value-discounting",
@@ -2936,7 +3258,8 @@ window.studyData = {
         "折现",
         "未实现融资收益",
         "租赁内含利率"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "finance-lease-commencement-entry-breakdown-lessor",
@@ -3574,7 +3897,8 @@ window.studyData = {
         "75%",
         "90%",
         "高度专用"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "finance-lease-subsequent-interest-income-account",
@@ -3916,7 +4240,8 @@ window.studyData = {
         "建筑物",
         "经营租赁",
         "资本增值"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "investment-property-recognition-timing",
@@ -3956,7 +4281,8 @@ window.studyData = {
         "董事会决议",
         "空置建筑物",
         "在建建筑物"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "investment-property-range-vs-acquisition-vs-conversion",
@@ -4000,7 +4326,8 @@ window.studyData = {
         "转换",
         "在建工程",
         "投资性房地产——在建"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "investment-property-subsequent-measurement-modes",
@@ -4047,7 +4374,8 @@ window.studyData = {
         "追溯调整",
         "递延所得税负债",
         "企业会计准则解释第18号"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "investment-property-conversion-system-map",
@@ -4277,7 +4605,8 @@ window.studyData = {
         "无偿性",
         "其他收益",
         "代扣代缴"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-tax-preferences-vat-vs-cit",
@@ -4310,7 +4639,8 @@ window.studyData = {
         "税收返还",
         "企业所得税",
         "税收优惠"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-asset-related-vs-income-related",
@@ -4343,7 +4673,8 @@ window.studyData = {
         "与收益相关",
         "存货",
         "长期资产"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-recognition-before-cash-and-nonmonetary-measurement",
@@ -4377,7 +4708,8 @@ window.studyData = {
         "公允价值",
         "名义金额",
         "递延收益"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-consistency-and-investment-property-analogy",
@@ -4411,7 +4743,8 @@ window.studyData = {
         "一致性",
         "会计政策",
         "投资性房地产"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-unamortized-deferred-income-on-asset-disposal",
@@ -4444,7 +4777,8 @@ window.studyData = {
         "资产处置",
         "总额法",
         "与资产相关"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-system-map",
@@ -4484,7 +4818,8 @@ window.studyData = {
         "净额法",
         "税收返还",
         "补助退回"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-refund-net-method-debit-other-income",
@@ -4517,7 +4852,8 @@ window.studyData = {
         "补助退回",
         "其他收益",
         "累计折旧"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-refund-current-profit-or-loss-destination",
@@ -4550,7 +4886,8 @@ window.studyData = {
         "当期损益",
         "其他收益",
         "营业外支出"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-grants-deferred-income-amortization-start-point",
@@ -4586,7 +4923,8 @@ window.studyData = {
         "总额法",
         "剩余使用寿命",
         "摊销"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-exit-price-vs-entry-price",
@@ -4623,7 +4961,8 @@ window.studyData = {
         "进入价格",
         "退出价格",
         "初始计量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-excluded-cases",
@@ -4656,7 +4995,8 @@ window.studyData = {
         "资产减值",
         "股份支付",
         "租赁"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-share-based-payment-special-rules",
@@ -4690,7 +5030,8 @@ window.studyData = {
         "授予日",
         "可行权条件",
         "等待期"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-principal-vs-most-advantageous-market",
@@ -4724,7 +5065,8 @@ window.studyData = {
         "最有利市场",
         "交易费用",
         "运输费用"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-valuation-technique-change",
@@ -4757,7 +5099,8 @@ window.studyData = {
         "会计估计变更",
         "披露",
         "企业会计准则第39号"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-input-hierarchy",
@@ -4801,7 +5144,8 @@ window.studyData = {
         "活跃市场",
         "重要输入值",
         "估值技术"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "fair-value-measurement-blockage-factor-exclusion",
@@ -4834,7 +5178,8 @@ window.studyData = {
         "折价",
         "第一层次输入值",
         "活跃市场报价"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-initial-recognition-exemption-core",
@@ -4870,7 +5215,8 @@ window.studyData = {
         "暂时性差异",
         "计税基础",
         "企业合并"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-initial-recognition-exemption-not-year-end-catch-up",
@@ -4906,7 +5252,8 @@ window.studyData = {
         "资产负债表日",
         "后续计量",
         "暂时性差异"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-single-transaction-lease-aro-exception",
@@ -4945,7 +5292,8 @@ window.studyData = {
         "弃置义务",
         "预计负债",
         "企业会计准则解释第16号"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-rd-intangible-200-tax-base-initial-exemption",
@@ -4985,7 +5333,8 @@ window.studyData = {
         "计税基础",
         "初始确认豁免",
         "递延所得税资产"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-liability-tax-base-comparison",
@@ -5285,7 +5634,8 @@ window.studyData = {
         "递延所得税负债",
         "商誉",
         "计税基础"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-business-combination-dta-after-acquisition",
@@ -5385,7 +5735,8 @@ window.studyData = {
         "递延所得税资产",
         "暂时性差异",
         "持有意图"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-deferred-tax-measurement-rate-no-discount",
@@ -5424,7 +5775,8 @@ window.studyData = {
         "不折现",
         "递延所得税资产",
         "递延所得税负债"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-investment-dtl-dta-asymmetry",
@@ -5459,7 +5811,8 @@ window.studyData = {
         "递延所得税资产",
         "谨慎性",
         "暂时性差异"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-share-based-payment-current-deferred-tax",
@@ -5595,7 +5948,8 @@ window.studyData = {
         "递延所得税",
         "永久性差异",
         "未确认递延所得税资产"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "income-tax-lease-tax-base-rou-liability",
@@ -5633,7 +5987,8 @@ window.studyData = {
         "计税基础",
         "递延所得税资产",
         "递延所得税负债"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-dismissal-benefits-payroll",
@@ -5643,7 +5998,6 @@ window.studyData = {
       "question": "辞退福利确认的预计负债为什么通过应付职工薪酬核算",
       "summary": "辞退福利属于职工薪酬。",
       "conclusion": [
-        "辞退福利属于职工薪酬。",
         "因辞退福利确认的预计负债，应当通过“应付职工薪酬”科目核算，而不是直接通过“预计负债”科目核算。",
         "常见分录为：",
         "```text\n借：管理费用\n  贷：应付职工薪酬--辞退福利\n```"
@@ -5672,7 +6026,8 @@ window.studyData = {
         "预计负债",
         "辞退福利",
         "应付职工薪酬"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-recognition-vs-contingent-liability",
@@ -5682,7 +6037,6 @@ window.studyData = {
       "question": "预计负债的确认条件和或有负债的区别",
       "summary": "预计负债的确认需要同时满足三个条件：",
       "conclusion": [
-        "预计负债的确认需要同时满足三个条件：",
         "```text\n1. 该义务是企业承担的现时义务；\n2. 履行该义务很可能导致经济利益流出企业；\n3. 该义务的金额能够可靠计量。\n```",
         "三个条件同时满足，才确认预计负债。",
         "如果不满足预计负债确认条件，通常不能确认负债，而应进一步判断是否属于或有负债。"
@@ -5708,7 +6062,8 @@ window.studyData = {
         "或有事项",
         "预计负债",
         "或有负债"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-litigation-expense-classification",
@@ -5748,7 +6103,8 @@ window.studyData = {
         "预计负债",
         "未决诉讼",
         "营业外支出"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-best-estimate-measurement",
@@ -5758,7 +6114,6 @@ window.studyData = {
       "question": "预计负债最佳估计数的确定方法",
       "summary": "预计负债应当按照履行相关现时义务所需支出的最佳估计数进行初始计量。",
       "conclusion": [
-        "预计负债应当按照履行相关现时义务所需支出的最佳估计数进行初始计量。",
         "最佳估计数的确定，常见分为三种情况：",
         "| 情况 | 最佳估计数确定方法 |\n| --- | --- |\n| 存在连续范围，且范围内各种结果发生的可能性相同 | 取该范围的中间值 |\n| 涉及单个项目 | 按最可能发生的金额确定 |\n| 涉及多个项目 | 按各种可能结果及相关概率计算确定，即加权平均数 |"
       ],
@@ -5789,7 +6144,8 @@ window.studyData = {
       "tags": [
         "或有事项",
         "预计负债"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-actual-loss-vs-provision",
@@ -5799,7 +6155,6 @@ window.studyData = {
       "question": "未决诉讼实际损失与已计提预计负债差额的处理",
       "summary": "对于未决诉讼或未决仲裁，企业当期实际发生的诉讼损失金额与已经计提的相关预计负债之间存在差额时，应当先看时点，再看前期处理是否合理。",
       "conclusion": [
-        "对于未决诉讼或未决仲裁，企业当期实际发生的诉讼损失金额与已经计提的相关预计负债之间存在差额时，应当先看时点，再看前期处理是否合理。",
         "判断顺序可以概括为：",
         "```text\n第一步：是否发生在资产负债表日至财务报告批准报出日之间？\n第二步：前期对预计负债的处理是否合理？\n```"
       ],
@@ -5830,7 +6185,8 @@ window.studyData = {
         "或有事项",
         "预计负债",
         "未决诉讼"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-onerous-contract-inventory-cost",
@@ -5846,7 +6202,6 @@ window.studyData = {
         "例中产品实际生产成本为 2 100 万元，冲减预计负债 100 万元后，库存商品账面成本为 2 000 万元；后续销售收入和销售成本均为 2 000 万元，最终总亏损仍为前期已确认的 100 万元。"
       ],
       "reasoning": [
-        "【例题】\n甲公司与乙公司于 2X25 年 12 月 10 日签订不可撤销合同，约定在 2X26 年 3 月 1 日以每件 2 万元的价格向乙公司提供 A 产品 1 000 件。",
         "【例题】\n如果不能按期交货，甲公司将按总价款的 20% 支付违约金。",
         "【例题】\n签订合同时，甲公司尚未开始生产 A 产品，也没有原材料库存。",
         "【例题】\n不考虑相关税费。",
@@ -5977,7 +6332,6 @@ window.studyData = {
       "question": "重组义务的确认和计量",
       "summary": "重组，是指企业制定和控制的、将显著改变企业组织形式、经营范围或经营方式的计划实施行为。",
       "conclusion": [
-        "重组，是指企业制定和控制的、将显著改变企业组织形式、经营范围或经营方式的计划实施行为。",
         "重组义务只有在满足预计负债确认条件时，才确认预计负债。",
         "不能因为企业管理层“打算重组”，就直接确认预计负债。"
       ],
@@ -6039,7 +6393,8 @@ window.studyData = {
       "tags": [
         "或有事项",
         "重组义务"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "contingencies-provision-presentation",
@@ -6049,7 +6404,6 @@ window.studyData = {
       "question": "预计负债在资产负债表中的列报",
       "summary": "会计科目中的“预计负债”和资产负债表项目中的“预计负债”不是完全一回事。",
       "conclusion": [
-        "会计科目中的“预计负债”和资产负债表项目中的“预计负债”不是完全一回事。",
         "账务处理时，符合条件的或有事项通常通过“预计负债”科目核算。",
         "但填列资产负债表时，应当按照预计负债的种类、形成原因以及经济利益预计流出时间长短，根据总账余额和明细账余额分析填列。"
       ],
@@ -6065,7 +6419,6 @@ window.studyData = {
         "【保证类质量保证的特殊列报】\n```text\n一年内到期的非流动负债      80\n预计负债                  220\n```",
         "【保证类质量保证的特殊列报】\n如果企业不能合理预计未来一年或一个营业周期以内清偿的金额，则全部计入流动负债，在资产负债表中“其他流动负债”项目列示。",
         "【保证类质量保证的特殊列报】\n例如，企业确认产品质量保证预计负债 300 万元，保证期超过一年，但无法合理区分一年内和一年后清偿的金额。",
-        "【保证类质量保证的特殊列报】\n列报为：",
         "【保证类质量保证的特殊列报】\n```text\n其他流动负债              300\n```"
       ],
       "memory": [
@@ -6081,7 +6434,8 @@ window.studyData = {
         "或有事项",
         "预计负债",
         "列报"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "intangible-assets-amortization-revenue-method",
@@ -6130,7 +6484,8 @@ window.studyData = {
         "车流量法",
         "高速公路经营权",
         "工作量法"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "intangible-assets-pre-use-ineffective-losses",
@@ -6175,7 +6530,8 @@ window.studyData = {
         "无效损失",
         "初始运作损失",
         "成本"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "intangible-assets-rd-super-deduction-deferred-tax",
@@ -6185,7 +6541,6 @@ window.studyData = {
       "question": "研发支出加计扣除和递延所得税资产",
       "summary": "研发支出涉及所得税时，要区分费用化支出和资本化支出。",
       "conclusion": [
-        "研发支出涉及所得税时，要区分费用化支出和资本化支出。",
         "```text\n费用化研发支出加计扣除：属于永久性差异，不确认递延所得税。\n资本化研发支出计税基础高于账面价值：虽然形成可抵扣暂时性差异，但内部研发形成无形资产的初始确认差异，通常不确认递延所得税资产。\n```"
       ],
       "reasoning": [
@@ -6247,7 +6602,8 @@ window.studyData = {
         "加计扣除",
         "递延所得税",
         "所得税"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "intangible-assets-rd-expense-and-amortization-presentation",
@@ -6308,7 +6664,6 @@ window.studyData = {
       "question": "资产负债表日和日后事项覆盖期间",
       "summary": "资产负债表日不是只有 6 月 30 日和 12 月 31 日。",
       "conclusion": [
-        "资产负债表日不是只有 6 月 30 日和 12 月 31 日。",
         "资产负债表日，是指财务报告所反映的报告期末日。",
         "常见情形如下：",
         "| 财务报告类型 | 资产负债表日 |\n| --- | --- |\n| 年报 | 12 月 31 日 |\n| 半年报 | 6 月 30 日 |\n| 一季报 | 3 月 31 日 |\n| 三季报 | 9 月 30 日 |\n| 月报 | 每月月末 |",
@@ -6326,7 +6681,8 @@ window.studyData = {
       "pitfalls": [],
       "tags": [
         "资产负债表日后事项"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "subsequent-events-adjusting-vs-non-adjusting",
@@ -6336,7 +6692,6 @@ window.studyData = {
       "question": "日后调整事项和非调整事项的判断",
       "summary": "判断是否属于资产负债表日后调整事项，关键看日后发生的事项是否能够证明资产负债表日已经存在某种情况。",
       "conclusion": [
-        "判断是否属于资产负债表日后调整事项，关键看日后发生的事项是否能够证明资产负债表日已经存在某种情况。",
         "```text\n证明日前已存在的情况 = 调整事项；\n日后新发生的新情况 = 非调整事项。\n```"
       ],
       "reasoning": [
@@ -6360,7 +6715,8 @@ window.studyData = {
         "资产负债表日后事项",
         "调整事项",
         "非调整事项"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "subsequent-events-prior-year-profit-adjustment",
@@ -6464,7 +6820,6 @@ window.studyData = {
       "question": "日后调整事项中的未决诉讼和所得税处理",
       "summary": "法院判决发生在资产负债表日后、财务报告批准报出日前，并且判决结果能够证明资产负债表日已经存在赔偿义务，因此属于资产负债表日后调整事项。",
       "conclusion": [
-        "法院判决发生在资产负债表日后、财务报告批准报出日前，并且判决结果能够证明资产负债表日已经存在赔偿义务，因此属于资产负债表日后调整事项。",
         "同时，法院判决和赔偿支付发生在 2X16 年所得税汇算清缴完成前，因此该赔偿损失可以在 2X16 年度税前扣除，应调整报告年度的应交所得税。"
       ],
       "reasoning": [
@@ -6514,7 +6869,8 @@ window.studyData = {
         "未决诉讼",
         "调整事项",
         "所得税"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "subsequent-events-vs-policy-change-error-correction",
@@ -6524,7 +6880,6 @@ window.studyData = {
       "question": "日后调整事项、会计政策变更和前期差错更正的区分",
       "summary": "日后调整事项、会计政策变更和前期差错更正，都可能涉及以前期间或报告年度财务报表的调整，但三者的本质不同。",
       "conclusion": [
-        "日后调整事项、会计政策变更和前期差错更正，都可能涉及以前期间或报告年度财务报表的调整，但三者的本质不同。",
         "```text\n日后调整事项：不是以前错，是日后新证据证明资产负债表日情况已存在。\n会计政策变更：不是以前错，是现在换了政策或执行新准则。\n前期差错更正：以前确实错，现在纠正错误。\n```"
       ],
       "reasoning": [
@@ -6564,7 +6919,8 @@ window.studyData = {
         "调整事项",
         "会计政策变更",
         "前期差错更正"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "subsequent-events-sales-with-return-right",
@@ -6747,7 +7103,6 @@ window.studyData = {
       "question": "资产负债表日后发现差错是否都要更正",
       "summary": "资产负债表日后至财务报告批准报出日前，如果发现报告年度或以前期间存在会计差错，应当作为资产负债表日后调整事项处理。",
       "conclusion": [
-        "资产负债表日后至财务报告批准报出日前，如果发现报告年度或以前期间存在会计差错，应当作为资产负债表日后调整事项处理。",
         "不能简单理解为：",
         "```text\n不重大差错 = 可以不更正\n```",
         "更准确的判断是：",
@@ -6772,7 +7127,8 @@ window.studyData = {
       ],
       "tags": [
         "资产负债表日后事项"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "subsequent-events-sales-return-income-tax",
@@ -6848,7 +7204,8 @@ window.studyData = {
         "递延所得税",
         "所得税",
         "销售退回"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-one-year-exception-inadvertent-condition",
@@ -6883,7 +7240,8 @@ window.studyData = {
         "意外设定条件",
         "处置组",
         "终止经营"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-rare-circumstance",
@@ -6918,7 +7276,8 @@ window.studyData = {
         "罕见情况",
         "处置组",
         "终止经营"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-long-term-equity-investment",
@@ -6954,7 +7313,8 @@ window.studyData = {
         "联营企业",
         "合营企业",
         "权益法"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-not-to-be-sold",
@@ -6988,7 +7348,8 @@ window.studyData = {
         "非流动资产",
         "处置组",
         "终止经营"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-initial-measurement",
@@ -7088,7 +7449,8 @@ window.studyData = {
         "金融资产",
         "存货",
         "负债"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "held-for-sale-reclassification-back",
@@ -7122,7 +7484,8 @@ window.studyData = {
         "重分类",
         "可收回金额",
         "资产减值损失"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "discontinued-operation-criteria",
@@ -7165,7 +7528,8 @@ window.studyData = {
         "处置组",
         "重大业务",
         "单独区分组成部分"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "borrowing-cost-capitalization-start-assets-expenditure",
@@ -7202,7 +7566,8 @@ window.studyData = {
         "带息债务",
         "不带息赊购",
         "一般借款"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "borrowing-cost-general-borrowing-official-method",
@@ -7239,7 +7604,8 @@ window.studyData = {
         "加权平均数",
         "累计资产支出",
         "利息资本化"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "borrowing-cost-premium-bond-special-borrowing-example",
@@ -7277,7 +7643,8 @@ window.studyData = {
         "发行价格",
         "实际利率法",
         "闲置资金收益"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "borrowing-cost-land-use-right-real-estate-vs-self-use",
@@ -7314,7 +7681,8 @@ window.studyData = {
         "开发成本",
         "在建工程",
         "资本化基础"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "borrowing-cost-transaction-cost-amortized-cost-start-date-example",
@@ -7353,7 +7721,8 @@ window.studyData = {
         "应付利息",
         "财务费用",
         "闲置资金收益"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-three-types-treatment",
@@ -7372,18 +7741,17 @@ window.studyData = {
         "### 核心结论\n\n| 事项 | 主要处理方法 | 例外或补充 |\n| --- | --- | --- |\n| 会计政策变更 | 追溯调整法 | 追溯调整不切实可行时，采用未来适用法 |\n| 会计估计变更 | 未来适用法 | 不追溯调整以前期间 |\n| 前期差错更正 | 追溯重述法 | 追溯重述不切实可行时，从可行时点处理，实务上类似未来适用 |\n\n### 图示记忆\n\n```text\n会计政策变更\n  ├─ 追溯调整法\n  └─ 未来适用法\n\n会计估计变更\n  └─ 未来适用法\n\n前期差错更正\n  ├─ 追溯重述法\n  └─ 未来适用法\n```\n\n### 记忆口诀\n\n政策变更：能追溯就追溯，追不动才未来。\n\n估计变更：只未来，不回头。\n\n差错更正：能重述就重述，重述不了才从可行时点处理。"
       ],
       "memory": [
-        "会计政策变更",
         "├─ 追溯调整法",
         "└─ 未来适用法",
-        "会计估计变更",
-        "└─ 未来适用法"
+        "会计估计变更"
       ],
       "pitfalls": [],
       "tags": [
         "会计政策、会计估计及差错更正",
         "三类事项对应的处理方法",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-prospective-application-policy-change",
@@ -7393,7 +7761,6 @@ window.studyData = {
       "question": "会计政策变更什么时候用未来适用法怎么理解？",
       "summary": "会计政策变更原则上采用追溯调整法。",
       "conclusion": [
-        "会计政策变更原则上采用追溯调整法。",
         "只有追溯调整不切实可行时，才采用未来适用法。",
         "| 情形 | 理解 |",
         "| 影响数不能确定 | 算不出以前期间或累积影响数 |"
@@ -7407,14 +7774,13 @@ window.studyData = {
         "猜不准；",
         "分不清。"
       ],
-      "pitfalls": [
-        "| 影响数不能确定 | 算不出以前期间或累积影响数 |"
-      ],
+      "pitfalls": [],
       "tags": [
         "会计政策、会计估计及差错更正",
         "会计政策变更什么时候用未来适用法",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-prospective-application-scenarios",
@@ -7424,7 +7790,6 @@ window.studyData = {
       "question": "未来适用法的常见场景怎么理解？",
       "summary": "CPA 中常见未来适用法场景包括：",
       "conclusion": [
-        "CPA 中常见未来适用法场景包括：",
         "1. 会计估计变更；",
         "2. 会计政策变更追溯调整不切实可行；",
         "3. 难以区分会计政策变更和会计估计变更的，作为会计估计变更处理；"
@@ -7438,7 +7803,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "未来适用法的常见场景",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-policy-change-common-scenarios",
@@ -7448,7 +7814,6 @@ window.studyData = {
       "question": "会计政策变更的常见场景怎么理解？",
       "summary": "会计政策变更，是同一类交易或事项的确认、计量、列报方法发生改变。",
       "conclusion": [
-        "会计政策变更，是同一类交易或事项的确认、计量、列报方法发生改变。",
         "常见例子：",
         "| 场景 | 处理 |",
         "| 发出存货计价方法改变，例如先进先出法改为加权平均法 | 会计政策变更 |"
@@ -7462,7 +7827,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "会计政策变更的常见场景",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-retrospective-adjustment-journal-logic",
@@ -7472,7 +7838,6 @@ window.studyData = {
       "question": "会计政策变更追溯调整法的分录思路怎么理解？",
       "summary": "会计政策变更采用追溯调整法时，通常不通过当期损益，也一般不通过“以前年度损益调整”。",
       "conclusion": [
-        "会计政策变更采用追溯调整法时，通常不通过当期损益，也一般不通过“以前年度损益调整”。",
         "核心是：",
         "调整相关资产、负债",
         "调整期初留存收益"
@@ -7486,7 +7851,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "会计政策变更追溯调整法的分录思路",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-retrospective-adjustment-vs-restatement",
@@ -7496,7 +7862,6 @@ window.studyData = {
       "question": "追溯调整法和追溯重述法的区别怎么理解？",
       "summary": "追溯调整法用于会计政策变更。",
       "conclusion": [
-        "追溯调整法用于会计政策变更。",
         "追溯重述法用于前期差错更正。",
         "二者都要“回头改比较信息”，但性质不同。",
         "| 项目 | 追溯调整法 | 追溯重述法 |"
@@ -7513,7 +7878,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "追溯调整法和追溯重述法的区别",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-retrospective-journal-comparison",
@@ -7536,7 +7902,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "追溯调整法和追溯重述法的分录对比",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-retrospective-adjustment-template",
@@ -7546,7 +7913,6 @@ window.studyData = {
       "question": "追溯调整法分录模板怎么理解？",
       "summary": "会计政策变更采用追溯调整法时，通常不通过“以前年度损益调整”。",
       "conclusion": [
-        "会计政策变更采用追溯调整法时，通常不通过“以前年度损益调整”。",
         "借：相关资产 / 相关负债",
         "贷：递延所得税负债",
         "盈余公积"
@@ -7562,7 +7928,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "追溯调整法分录模板",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-retrospective-restatement-template",
@@ -7572,7 +7939,6 @@ window.studyData = {
       "question": "追溯重述法分录模板怎么理解？",
       "summary": "前期差错更正采用追溯重述法时，要把以前错误更正为正确结果。",
       "conclusion": [
-        "前期差错更正采用追溯重述法时，要把以前错误更正为正确结果。",
         "如果差错影响以前年度损益，通常通过“以前年度损益调整”科目过渡。",
         "借：应收账款 / 银行存款等",
         "贷：以前年度损益调整"
@@ -7589,7 +7955,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "追溯重述法分录模板",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "accounting-policy-estimate-error-investment-property-cost-to-fair-policy-example",
@@ -7599,7 +7966,6 @@ window.studyData = {
       "question": "投资性房地产成本模式改为公允价值模式例题怎么理解？",
       "summary": "投资性房地产后续计量由成本模式改为公允价值模式，属于会计政策变更，采用追溯调整法。",
       "conclusion": [
-        "投资性房地产后续计量由成本模式改为公允价值模式，属于会计政策变更，采用追溯调整法。",
         "追溯调整时要同时考虑：",
         "1. 2x25 年初资产负债表项目的累计影响；",
         "2. 2x24 年比较利润表项目的当年影响。"
@@ -7620,7 +7986,8 @@ window.studyData = {
         "会计政策、会计估计及差错更正",
         "投资性房地产成本模式改为公允价值模式例题",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-mandatory-impairment-test-assets",
@@ -7630,7 +7997,6 @@ window.studyData = {
       "question": "不论是否存在减值迹象都应进行减值测试的资产怎么理解？",
       "summary": "资产减值准则中，有三类资产不论是否存在减值迹象，都至少每年进行减值测试：",
       "conclusion": [
-        "资产减值准则中，有三类资产不论是否存在减值迹象，都至少每年进行减值测试：",
         "1. 使用寿命不确定的无形资产；",
         "2. 尚未达到可使用状态的无形资产；",
         "3. 因企业合并形成的商誉。"
@@ -7650,7 +8016,8 @@ window.studyData = {
         "资产减值",
         "不论是否存在减值迹象都应进行减值测试的资产",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-development-expenditure-presentation",
@@ -7660,7 +8027,6 @@ window.studyData = {
       "question": "内部研发尚未达到预定可使用状态的列报怎么理解？",
       "summary": "内部研发形成的无形资产，在尚未达到预定可使用状态时，不能转入“无形资产”。",
       "conclusion": [
-        "内部研发形成的无形资产，在尚未达到预定可使用状态时，不能转入“无形资产”。",
         "对应关系如下：",
         "| 项目 | 名称 |",
         "| 会计科目 | 研发支出--资本化支出 |"
@@ -7670,14 +8036,14 @@ window.studyData = {
       ],
       "memory": [],
       "pitfalls": [
-        "内部研发形成的无形资产，在尚未达到预定可使用状态时，不能转入“无形资产”。",
         "不要看到“内部研发形成的无形资产”，就直接认为报表项目一定是“无形资产”。"
       ],
       "tags": [
         "资产减值",
         "内部研发尚未达到预定可使用状态的列报",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-fair-value-less-costs-disposal-cost-scope",
@@ -7687,7 +8053,6 @@ window.studyData = {
       "question": "公允价值减去处置费用后的净额中，处置费用不包括什么怎么理解？",
       "summary": "“公允价值减去处置费用后的净额”中的处置费用，是指可以直接归属于资产处置的增量成本。",
       "conclusion": [
-        "“公允价值减去处置费用后的净额”中的处置费用，是指可以直接归属于资产处置的增量成本。",
         "处置费用不包括：",
         "1. 财务费用；",
         "2. 所得税费用。"
@@ -7706,7 +8071,8 @@ window.studyData = {
         "资产减值",
         "公允价值减去处置费用后的净额中",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-future-cash-flows-current-condition",
@@ -7716,7 +8082,6 @@ window.studyData = {
       "question": "预计资产未来现金流量要以资产当前状况为基础怎么理解？",
       "summary": "预计资产未来现金流量，应当以资产的当前状况为基础。",
       "conclusion": [
-        "预计资产未来现金流量，应当以资产的当前状况为基础。",
         "意思是：站在减值测试日，看这项资产“现在这个样子”未来能够带来多少现金流，而不是把未来改造、扩建、升级后的好处提前算入。",
         "预计资产未来现金流量通常包括：",
         "1. 资产持续使用过程中预计产生的现金流入；"
@@ -7733,7 +8098,8 @@ window.studyData = {
         "资产减值",
         "预计资产未来现金流量要以资产当前状况为基础",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-committed-restructuring-vs-future-improvement",
@@ -7743,7 +8109,6 @@ window.studyData = {
       "question": "已承诺重组和未来改良资产的区分怎么理解？",
       "summary": "已承诺的重组影响可以考虑。",
       "conclusion": [
-        "已承诺的重组影响可以考虑。",
         "未来改良、扩建、升级资产带来的额外现金流，不能提前考虑。",
         "这两个事项容易混淆，但判断口径不同。",
         "| 事项 | 是否纳入预计未来现金流量 | 理由 |"
@@ -7756,16 +8121,14 @@ window.studyData = {
         "改良：即使计划明确，也不能提前算未来增量。"
       ],
       "pitfalls": [
-        "未来改良、扩建、升级资产带来的额外现金流，不能提前考虑。",
-        "这两个事项容易混淆，但判断口径不同。",
-        "未来改良资产，是对资产本身进行改造、扩建或升级，使资产性能提高、产能增加或效率提升。即使管理层已经批准或明确承诺，只要在减值测试日资产还没有完成改造，就不能把改造后的增量现金流提前算入。",
-        "改良：即使计划明确，也不能提前算未来增量。"
+        "未来改良资产，是对资产本身进行改造、扩建或升级，使资产性能提高、产能增加或效率提升。即使管理层已经批准或明确承诺，只要在减值测试日资产还没有完成改造，就不能把改造后的增量现金流提前算入。"
       ],
       "tags": [
         "资产减值",
         "已承诺重组和未来改良资产的区分",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-discount-rate-for-value-in-use",
@@ -7775,7 +8138,6 @@ window.studyData = {
       "question": "预计未来现金流量现值的折现率口径怎么理解？",
       "summary": "资产减值中计算预计未来现金流量现值，使用的是税前折现率。",
       "conclusion": [
-        "资产减值中计算预计未来现金流量现值，使用的是税前折现率。",
         "口径要一致：",
         "| 项目 | 口径 |",
         "| 预计未来现金流量 | 税前口径，通常不考虑所得税收付 |"
@@ -7795,7 +8157,8 @@ window.studyData = {
         "资产减值",
         "预计未来现金流量现值的折现率口径",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-foreign-currency-cash-flow-translation",
@@ -7805,7 +8168,6 @@ window.studyData = {
       "question": "外币未来现金流量现值的折算怎么理解？",
       "summary": "外币未来现金流量，应当先用外币折现，再按即期汇率折算为记账本位币。",
       "conclusion": [
-        "外币未来现金流量，应当先用外币折现，再按即期汇率折算为记账本位币。",
         "处理顺序：",
         "1. 预计以外币表示的未来现金流量；",
         "2. 用该外币适用的折现率折现；"
@@ -7823,7 +8185,8 @@ window.studyData = {
         "资产减值",
         "外币未来现金流量现值的折算",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-asset-group-carrying-amount-liabilities",
@@ -7833,7 +8196,6 @@ window.studyData = {
       "question": "资产组账面价值与负债的关系怎么理解？",
       "summary": "资产组账面价值和可收回金额的口径要一致。",
       "conclusion": [
-        "资产组账面价值和可收回金额的口径要一致。",
         "资产组账面价值通常不包括已确认负债的账面价值。",
         "原因是，预计资产组可收回金额时，通常也不包括与已确认负债有关的现金流量。",
         "如果不考虑某项负债，就无法确定资产组可收回金额，则资产组账面价值中应扣除该负债。"
@@ -7850,7 +8212,8 @@ window.studyData = {
         "资产减值",
         "资产组账面价值与负债的关系",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-asset-group-impairment-allocation",
@@ -7860,7 +8223,6 @@ window.studyData = {
       "question": "资产组减值损失的分摊怎么理解？",
       "summary": "资产组发生减值后，减值损失按以下顺序分摊：",
       "conclusion": [
-        "资产组发生减值后，减值损失按以下顺序分摊：",
         "1. 首先抵减分摊至资产组中商誉的账面价值；",
         "2. 剩余减值损失，再按资产组中除商誉外其他资产的账面价值比例分摊。",
         "分摊后，单项资产的账面价值不得低于以下三者中的最高者："
@@ -7874,14 +8236,14 @@ window.studyData = {
         "谁触底谁退出，剩下继续按比例分。"
       ],
       "pitfalls": [
-        "如果某项资产已经减到下限，不能继续承担减值，则多出来不能分给它的减值，继续分摊给其他尚未触底的资产。",
-        "资产按比例，不能破底线。"
+        "如果某项资产已经减到下限，不能继续承担减值，则多出来不能分给它的减值，继续分摊给其他尚未触底的资产。"
       ],
       "tags": [
         "资产减值",
         "资产组减值损失的分摊",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-corporate-assets-two-level-test",
@@ -7891,7 +8253,6 @@ window.studyData = {
       "question": "总部资产的两层减值测试怎么理解？",
       "summary": "总部资产不能单独产生现金流，减值测试时要看能否合理分摊至资产组。",
       "conclusion": [
-        "总部资产不能单独产生现金流，减值测试时要看能否合理分摊至资产组。",
         "如果既有能够分摊的总部资产，又有不能分摊的总部资产，应分两层处理：",
         "1. 能够分摊的总部资产，先分摊至各资产组，和各资产组一起测试；",
         "2. 不能分摊的总部资产，放到包含相关资产组的最小资产组组合中，再整体测试。"
@@ -7904,9 +8265,6 @@ window.studyData = {
         "第二层看口径：办公大楼单独列，就单独加；已经含在资产组里，就不能再加。"
       ],
       "pitfalls": [
-        "总部资产不能单独产生现金流，减值测试时要看能否合理分摊至资产组。",
-        "如果既有能够分摊的总部资产，又有不能分摊的总部资产，应分两层处理：",
-        "2. 不能分摊的总部资产，放到包含相关资产组的最小资产组组合中，再整体测试。",
         "| 研发中心 | 不能合理分摊 | 暂不分摊，留到第二层组合测试 |",
         "然后分别测试："
       ],
@@ -7914,7 +8272,8 @@ window.studyData = {
         "资产减值",
         "总部资产的两层减值测试",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "asset-impairment-asset-group-mcq-pitfalls",
@@ -7924,7 +8283,6 @@ window.studyData = {
       "question": "资产组减值选择题易错点怎么理解？",
       "summary": "关于资产组减值的表述，正确选项为：",
       "conclusion": [
-        "关于资产组减值的表述，正确选项为：",
         "A、D、E、G",
         "| 选项 | 判断 | 核心理由 |",
         "| A | 正确 | 认定资产组最关键的因素是资产组能否独立产生现金流入 |"
@@ -7944,7 +8302,8 @@ window.studyData = {
         "资产减值",
         "资产组减值选择题易错点",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-step-acquisition-non-common-control",
@@ -7969,7 +8328,8 @@ window.studyData = {
         "公允价值变动损益",
         "留存收益",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-step-acquisition-transaction-costs",
@@ -8089,7 +8449,8 @@ window.studyData = {
         "多次交易形成同一控制下企业合并",
         "资本公积",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-common-control-fv-original-fixed-asset-consideration",
@@ -8218,7 +8579,8 @@ window.studyData = {
         "长期股权投资",
         "权益法下长期股权投资",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-oci-disposal-summary",
@@ -8237,7 +8599,8 @@ window.studyData = {
         "长期股权投资",
         "其他综合收益的主要去向总表",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-bargain-purchase-cost-vs-equity-method",
@@ -8256,7 +8619,8 @@ window.studyData = {
         "长期股权投资",
         "非同一控制下买便宜时",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-equity-method-preference-shares",
@@ -8276,7 +8640,8 @@ window.studyData = {
         "潜在表决权",
         "优先股股利扣除",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-equity-method-excess-losses",
@@ -8509,7 +8874,8 @@ window.studyData = {
         "FVTPL",
         "FVOCI",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-joint-venture-vs-joint-operation",
@@ -8532,7 +8898,8 @@ window.studyData = {
         "合营安排",
         "单独主体",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-joint-operation-downstream-fixed-asset",
@@ -8555,7 +8922,8 @@ window.studyData = {
         "资产处置收益",
         "构成业务",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-equity-method-internal-transaction-not-business",
@@ -8574,7 +8942,8 @@ window.studyData = {
         "长期股权投资",
         "权益法下内部交易不构成业务",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-equity-method-upstream-downstream-transactions",
@@ -8593,7 +8962,8 @@ window.studyData = {
         "长期股权投资",
         "权益法下关联方交易",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "long-term-equity-investment-loss-control-cost-to-equity-method",
@@ -8845,7 +9215,8 @@ window.studyData = {
         "其他综合收益",
         "资本公积--其他资本公积",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-monetary-assets-prepayment",
@@ -8878,7 +9249,8 @@ window.studyData = {
         "预付账款",
         "应收账款",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-scope-exclusions-special-standards",
@@ -8916,7 +9288,8 @@ window.studyData = {
         "租赁",
         "权益性交易",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-fair-value-vs-carrying-amount",
@@ -8951,7 +9324,8 @@ window.studyData = {
         "账面价值计量",
         "商业实质",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-disposal-gain-anchor",
@@ -8989,7 +9363,8 @@ window.studyData = {
         "换入资产公允价值",
         "倒挤",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-boot-ratio-25-percent",
@@ -9021,7 +9396,8 @@ window.studyData = {
         "25%",
         "适用范围",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-vat-boot-fees-examples",
@@ -9227,7 +9603,8 @@ window.studyData = {
         "处置损益",
         "公允价值比例",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-commercial-substance",
@@ -9262,7 +9639,8 @@ window.studyData = {
         "现金流量",
         "公允价值计量",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-equity-investment-scope",
@@ -9301,7 +9679,8 @@ window.studyData = {
         "金融工具",
         "权益性交易",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "non-monetary-exchange-inbound-fair-value-fees-vs-output-vat",
@@ -9420,7 +9799,8 @@ window.studyData = {
         "Markdown同步",
         "五步法",
         "控制权"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-contract-asset-foreign-currency-nonmonetary-vs-receivable",
@@ -9526,7 +9906,8 @@ window.studyData = {
         "Markdown同步",
         "合同成立",
         "批权款商收"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-distinct-performance-obligation",
@@ -9564,7 +9945,8 @@ window.studyData = {
         "单项履约义务",
         "可明确区分",
         "质量保证"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-contract-combination-vs-po-combination",
@@ -9598,7 +9980,8 @@ window.studyData = {
         "Markdown同步",
         "合同合并",
         "履约义务识别"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-performance-and-control",
@@ -9629,7 +10012,8 @@ window.studyData = {
         "Markdown同步",
         "履约义务",
         "控制权"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-over-time-three-criteria",
@@ -9662,7 +10046,8 @@ window.studyData = {
         "Markdown同步",
         "某一时段履约",
         "履约进度"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-point-in-time-control-indicators",
@@ -9693,7 +10078,8 @@ window.studyData = {
         "Markdown同步",
         "某一时点履约",
         "控制权迹象"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-transaction-price-variable-consideration-ip-royalty",
@@ -9726,7 +10112,8 @@ window.studyData = {
         "交易价格",
         "可变对价",
         "知识产权提成"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-transaction-price-significant-financing",
@@ -9816,7 +10203,8 @@ window.studyData = {
         "Markdown同步",
         "非现金对价",
         "交易价格"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-transaction-price-consideration-payable-to-customer",
@@ -9904,7 +10292,8 @@ window.studyData = {
         "交易价格分摊",
         "后续变动",
         "合同变更"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-material-right-rebates-points",
@@ -10183,7 +10572,8 @@ window.studyData = {
         "Markdown同步",
         "合同履约成本",
         "运费"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "revenue-sales-with-right-of-return",
@@ -10740,7 +11130,8 @@ window.studyData = {
         "净额列示",
         "资产处置收益",
         "备抵项目"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-liability-current-noncurrent-presentation",
@@ -10783,7 +11174,8 @@ window.studyData = {
         "其他流动负债",
         "可转换工具",
         "金融工具列报"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-current-noncurrent-line-items-table",
@@ -10853,7 +11245,8 @@ window.studyData = {
         "继续涉入资产",
         "继续涉入负债",
         "金融资产转移"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-prepaid-rent-vs-contract-liability-vat",
@@ -10900,7 +11293,8 @@ window.studyData = {
         "其他流动负债",
         "待转销项税额",
         "breakage"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-revenue-financial-instrument-line-items",
@@ -10948,7 +11342,8 @@ window.studyData = {
         "财务担保合同",
         "其他权益工具",
         "应付债券"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-bill-discounting",
@@ -10989,7 +11384,8 @@ window.studyData = {
         "终止确认",
         "经营活动现金流量",
         "筹资活动现金流量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-bill-endorsement-materials",
@@ -11028,7 +11424,8 @@ window.studyData = {
         "购买原材料",
         "非现金交易",
         "经营活动现金流量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-pledged-time-deposit",
@@ -11070,7 +11467,8 @@ window.studyData = {
         "现金及现金等价物",
         "经营活动现金流量",
         "筹资活动现金流量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-lessee-lease-payments",
@@ -11112,7 +11510,8 @@ window.studyData = {
         "可变租赁付款额",
         "经营活动现金流量",
         "筹资活动现金流量"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-reportable-segment-new-and-continuing",
@@ -11148,7 +11547,8 @@ window.studyData = {
         "报告分部",
         "可比信息",
         "单独披露"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-related-party-identification-framework",
@@ -11204,7 +11604,8 @@ window.studyData = {
         "共同控制",
         "重大影响",
         "关键管理人员"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-related-party-consolidated-scope-disclosure",
@@ -11242,7 +11643,8 @@ window.studyData = {
         "合并范围",
         "联营企业",
         "内部交易抵销"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-related-party-group-boundary-associates",
@@ -11284,7 +11686,8 @@ window.studyData = {
         "联营企业",
         "重大影响",
         "控制"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-annual-vs-interim-reporting",
@@ -11343,7 +11746,8 @@ window.studyData = {
         "三表一附注",
         "及时性",
         "会计估计"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-investing-items",
@@ -11390,7 +11794,8 @@ window.studyData = {
         "投资收益",
         "处置长期资产",
         "处置子公司"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-financing-items",
@@ -11438,7 +11843,8 @@ window.studyData = {
         "偿还债务",
         "偿付利息",
         "租赁付款"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-cash-flow-exchange-rate-and-supplement",
@@ -11481,7 +11887,8 @@ window.studyData = {
         "补充资料",
         "经营活动现金流量",
         "净利润调节"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-basic-eps-common-control-share-weighting",
@@ -11518,7 +11925,8 @@ window.studyData = {
         "归母净利润",
         "加权平均普通股股数",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-diluted-eps-potential-shares-forward-repurchase",
@@ -11563,7 +11971,8 @@ window.studyData = {
         "远期回购合同",
         "库存股法",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-basic-eps-restricted-stock-vesting-period",
@@ -11603,7 +12012,8 @@ window.studyData = {
         "现金股利可撤销",
         "现金股利不可撤销",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-diluted-eps-restricted-stock-treasury-stock-method",
@@ -11650,7 +12060,8 @@ window.studyData = {
         "加权平均普通股股数",
         "股份支付",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-diluted-eps-multiple-potential-ordinary-shares-order",
@@ -11696,7 +12107,8 @@ window.studyData = {
         "库存股法",
         "增量每股收益",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-basic-eps-rights-issue-bonus-element",
@@ -11741,7 +12153,8 @@ window.studyData = {
         "股票股利",
         "资本公积转增股本",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-reporting-eps-retrospective-recalculation-events",
@@ -11791,7 +12204,8 @@ window.studyData = {
         "同一控制下企业合并",
         "会计政策变更",
         "Markdown同步"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "financial-instruments-fair-value-hedge-carrying-adjustment",
@@ -12008,7 +12422,8 @@ window.studyData = {
         "或有事项",
         "前期差错",
         "资产负债表日后事项"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "overview-accounting-vs-sustainability-information-quality",
@@ -12050,7 +12465,8 @@ window.studyData = {
         "重要性",
         "谨慎性",
         "实质重于形式"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "government-accounting-fiscal-authorized-payment-flow",
@@ -12224,7 +12640,8 @@ window.studyData = {
         "即期汇率",
         "汇兑损益",
         "会计估计变更"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "foreign-currency-exchange-middle-rate-bank-buy-sell-rate",
@@ -12818,7 +13235,8 @@ window.studyData = {
         "货币性项目",
         "非货币性项目",
         "汇兑差额"
-      ]
+      ],
+      "journalEntries": []
     },
     {
       "id": "debt-restructuring-debt-to-equity-substance-and-use",

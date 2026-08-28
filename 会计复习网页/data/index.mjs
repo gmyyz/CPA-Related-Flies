@@ -28,6 +28,7 @@ import topic25 from "./topics/政府会计.mjs";
 import topic26 from "./topics/外币折算.mjs";
 import topic27 from "./topics/债务重组.mjs";
 
+import { chapterDefinitions } from "./chapters.mjs";
 import { updatedAt } from "./meta.mjs";
 
 const entriesById = new Map([
@@ -311,11 +312,32 @@ export const entryOrder = [
   "debt-restructuring-creditor-nonfinancial-asset-taxes-cost"
 ];
 
+function normalizeForReview(entry) {
+  const normalizeText = (value) => String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  const seen = new Set([normalizeText(entry.summary)]);
+  const uniqueBlocks = (items = []) => items.filter((item) => {
+    const key = normalizeText(item);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  return {
+    ...entry,
+    conclusion: uniqueBlocks(entry.conclusion),
+    reasoning: uniqueBlocks(entry.reasoning),
+    memory: uniqueBlocks(entry.memory),
+    pitfalls: uniqueBlocks(entry.pitfalls),
+    journalEntries: entry.journalEntries || []
+  };
+}
+
 export const studyData = {
   updatedAt,
+  chapters: chapterDefinitions,
   entries: entryOrder.map((id) => {
     const entry = entriesById.get(id);
     if (!entry) throw new Error(`data/index.mjs references unknown card ID: ${id}`);
-    return entry;
+    return normalizeForReview(entry);
   })
 };

@@ -5,10 +5,12 @@
   "scripts": {
     "data:build": "node ./会计复习网页/scripts/build-study-data.mjs",
     "data:check": "node ./会计复习网页/scripts/build-study-data.mjs --check",
+    "notes:build": "node ./会计复习网页/scripts/export-chapter-markdown.mjs",
+    "notes:check": "node ./会计复习网页/scripts/export-chapter-markdown.mjs --check",
     "build": "node ./会计复习网页/scripts/build.mjs",
     "build:check": "node ./会计复习网页/scripts/build.mjs --check",
     "test": "node --test ./会计复习网页/tests/*.test.mjs",
-    "check": "npm run build && npm test && npm run build:check"
+    "check": "npm run build && npm run notes:build && npm test && npm run build:check && npm run notes:check"
   },
   "devDependencies": {
     "esbuild": "0.25.6",

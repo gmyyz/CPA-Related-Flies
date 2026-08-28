@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import vm from "node:vm";
 import { loadSource, pageDir, sourceDir } from "./helpers/load-source.mjs";
@@ -68,11 +68,30 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   const { api } = await loadSource(
     ["js/app/00-runtime.js"],
     ["chapterDefinitions"],
-    { document, window: {}, Set, Map }
+    { document, window: { studyData: dataContext.window.studyData }, Set, Map }
   );
   const coveredTopics = new Set(api.chapterDefinitions.flatMap((chapter) => chapter.topics));
   const missingTopics = [...new Set(entries.map((entry) => entry.topic))].filter((topic) => !coveredTopics.has(topic));
   assert.deepEqual(missingTopics, []);
+});
+
+test("chapter Markdown export covers every chapter and remains plain text", async () => {
+  const outputDir = path.resolve(pageDir, "..", "01-会计", "04-章节复习卡片");
+  const files = (await readdir(outputDir)).filter((file) => file.endsWith(".md")).sort();
+  const expectedFiles = ["README.md", ...studyData.chapters.map((chapter) => chapter.fileName)].sort();
+  assert.deepEqual(files, expectedFiles);
+
+  let exportedCards = 0;
+  for (const chapter of studyData.chapters) {
+    const markdown = await readFile(path.join(outputDir, chapter.fileName), "utf8");
+    assert.doesNotMatch(markdown, /^%TSD-Header-###%/);
+    assert.match(markdown, new RegExp(`title: ${chapter.title}`));
+    assert.match(markdown, /由 会计复习网页\/scripts\/export-chapter-markdown\.mjs 自动生成/);
+    exportedCards += Number(markdown.match(/^cards: (\d+)$/m)?.[1]);
+  }
+  assert.equal(exportedCards, 278);
+  const index = await readFile(path.join(outputDir, "README.md"), "utf8");
+  assert.match(index, /共 \*\*278 张\*\*卡片/);
 });
 
 test("source note renderer supports tilde fenced code blocks", async () => {
