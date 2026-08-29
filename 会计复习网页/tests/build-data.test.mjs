@@ -84,13 +84,24 @@ test("chapter Markdown export covers every chapter and remains plain text", asyn
   let exportedCards = 0;
   for (const chapter of studyData.chapters) {
     const markdown = await readFile(path.join(outputDir, chapter.fileName), "utf8");
+    const cardCount = Number(markdown.match(/^cards: (\d+)$/m)?.[1]);
     assert.doesNotMatch(markdown, /^%TSD-Header-###%/);
+    assert.match(markdown, new RegExp(`^---\\ntitle: ${chapter.title}\\n`, "m"));
     assert.match(markdown, new RegExp(`title: ${chapter.title}`));
-    assert.match(markdown, /由 会计复习网页\/scripts\/export-chapter-markdown\.mjs 自动生成/);
-    exportedCards += Number(markdown.match(/^cards: (\d+)$/m)?.[1]);
+    assert.match(markdown, /## 本章目录/);
+    if (cardCount === 0) {
+      assert.match(markdown, /当前暂无复习卡片/);
+    } else {
+      const cardHeadings = [...markdown.matchAll(/^## (\d{2})｜(.+)$/gm)];
+      assert.equal(cardHeadings.length, cardCount);
+      assert.match(markdown, /\n\[toc\]\n/);
+      assert.doesNotMatch(markdown, /<a\s+id=/);
+    }
+    exportedCards += cardCount;
   }
   assert.equal(exportedCards, 278);
   const index = await readFile(path.join(outputDir, "README.md"), "utf8");
+  assert.match(index, /^# CPA 会计章节复习卡片/m);
   assert.match(index, /共 \*\*278 张\*\*卡片/);
 });
 

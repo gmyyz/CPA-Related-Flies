@@ -70,6 +70,15 @@ function renderJournalEntries(entries) {
   return `### 关键分录\n\n${content}`;
 }
 
+function getCardHeading(entry, index) {
+  return `${String(index).padStart(2, "0")}｜${entry.question}`;
+}
+
+function renderCardDirectory(entries) {
+  if (entries.length === 0) return "## 本章目录\n\n> 当前暂无复习卡片。";
+  return "## 本章目录\n\n[toc]";
+}
+
 function renderStructuredCard(entry, index) {
   const seen = new Set();
   const sections = [
@@ -81,7 +90,7 @@ function renderStructuredCard(entry, index) {
     renderJournalEntries(entry.journalEntries)
   ].filter(Boolean);
   const tags = entry.tags?.length ? `\n\n**标签**：${entry.tags.map((tag) => `\`${tag}\``).join(" · ")}` : "";
-  return `## ${String(index).padStart(2, "0")}｜${entry.question}\n\n**难度**：${entry.difficulty}　·　**更新**：${entry.updatedAt}\n\n${sections.join("\n\n")}${tags}`;
+  return `## ${getCardHeading(entry, index)}\n\n**难度**：${entry.difficulty}　·　**更新**：${entry.updatedAt}\n\n${sections.join("\n\n")}${tags}`;
 }
 
 async function readFinancialCards() {
@@ -103,7 +112,7 @@ async function readFinancialCards() {
 }
 
 function renderFinancialCard(entry, index) {
-  return `## ${String(index).padStart(2, "0")}｜${entry.question}\n\n**难度**：${entry.difficulty}　·　**更新**：${entry.updatedAt}\n\n### 完整笔记\n\n${entry.body || "本卡片暂无正文。"}\n\n**标签**：\`金融工具\` · \`Markdown同步\``;
+  return `## ${getCardHeading(entry, index)}\n\n**难度**：${entry.difficulty}　·　**更新**：${entry.updatedAt}\n\n### 完整笔记\n\n${entry.body || "本卡片暂无正文。"}\n\n**标签**：\`金融工具\` · \`Markdown同步\``;
 }
 
 function getChapterEntries(chapter, entries) {
@@ -121,19 +130,21 @@ function renderChapter(chapter, entries) {
     : entries.map((entry, index) => entry.body !== undefined
       ? renderFinancialCard(entry, index + 1)
       : renderStructuredCard(entry, index + 1)).join("\n\n---\n\n");
-  return `<!-- 此文件由 会计复习网页/scripts/export-chapter-markdown.mjs 自动生成，请勿直接编辑。 -->
----
+  return `---
 title: ${chapter.title}
 cards: ${entries.length}
 updated: ${studyData.updatedAt}
 source: 会计复习网页/data
+generated: true
 ---
 
 # ${chapter.title}
 
 [← 返回章节目录](README.md)　·　**${entries.length} 张复习卡片**　·　生成时间：${studyData.updatedAt}
 
-> 阅读顺序：先看“速览”，再用“核心结论—判断与例题—记忆线索—易错提醒”完成一轮复习。完全重复的结构化内容会在导出和网页数据中自动省略。
+> 阅读顺序：先从本章目录或阅读器的大纲定位卡片，再看“速览”，并用“核心结论—判断与例题—记忆线索—易错提醒”完成一轮复习。完全重复的结构化内容会在导出和网页数据中自动省略。
+
+${renderCardDirectory(entries)}
 
 ${body}
 `;
@@ -142,14 +153,14 @@ ${body}
 function renderIndex(chapters, chapterEntries) {
   const rows = chapters.map((chapter) => `| ${chapter.title} | ${chapterEntries.get(chapter.id).length} | [打开](./${chapter.fileName}) |`).join("\n");
   const total = [...chapterEntries.values()].reduce((sum, entries) => sum + entries.length, 0);
-  return `<!-- 此文件由 会计复习网页/scripts/export-chapter-markdown.mjs 自动生成，请勿直接编辑。 -->
-# CPA 会计章节复习卡片
+  return `# CPA 会计章节复习卡片
 
 将网页的复习卡片按 CPA《会计》30 章拆分为独立 Markdown 文件，便于在 Typora、MarkText、Obsidian 或 GitHub 中按章复习。
 
 ## 使用说明
 
 - 每章采用统一结构：**速览 → 核心结论 → 判断与例题 → 记忆线索 → 易错提醒 → 关键分录**。
+- 各章节的“本章目录”使用 Typora 原生的 \`[toc]\`：在 Typora 中会自动生成可点击目录，目录项会随着卡片标题更新；其他阅读器可使用其标题大纲浏览。
 - Markdown 由网页数据自动导出；不要直接改本目录的文件。修改卡片源后执行 \`npm run notes:build\`。
 - 导出时会移除同一卡片内完全相同的文字块，避免“摘要、结论、提示”重复出现；不同卡片之间的必要交叉提示会保留。
 - 第十六章目前没有网页卡片，目录保留章节文件但不虚构内容。
