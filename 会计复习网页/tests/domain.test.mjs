@@ -123,8 +123,8 @@ test("URL state reads and writes the existing query contract", async () => {
     history: { replaceState: (_state, _title, url) => { replacedUrl = url; } }
   };
   const { api } = await loadSource(
-    ["js/domain/review.js", "js/app/state.js"],
-    ["readUrlState", "syncPersistence"],
+    ["js/domain/review.js", "js/domain/progress.js", "js/app/state.js"],
+    ["readUrlState", "readSavedState", "syncPersistence", "mergedEntryAliases"],
     domainSandbox({
       STORAGE_KEY: "cicpa-review-state",
       defaultState,
@@ -143,6 +143,22 @@ test("URL state reads and writes the existing query contract", async () => {
   assert.match(replacedUrl, /view=journal/);
   assert.match(replacedUrl, /journal=1/);
   assert.match(replacedUrl, /jside=/);
+  for (const [oldId, targetId] of Object.entries(api.mergedEntryAliases)) {
+    window.location.search = `?view=cards&random=${encodeURIComponent(oldId)}&source=legacy`;
+    const fromUrl = api.readUrlState();
+    assert.equal(fromUrl.randomEntryId, targetId);
+    assert.equal(fromUrl.randomEntrySource, "legacy");
+    storage.set("cicpa-review-state", JSON.stringify({ randomEntryId: oldId }));
+    assert.equal(api.readSavedState().randomEntryId, targetId);
+    Object.assign(state, fromUrl);
+    api.syncPersistence();
+    assert.equal(new URL(replacedUrl, "https://example.test").searchParams.get("random"), targetId);
+  }
+  window.location.search = "?random=unknown-entry";
+  assert.equal(api.readUrlState().randomEntryId, "unknown-entry");
+  window.location.search = "?random=constructor";
+  assert.equal(api.readUrlState().randomEntryId, "constructor");
+
 });
 
 test("Gist service writes the versioned progress file without calling the real API", async () => {
@@ -186,4 +202,24 @@ test("Gist service writes the versioned progress file without calling the real A
   assert.equal(requests[0].options.headers.Authorization, "Bearer token-test");
   const body = JSON.parse(requests[0].options.body);
   assert.equal(JSON.parse(body.files["cicpa-review-progress.json"].content).version, 1);
+});
+
+test("retired cards migrate without losing favorites or newest study state", async () => {
+  const { api } = await loadSource(["js/domain/review.js", "js/domain/progress.js"],
+    ["normalizeProgressState", "mergedEntryAliases"], domainSandbox());
+  for (const [oldId, targetId] of Object.entries(api.mergedEntryAliases)) {
+    const records = {
+      [targetId]: { status: "known", favorite: false, reviewedAt: "2026-09-08", updatedAt: "2026-09-08" },
+      [oldId]: { status: "weak", favorite: true, reviewedAt: "2026-09-07", updatedAt: "2026-09-07" }
+    };
+    const migrated = api.normalizeProgressState(records);
+    assert.equal(migrated[oldId], undefined);
+    assert.equal(migrated[targetId].status, "known");
+    assert.equal(migrated[targetId].favorite, true);
+    assert.equal(migrated[targetId].reviewedAt, "2026-09-08");
+    assert.deepEqual(migrated, api.normalizeProgressState(migrated));
+    assert.deepEqual(migrated, api.normalizeProgressState(Object.fromEntries(Object.entries(records).reverse())));
+    records[oldId].updatedAt = "2026-09-09";
+    assert.equal(api.normalizeProgressState(records)[targetId].status, "weak");
+  }
 });

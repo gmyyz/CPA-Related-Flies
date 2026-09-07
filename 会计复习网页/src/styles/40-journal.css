@@ -17,7 +17,7 @@
 
     .journal-stat {
       padding: 12px;
-      border: 1px solid rgba(47, 125, 107, 0.12);
+      border: 1px solid rgba(0, 145, 192, 0.12);
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.72);
     }
@@ -74,7 +74,7 @@
     }
 
     .journal-entry {
-      border: 1px solid rgba(182, 84, 42, 0.16);
+      border: 1px solid rgba(0, 133, 235, 0.16);
       border-radius: 12px;
       background: rgba(255, 247, 236, 0.72);
       overflow: hidden;
@@ -85,7 +85,7 @@
       justify-content: space-between;
       gap: 12px;
       padding: 12px 14px;
-      border-bottom: 1px solid rgba(182, 84, 42, 0.12);
+      border-bottom: 1px solid rgba(0, 133, 235, 0.12);
       background: rgba(255, 255, 255, 0.5);
     }
 
@@ -177,7 +177,7 @@
 
     .journal-side-panel {
       min-width: 0;
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.7);
       overflow: hidden;
@@ -186,7 +186,7 @@
     .journal-side-panel h5 {
       margin: 0;
       padding: 10px 12px;
-      border-bottom: 1px solid rgba(28, 22, 15, 0.08);
+      border-bottom: 1px solid rgba(65, 123, 185, 0.08);
       color: var(--brand-deep);
       font-size: 13px;
     }
@@ -204,7 +204,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
       padding: 10px 12px;
-      border-top: 1px solid rgba(28, 22, 15, 0.06);
+      border-top: 1px solid rgba(65, 123, 185, 0.06);
       line-height: 1.5;
     }
 
@@ -244,7 +244,7 @@
 
     .related-button {
       flex: 1 1 220px;
-      border: 1px solid rgba(28, 22, 15, 0.1);
+      border: 1px solid rgba(65, 123, 185, 0.1);
       border-radius: 14px;
       padding: 12px 14px;
       background: rgba(255, 255, 255, 0.82);
@@ -256,7 +256,7 @@
 
     .related-button:hover {
       transform: translateY(-1px);
-      border-color: rgba(182, 84, 42, 0.28);
+      border-color: rgba(0, 133, 235, 0.28);
     }
 
     .related-button strong {
@@ -284,7 +284,7 @@
     .diagram-shell {
       margin-top: 12px;
       padding: 14px;
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.82);
       overflow-x: auto;

@@ -4,7 +4,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { transform } from "esbuild";
+import { revenueEntryIds } from "./revenue-note-ids.mjs";
 import { markdownNoteSources } from "./markdown-notes.mjs";
+import financialNoteDetails from "../data/financial-note-details.mjs";
 import { syncStudyData } from "./build-study-data.mjs";
 
 const execFileAsync = promisify(execFile);
@@ -16,9 +18,7 @@ const studyDataPath = path.join(pageDir, "study-data.js");
 const mermaidPath = path.resolve(pageDir, "..", "node_modules", "mermaid", "dist", "mermaid.min.js");
 const revenueNotesPath = path.resolve(pageDir, "..", "01-会计", "01-章节笔记", "收入准则知识点.md");
 const financialNotesPath = path.resolve(pageDir, "..", "01-会计", "01-章节笔记", "金融工具准则知识点.md");
-const revenueEntryIds = [
-  "revenue-five-step-and-control", "revenue-contract-formation-five-conditions", "revenue-distinct-performance-obligation", "revenue-contract-combination-vs-po-combination", "revenue-performance-and-control", "revenue-over-time-three-criteria", "revenue-point-in-time-control-indicators", "revenue-transaction-price-variable-consideration-ip-royalty", "revenue-transaction-price-significant-financing", "revenue-transaction-price-noncash-consideration", "revenue-transaction-price-consideration-payable-to-customer", "revenue-allocation-subsequent-changes", "revenue-material-right-rebates-points", "revenue-contract-costs-fulfillment-acquisition-impairment", "revenue-transportation-costs", "revenue-sales-with-right-of-return", "revenue-principal-vs-agent", "revenue-ip-license-special-rules", "revenue-repurchase-arrangements", "revenue-customer-unexercised-rights", "revenue-nonrefundable-upfront-fee", "revenue-refund-liability-vs-other-payables"
-];
+
 
 function normalizeLineEndings(text) {
   return text.replace(/\r\n?/g, "\n");
@@ -120,18 +120,19 @@ async function readFinancialNotes() {
   const entries = sections.map((section, index) => {
     const title = section.split(/\r?\n/, 1)[0];
     const id = `financial-instruments-${String(index + 1).padStart(2, "0")}`;
+    if (!financialNoteDetails[id]?.summary) throw new Error(`金融工具卡片缺少摘要：${id}`);
     return {
       id,
-      updatedAt: "2026-08-02",
+      updatedAt: "2026-09-07",
       topic: "金融工具",
       difficulty: "章节笔记",
       question: title,
-      summary: "展开查看完整 Markdown 笔记。",
-      conclusion: ["本卡片已同步完整章节笔记，可在下方查看判断逻辑、例题和易错点。"],
+      summary: financialNoteDetails[id].summary,
+      conclusion: [],
       reasoning: [],
       memory: [],
       pitfalls: [],
-      journalEntries: [],
+      journalEntries: financialNoteDetails[id]?.journalEntries || [],
       tags: ["金融工具", "Markdown同步"]
     };
   });
@@ -143,7 +144,8 @@ const cssModules = [
   "styles/20-dashboard.css",
   "styles/30-cards.css",
   "styles/40-journal.css",
-  "styles/90-responsive.css"
+  "styles/90-responsive.css",
+  "styles/80-study-console.css"
 ];
 
 const jsModules = [
@@ -179,7 +181,8 @@ async function buildPage() {
     readFile(mermaidPath, "utf8")
   ]);
 
-  const css = cssParts.map((part) => part.trimEnd()).join("\n\n");
+  const orbitData = await readFile(path.join(sourceDir, "assets/study-orbit.png"));
+  const css = cssParts.map((part) => part.trimEnd()).join("\n\n").replace("__CPA_ORBIT_ASSET__", `data:image/png;base64,${orbitData.toString("base64")}`);
   const combinedJs = jsParts.map((part) => part.trim()).join("\n\n");
   const result = await transform(combinedJs, {
     charset: "utf8",
@@ -200,7 +203,12 @@ async function buildPage() {
     throw new Error("模板缺少离线构建占位符。");
   }
 
-  return template
+  let iconTemplate = template;
+  for (const icon of ["school", "clipboard-check", "notebook", "receipt"]) {
+    const bytes = await readFile(path.join(sourceDir, `assets/${icon}.svg`));
+    iconTemplate = iconTemplate.replaceAll(`__CPA_ICON_${icon}__`, `data:image/svg+xml;base64,${bytes.toString("base64")}`);
+  }
+  return iconTemplate
     .replace(cssMarker, () => css)
     .replace(dataMarker, () => escapeInlineScript(studyData.trim()))
     .replace(mermaidMarker, () => escapeInlineScript(mermaidSource.trim()))

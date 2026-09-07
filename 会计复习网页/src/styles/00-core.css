@@ -1,17 +1,17 @@
 :root {
-      --bg: #f3eee5;
-      --panel: rgba(255, 252, 246, 0.94);
-      --panel-strong: #fffaf2;
-      --ink: #17130e;
-      --muted: #675d50;
-      --line: rgba(56, 43, 29, 0.14);
-      --brand: #a94d2a;
-      --brand-deep: #6e2c18;
-      --mint: #246f64;
-      --mint-soft: rgba(36, 111, 100, 0.12);
+      --bg: #ffffff;
+      --panel: rgba(255, 255, 255, 0.94);
+      --panel-strong: #ffffff;
+      --ink: #0b203f;
+      --muted: #5b6f8e;
+      --line: rgba(65, 123, 185, 0.14);
+      --brand: #087afa;
+      --brand-deep: #0963c8;
+      --mint: #0786ad;
+      --mint-soft: rgba(0, 145, 192, 0.12);
       --gold: #c7972d;
       --danger: #9f4030;
-      --shadow: 0 14px 34px rgba(83, 58, 31, 0.1);
+      --shadow: 0 14px 34px rgba(69, 126, 187, 0.1);
       --radius: 8px;
     }
 
@@ -24,9 +24,9 @@
       font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
       color: var(--ink);
       background:
-        linear-gradient(90deg, rgba(36, 111, 100, 0.08) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(169, 77, 42, 0.07) 1px, transparent 1px),
-        linear-gradient(180deg, #faf6ef 0%, var(--bg) 100%);
+        linear-gradient(90deg, rgba(0, 145, 192, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(0, 133, 235, 0.07) 1px, transparent 1px),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
       background-size: 36px 36px, 36px 36px, auto;
       overflow-x: hidden;
       overflow-wrap: break-word;
@@ -43,7 +43,7 @@
     input:focus-visible,
     select:focus-visible,
     [tabindex]:focus-visible {
-      outline: 3px solid rgba(169, 77, 42, 0.42);
+      outline: 3px solid rgba(0, 133, 235, 0.42);
       outline-offset: 3px;
     }
 
@@ -64,7 +64,7 @@
       padding: 14px;
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: rgba(255, 250, 242, 0.9);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
     }
@@ -89,7 +89,7 @@
       height: 36px;
       border-radius: 8px;
       background: var(--ink);
-      color: #fff8ea;
+      color: #ffffff;
       font-weight: 700;
     }
 
@@ -127,7 +127,7 @@
       grid-template-columns: repeat(3, minmax(58px, 1fr));
       gap: 4px;
       padding: 4px;
-      border: 1px solid rgba(28, 22, 15, 0.1);
+      border: 1px solid rgba(65, 123, 185, 0.1);
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.7);
     }
@@ -145,7 +145,7 @@
 
     .view-switch button.active {
       background: var(--ink);
-      color: #fff8ea;
+      color: #ffffff;
       box-shadow: 0 8px 18px rgba(23, 19, 14, 0.12);
     }
 
@@ -177,20 +177,20 @@
 
     .quick-action {
       min-height: 58px;
-      border: 1px solid rgba(28, 22, 15, 0.1);
+      border: 1px solid rgba(65, 123, 185, 0.1);
       border-radius: 8px;
       padding: 10px 12px;
       background: rgba(255, 255, 255, 0.72);
       color: var(--ink);
       cursor: pointer;
       text-align: left;
-      box-shadow: 0 10px 22px rgba(83, 58, 31, 0.08);
+      box-shadow: 0 10px 22px rgba(69, 126, 187, 0.08);
       transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     }
 
     .quick-action:hover {
       transform: translateY(-2px);
-      border-color: rgba(182, 84, 42, 0.32);
+      border-color: rgba(0, 133, 235, 0.32);
       box-shadow: 0 18px 34px rgba(88, 54, 22, 0.12);
     }
 
@@ -289,7 +289,7 @@
     select {
       width: 100%;
       padding: 12px 13px;
-      border: 1px solid rgba(28, 22, 15, 0.12);
+      border: 1px solid rgba(65, 123, 185, 0.12);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.9);
       font-size: 14px;
@@ -300,8 +300,8 @@
     input[type="password"]:focus,
     input[type="text"]:focus,
     select:focus {
-      outline: 2px solid rgba(182, 84, 42, 0.22);
-      border-color: rgba(182, 84, 42, 0.32);
+      outline: 2px solid rgba(0, 133, 235, 0.22);
+      border-color: rgba(0, 133, 235, 0.32);
     }
 
     .filter-list,
@@ -323,7 +323,7 @@
     .chip,
     .tag,
     .mode-button {
-      border: 1px solid rgba(28, 22, 15, 0.1);
+      border: 1px solid rgba(65, 123, 185, 0.1);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.78);
       color: var(--ink);
@@ -355,7 +355,7 @@
       overscroll-behavior: contain;
       padding-right: 4px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(182, 84, 42, 0.45) rgba(28, 22, 15, 0.06);
+      scrollbar-color: rgba(0, 133, 235, 0.45) rgba(65, 123, 185, 0.06);
     }
 
     .chapter-list::-webkit-scrollbar {
@@ -364,12 +364,12 @@
 
     .chapter-list::-webkit-scrollbar-track {
       border-radius: 999px;
-      background: rgba(28, 22, 15, 0.06);
+      background: rgba(65, 123, 185, 0.06);
     }
 
     .chapter-list::-webkit-scrollbar-thumb {
       border-radius: 999px;
-      background: rgba(182, 84, 42, 0.45);
+      background: rgba(0, 133, 235, 0.45);
     }
 
     .chapter-button {
@@ -385,7 +385,7 @@
       min-width: 26px;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(47, 125, 107, 0.12);
+      background: rgba(0, 145, 192, 0.12);
       color: var(--mint);
       font-size: 12px;
       font-weight: 700;
@@ -476,7 +476,7 @@
       grid-template-columns: 1fr auto;
       gap: 4px 12px;
       width: 100%;
-      border: 1px solid rgba(28, 22, 15, 0.1);
+      border: 1px solid rgba(65, 123, 185, 0.1);
       border-radius: 8px;
       padding: 11px 12px;
       background: rgba(255, 255, 255, 0.72);
@@ -542,7 +542,7 @@
     .cloud-sync-status {
       margin: 0;
       padding: 10px;
-      border: 1px solid rgba(36, 111, 100, 0.12);
+      border: 1px solid rgba(0, 145, 192, 0.12);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.6);
       color: var(--muted);
@@ -551,7 +551,7 @@
     }
 
     .cloud-sync-status.success {
-      border-color: rgba(36, 111, 100, 0.24);
+      border-color: rgba(0, 145, 192, 0.24);
       color: var(--mint);
     }
 
@@ -625,14 +625,14 @@
 
     .ghost-button,
     .inline-button {
-      border: 1px solid rgba(28, 22, 15, 0.12);
+      border: 1px solid rgba(65, 123, 185, 0.12);
       background: #fff;
       color: var(--ink);
     }
 
     .ghost-button.active {
-      border-color: rgba(47, 125, 107, 0.28);
-      background: rgba(47, 125, 107, 0.1);
+      border-color: rgba(0, 145, 192, 0.28);
+      background: rgba(0, 145, 192, 0.1);
       color: var(--mint);
     }
 
@@ -640,7 +640,7 @@
       border: 1px solid transparent;
       background: var(--brand);
       color: #fff;
-      box-shadow: 0 10px 25px rgba(182, 84, 42, 0.18);
+      box-shadow: 0 10px 25px rgba(0, 133, 235, 0.18);
     }
 
     .ghost-button:hover,
@@ -668,7 +668,7 @@
       padding: 7px 10px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
       font-size: 12px;
       font-weight: 600;
       color: var(--brand-deep);
