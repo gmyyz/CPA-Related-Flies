@@ -372,12 +372,16 @@ function renderCards(entries, totalEntries = entries.length) {
     }
     const tabs = [...fragment.querySelectorAll("[data-detail-tab]")];
     const panes = [...fragment.querySelectorAll("[data-detail-pane]")];
-    const availableTabs = new Set(["overview"]);
+    const hasOverview = [getQuickReviewItems(entry), entry.reasoning, entry.memory, entry.pitfalls].some((items) => items.length > 0);
+    const defaultTab = sourceNotes && !hasOverview ? "notes" : "overview";
+    const availableTabs = new Set(hasOverview || !sourceNotes ? ["overview"] : []);
     if (sourceNotes) availableTabs.add("notes");
     if (entry.journalEntries.length > 0) availableTabs.add("journal");
     tabs.forEach((tab) => {
       const tabName = tab.dataset.detailTab;
       tab.hidden = !availableTabs.has(tabName);
+      tab.classList.toggle("active", tabName === defaultTab);
+      tab.setAttribute("aria-selected", String(tabName === defaultTab));
       tab.addEventListener("click", () => {
         tabs.forEach((button) => {
           const active = button === tab;
@@ -389,6 +393,7 @@ function renderCards(entries, totalEntries = entries.length) {
         });
       });
     });
+    panes.forEach((pane) => { pane.hidden = pane.dataset.detailPane !== defaultTab; });
     const sections = [
       [".conclusion-list", getQuickReviewItems(entry)],
       [".reasoning-list", entry.reasoning],

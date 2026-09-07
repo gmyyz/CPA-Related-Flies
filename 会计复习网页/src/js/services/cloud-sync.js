@@ -7,7 +7,7 @@ function persistProgress() {
 function readProgressState() {
   try {
     const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    return normalizeProgressState(raw ? JSON.parse(raw) : {});
   } catch (error) {
     return {};
   }

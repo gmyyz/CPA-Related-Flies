@@ -13,30 +13,11 @@
 <body>
   <div class="page-shell">
     <header class="app-command">
-      <div class="brand-block">
-        <div class="brand-mark">
-          <span class="brand-symbol">会</span>
-          <div>
-            <h1>CICPA 会计复习手册</h1>
-            <p class="brand-subtitle">学习看板 · 知识卡片 · 分录速查</p>
-          </div>
-        </div>
-        <div class="system-meta">
-          <span id="entry-count">0 个知识点</span>
-          <span id="updated-at">更新时间 -</span>
-          <span id="data-source">数据源加载中</span>
-        </div>
-      </div>
+      <div class="workspace-title">学习工作台 <span>STUDY CONSOLE</span></div>
 
       <div class="command-search">
         <label class="field-label" for="search-input">全局关键词</label>
-        <input id="search-input" type="search" placeholder="搜索题目、结论、口诀、标签、分录">
-      </div>
-
-      <div class="view-switch" aria-label="视图切换">
-        <button id="dashboard-view" type="button" data-view-mode="dashboard">看板</button>
-        <button id="cards-view" type="button" data-view-mode="cards">卡片</button>
-        <button id="journal-library" type="button" data-view-mode="journal">分录</button>
+        <input id="search-input" aria-label="搜索知识点、分录、关键词" type="search" placeholder="搜索知识点、分录、关键词">
       </div>
 
       <div class="command-actions">
@@ -68,6 +49,29 @@
 
     <main class="layout">
       <aside class="panel controls">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <img class="brand-icon" src="__CPA_ICON_school__" alt="">
+
+          <div>
+            <h1>CICPA</h1>
+            <p class="brand-subtitle">会计复习手册</p>
+          </div>
+        </div>
+        <div class="system-meta">
+          <span id="entry-count">0 个知识点</span>
+          <span id="updated-at">更新时间 -</span>
+          <span id="data-source">数据源加载中</span>
+        </div>
+      </div>
+
+      <div class="view-switch" aria-label="视图切换">
+        <button id="dashboard-view" type="button" data-view-mode="dashboard"><img src="__CPA_ICON_clipboard-check__" alt="">今日复习</button>
+        <button id="cards-view" type="button" data-view-mode="cards"><img src="__CPA_ICON_notebook__" alt="">知识卡片</button>
+        <button id="journal-library" type="button" data-view-mode="journal"><img src="__CPA_ICON_receipt__" alt="">分录速查</button>
+      </div>
+
+
         <div class="controls-header">
           <h2 class="controls-title">筛选控制台</h2>
           <button id="close-filters" class="ghost-button close-filters" type="button">关闭</button>
@@ -77,7 +81,7 @@
 
         <div id="filter-panel" class="filter-panel">
           <section>
-            <h2>章节导航</h2>
+            <h2>章节导航 <small>CHAPTERS</small></h2>
             <div id="chapter-filters" class="chapter-list"></div>
           </section>
 

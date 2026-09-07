@@ -43,7 +43,7 @@ function sanitizeStatePatch(rawState = {}) {
     journalSide: typeof rawState.journalSide === "string" ? rawState.journalSide : defaultState.journalSide,
     journalAccount: typeof rawState.journalAccount === "string" ? rawState.journalAccount : defaultState.journalAccount,
     journalSource: typeof rawState.journalSource === "string" ? rawState.journalSource : defaultState.journalSource,
-    randomEntryId: typeof rawState.randomEntryId === "string" ? rawState.randomEntryId : defaultState.randomEntryId,
+    randomEntryId: typeof rawState.randomEntryId === "string" ? resolveMergedEntryId(rawState.randomEntryId) : defaultState.randomEntryId,
     randomEntrySource: typeof rawState.randomEntrySource === "string" ? rawState.randomEntrySource : defaultState.randomEntrySource
   };
   if (nextState.journalMode) {

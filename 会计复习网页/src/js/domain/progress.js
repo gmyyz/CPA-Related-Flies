@@ -1,3 +1,31 @@
+const mergedEntryAliases = Object.freeze({
+  "lease-unguaranteed-residual-value-discounting": "lease-net-investment-unguaranteed-residual-value",
+  "asset-impairment-development-expenditure-presentation": "asset-impairment-mandatory-impairment-test-assets",
+  "government-grants-unamortized-deferred-income-on-asset-disposal": "government-grants-deferred-income-amortization-start-point",
+  "employee-benefits-internal-retirement-provision-payroll-payable": "employee-benefits-internal-retirement-termination-benefits",
+  "subsequent-events-vs-policy-change-error-correction": "subsequent-events-error-discovered-after-reporting-date",
+  "revenue-performance-and-control": "revenue-five-step-and-control",
+  "non-monetary-exchange-inbound-fair-value-fees-vs-output-vat": "non-monetary-exchange-vat-boot-fees-examples",
+  "fair-value-measurement-share-based-payment-special-rules": "fair-value-measurement-excluded-cases",
+  "financial-instruments-fair-value-hedge-carrying-adjustment": "financial-instruments-25",
+  "financial-instruments-written-call-fixed-for-fixed-equity": "financial-instruments-05",
+  "accounting-policy-estimate-error-prospective-application-scenarios": "accounting-policy-estimate-error-three-types-treatment",
+  "accounting-policy-estimate-error-retrospective-adjustment-vs-restatement": "accounting-policy-estimate-error-three-types-treatment",
+  "accounting-policy-estimate-error-retrospective-journal-comparison": "accounting-policy-estimate-error-retrospective-adjustment-journal-logic",
+  "accounting-policy-estimate-error-retrospective-adjustment-template": "accounting-policy-estimate-error-retrospective-adjustment-journal-logic",
+  "debt-restructuring-debtor-debt-to-equity-fair-value-order": "debt-restructuring-debt-to-equity-substance-and-use",
+  "debt-restructuring-creditor-nonfinancial-asset-taxes-cost": "debt-restructuring-creditor-assets-measurement-anchor",
+  "income-tax-initial-recognition-exemption-not-year-end-catch-up": "income-tax-initial-recognition-exemption-core",
+  "income-tax-single-transaction-lease-aro-exception": "income-tax-initial-recognition-exemption-core",
+  "income-tax-investment-dtl-dta-asymmetry": "income-tax-equity-investment-temporary-differences-rules",
+  "consolidation-downstream-minority-profit": "consolidation-downstream-upstream-comparison",
+  "downstream-fixed-assets-depreciation": "consolidation-downstream-upstream-comparison"
+});
+function resolveMergedEntryId(entryId) {
+  return Object.prototype.hasOwnProperty.call(mergedEntryAliases, entryId)
+    ? mergedEntryAliases[entryId]
+    : entryId;
+}
 function getProgress(entryId) {
   return progressState[entryId] || {
     status: "new",
@@ -20,12 +48,28 @@ function normalizeProgressRecord(record = {}) {
   };
 }
 function normalizeProgressState(value = {}) {
-  return Object.entries(value || {}).reduce((result, [entryId, record]) => {
-    if (typeof entryId === "string" && entryId) {
-      result[entryId] = normalizeProgressRecord(record);
+  const result = {};
+  // Fold retired cards first, so a canonical record wins equal-time status ties.
+  const entries = Object.entries(value || {}).sort(([a], [b]) =>
+    Number(Boolean(mergedEntryAliases[b])) - Number(Boolean(mergedEntryAliases[a]))
+    || a.localeCompare(b));
+  for (const [entryId, record] of entries) {
+    if (!entryId) continue;
+    const targetId = resolveMergedEntryId(entryId);
+    const next = normalizeProgressRecord(record);
+    const previous = result[targetId];
+    if (!previous) {
+      result[targetId] = next;
+      continue;
     }
-    return result;
-  }, {});
+    const newer = getProgressRecordTimestamp(next) >= getProgressRecordTimestamp(previous) ? next : previous;
+    result[targetId] = {
+      ...newer,
+      favorite: previous.favorite || next.favorite,
+      reviewedAt: parseDate(next.reviewedAt) > parseDate(previous.reviewedAt) ? next.reviewedAt : previous.reviewedAt
+    };
+  }
+  return result;
 }
 function mergeProgressStates(localProgress = {}, remoteProgress = {}) {
   const local = normalizeProgressState(localProgress);

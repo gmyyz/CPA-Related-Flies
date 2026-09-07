@@ -2,6 +2,7 @@ function renderResults() {
   if (!studyData) {
     return;
   }
+  document.body.dataset.view = state.viewMode;
   const filteredEntries = getFilteredEntries();
   entryCount.textContent = `${studyData.entries.length} 个知识点`;
   updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;
@@ -109,8 +110,9 @@ function bindEvents() {
       const viewMode = button.dataset.viewMode;
       setState({
         viewMode,
-        journalMode: viewMode === "journal"
-      }, { clearRandom: false });
+        journalMode: viewMode === "journal",
+        ...(viewMode === "dashboard" ? { reviewFilter: "全部" } : {})
+      });
     });
   });
   restoreSessionButton.addEventListener("click", () => {
@@ -168,7 +170,7 @@ function bindEvents() {
       const action = button.dataset.mobileAction;
       if (action === "dashboard") {
         document.body.classList.remove("filters-open");
-        setState({ viewMode: "dashboard", journalMode: false }, { clearRandom: false });
+        setState({ viewMode: "dashboard", journalMode: false, reviewFilter: "全部" });
       }
       if (action === "filters") {
         document.body.classList.toggle("filters-open");

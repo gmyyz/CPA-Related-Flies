@@ -53,7 +53,7 @@ test("study data has unique IDs, required fields, and chapter coverage", async (
   const entries = dataContext.window.studyData?.entries;
   assert.ok(Array.isArray(entries));
   assert.deepEqual(JSON.parse(JSON.stringify(studyData)), JSON.parse(JSON.stringify(dataContext.window.studyData)));
-  assert.equal(entries.length, 248);
+  assert.equal(entries.length, 228);
   assert.equal(new Set(entries.map((entry) => entry.id)).size, entries.length);
   entries.forEach((entry) => {
     assert.equal(typeof entry.id, "string");
@@ -99,10 +99,10 @@ test("chapter Markdown export covers every chapter and remains plain text", asyn
     }
     exportedCards += cardCount;
   }
-  assert.equal(exportedCards, 278);
+  assert.equal(exportedCards, 258);
   const index = await readFile(path.join(outputDir, "README.md"), "utf8");
   assert.match(index, /^# CPA 会计章节复习卡片/m);
-  assert.match(index, /共 \*\*278 张\*\*卡片/);
+  assert.match(index, /共 \*\*258 张\*\*卡片/);
 });
 
 test("source note renderer supports tilde fenced code blocks", async () => {
@@ -173,4 +173,41 @@ test("source template retains both build markers", async () => {
   assert.match(template, /__CPA_INLINE_APP__/);
   assert.match(template, /__CPA_INLINE_DATA__/);
   assert.match(template, /__CPA_MERMAID_SOURCE__/);
+});
+
+
+test("compacted cards retain source calculations and previously unindexed long-term investment section", async () => {
+  const outputDir = path.resolve(pageDir, "..", "01-会计", "04-章节复习卡片");
+  const borrowing = await readFile(path.join(outputDir, "11-借款费用.md"), "utf8");
+  assert.match(borrowing, /2,750×\(920\/12,000\)＝210.83/);
+  assert.match(borrowing, /1,245|3,300－2,054.384/);
+  assert.match(borrowing, /2,652.42/);
+  const card = studyData.entries.find((entry) => entry.id === "long-term-equity-investment-disposal-partial-interest-without-loss-control");
+  assert.ok(card, "existing authored card must be reachable in the webpage");
+  const longTerm = await readFile(path.join(outputDir, "06-长期股权投资与合营安排.md"), "utf8");
+  assert.match(longTerm, /商誉/);
+  assert.match(longTerm, /不丧失控制权/);
+});
+
+test("merged financial cards retain examples and structured journal entries", async () => {
+  const html = await readFile(path.join(pageDir, "CICPA会计复习手册.html"), "utf8");
+  const appended = html.match(/window\.studyData\.entries\.push\(\.\.\.(\[.*?\])\);/s);
+  assert.ok(appended, "financial cards are included in generated page");
+  const cards = JSON.parse(appended[1]);
+  assert.equal(cards.length, 30);
+  for (const id of ["financial-instruments-05", "financial-instruments-25"]) {
+    const card = cards.find((item) => item.id === id);
+    assert.equal(card.journalEntries.length, 2);
+    assert.equal(card.conclusion.length, 0, "source notes open without placeholder overview");
+  }
+  const equity = cards.find((item) => item.id === "financial-instruments-05");
+  assert.equal(equity.journalEntries[1].lines.at(-1).amount, "380");
+  assert.ok(!studyData.entries.some((entry) => [
+    "financial-instruments-fair-value-hedge-carrying-adjustment",
+    "financial-instruments-written-call-fixed-for-fixed-equity"
+  ].includes(entry.id)), "duplicate standalone cards no longer render");
+  const notes = await readFile(path.resolve(pageDir, "../01-会计/01-章节笔记/金融工具准则知识点.md"), "utf8");
+  assert.match(notes, /500−20=480/);
+  assert.match(notes, /股本溢价 380/);
+  assert.match(notes, /留存收益累计减少30−7.5=22.5/);
 });

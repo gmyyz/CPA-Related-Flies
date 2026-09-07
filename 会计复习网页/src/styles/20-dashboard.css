@@ -51,10 +51,10 @@
       gap: 16px;
       align-items: center;
       padding: 16px;
-      border: 1px solid rgba(36, 111, 100, 0.18);
+      border: 1px solid rgba(0, 145, 192, 0.18);
       border-radius: 8px;
       background:
-        linear-gradient(135deg, rgba(36, 111, 100, 0.1), rgba(255, 255, 255, 0.58)),
+        linear-gradient(135deg, rgba(0, 145, 192, 0.1), rgba(255, 255, 255, 0.58)),
         var(--panel);
       box-shadow: var(--shadow);
     }
@@ -94,7 +94,7 @@
 
     .recommendation-meta span {
       padding: 6px 9px;
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.68);
       color: var(--brand-deep);
@@ -157,7 +157,7 @@
       height: 10px;
       overflow: hidden;
       border-radius: 999px;
-      background: rgba(28, 22, 15, 0.08);
+      background: rgba(65, 123, 185, 0.08);
     }
 
     .bar-fill {
@@ -194,10 +194,10 @@
       border-radius: 50%;
       background:
         radial-gradient(circle at center, var(--panel-strong) 0 50%, transparent 51%),
-        conic-gradient(var(--mint) 0 var(--known-angle, 0deg), var(--danger) var(--known-angle, 0deg) var(--weak-angle, 0deg), var(--gold) var(--weak-angle, 0deg) var(--reviewed-angle, 0deg), rgba(28, 22, 15, 0.12) var(--reviewed-angle, 0deg) 360deg);
+        conic-gradient(var(--mint) 0 var(--known-angle, 0deg), var(--danger) var(--known-angle, 0deg) var(--weak-angle, 0deg), var(--gold) var(--weak-angle, 0deg) var(--reviewed-angle, 0deg), rgba(65, 123, 185, 0.12) var(--reviewed-angle, 0deg) 360deg);
       display: grid;
       place-items: center;
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
     }
 
     .donut strong {
@@ -246,7 +246,7 @@
       gap: 10px;
       align-items: center;
       padding: 12px;
-      border: 1px solid rgba(28, 22, 15, 0.08);
+      border: 1px solid rgba(65, 123, 185, 0.08);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.72);
       text-align: left;
@@ -290,7 +290,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
       align-items: center;
-      border: 1px solid rgba(36, 111, 100, 0.16);
+      border: 1px solid rgba(0, 145, 192, 0.16);
       border-radius: 8px;
       padding: 10px 11px;
       background: rgba(255, 255, 255, 0.7);

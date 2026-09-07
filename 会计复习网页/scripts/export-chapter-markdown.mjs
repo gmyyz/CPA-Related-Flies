@@ -2,7 +2,9 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chapterDefinitions } from "../data/chapters.mjs";
+import { revenueEntryIds } from "./revenue-note-ids.mjs";
 import { studyData } from "../data/index.mjs";
+import { markdownNoteSources } from "./markdown-notes.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const pageDir = path.resolve(scriptDir, "..");
@@ -81,7 +83,8 @@ function renderCardDirectory(entries) {
 
 function renderStructuredCard(entry, index) {
   const seen = new Set();
-  const sections = [
+  const compactNote = entry.noteBody && ![...(entry.conclusion || []), ...(entry.reasoning || []), ...(entry.memory || []), ...(entry.pitfalls || [])].length;
+  const sections = compactNote ? [renderSummary(entry.summary, seen), entry.noteBody] : [
     renderSummary(entry.summary, seen),
     renderBlocks("核心结论", entry.conclusion, seen),
     renderBlocks("判断与例题", entry.reasoning, seen),
@@ -104,7 +107,7 @@ async function readFinancialCards() {
       id: `financial-instruments-${String(index + 1).padStart(2, "0")}`,
       topic: "金融工具",
       difficulty: "章节笔记",
-      updatedAt: "2026-08-02",
+      updatedAt: "2026-09-07",
       question: question.trim(),
       body: body.join("\n").trim()
     };
@@ -142,7 +145,7 @@ generated: true
 
 [← 返回章节目录](README.md)　·　**${entries.length} 张复习卡片**　·　生成时间：${studyData.updatedAt}
 
-> 阅读顺序：先从本章目录或阅读器的大纲定位卡片，再看“速览”，并用“核心结论—判断与例题—记忆线索—易错提醒”完成一轮复习。完全重复的结构化内容会在导出和网页数据中自动省略。
+> 阅读顺序：先从本章目录或阅读器的大纲定位卡片，再看“速览”，并用“核心结论—判断与例题—记忆线索—易错提醒”完成一轮复习。已精简卡片直接保留对应完整笔记；其余卡片省略完全重复的结构化内容。
 
 ${renderCardDirectory(entries)}
 
@@ -182,9 +185,36 @@ ${rows}
 `;
 }
 
+async function readMappedNotes() {
+  const notes = new Map();
+  for (const source of markdownNoteSources) {
+    const sourcePath = path.resolve(pageDir, ...source.path);
+    const markdown = await readFile(sourcePath, "utf8");
+    const sections = markdown.split(/^## /m).slice(1);
+    if (sections.length !== source.entryIds.length) throw new Error(`笔记映射数量不符：${sourcePath}`);
+    sections.forEach((section, index) => {
+      const id = source.entryIds[index];
+      if (!studyData.entries.some((entry) => entry.id === id)) throw new Error(`完整笔记缺少在用卡片：${id}`);
+      // Keep each source section once, including merged mappings; local assets remain relative to the export directory.
+      const body = (`### ${section.trim()}`).replace(/(!?\[[^\]]*\]\()([^\s)]+)(\))/g, (match, start, url, end) => {
+        if (/^(?:[a-z][a-z0-9+.-]*:|#|\/)/i.test(url)) return match;
+        const target = path.resolve(path.dirname(sourcePath), decodeURI(url));
+        return `${start}${encodeURI(path.relative(outputDir, target).split(path.sep).join("/"))}${end}`;
+      });
+      notes.set(id, [notes.get(id), body].filter(Boolean).join("\n\n"));
+    });
+  }
+  const revenue = await readFile(path.resolve(pageDir, "../01-会计/01-章节笔记/收入准则知识点.md"), "utf8");
+  const sections = revenue.split(/^## /m).slice(1).filter((section) => !section.startsWith("待整理规则") && !section.startsWith("一、专题标题"));
+  if (sections.length !== revenueEntryIds.length) throw new Error("收入笔记与卡片映射数量不符");
+  revenueEntryIds.forEach((id, index) => notes.set(id, "### " + sections[index].trim()));
+  return notes;
+}
+
 async function syncChapterMarkdown({ check = false } = {}) {
   const financialCards = await readFinancialCards();
-  const allEntries = [...studyData.entries, ...financialCards];
+  const mappedNotes = await readMappedNotes();
+  const allEntries = [...studyData.entries.map((entry) => ({ ...entry, noteBody: mappedNotes.get(entry.id) })), ...financialCards];
   const chapterEntries = new Map(chapterDefinitions.map((chapter) => [chapter.id, getChapterEntries(chapter, allEntries)]));
   const expectedFiles = new Map([
     ["README.md", renderIndex(chapterDefinitions, chapterEntries)],

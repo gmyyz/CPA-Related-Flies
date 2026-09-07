@@ -248,7 +248,7 @@ function renderReviewPanel(entries) {
   const knownAngle = Math.round(distribution[0].count / total * 360);
   const weakAngle = knownAngle + Math.round(distribution[1].count / total * 360);
   const reviewedAngle = weakAngle + Math.round(distribution[2].count / total * 360);
-  const panel = createDashboardPanel("复习状态", "状态来自本机 localStorage，标记后看板即时更新。");
+  const panel = createDashboardPanel("复习状态", "记录每一次积累，标记后即时更新。");
   const row = document.createElement("div");
   row.className = "donut-row";
   const donut = document.createElement("div");
@@ -416,30 +416,85 @@ function renderDashboardActions(panel) {
   actions.appendChild(cardsButton);
   panel.appendChild(actions);
 }
+let dashboardPreviewId = null;
+function studyNode(tag, className, text) {
+  const node = document.createElement(tag);
+  node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function studyAction(label, action, primary = false) {
+  const button = studyNode("button", primary ? "accent-button" : "ghost-button", label);
+  button.type = "button";
+  button.addEventListener("click", action);
+  return button;
+}
+function renderStudyHero(entries) {
+  const hero = studyNode("section", "study-hero");
+  const copy = studyNode("div", "study-hero-copy");
+  copy.append(studyNode("h2", "", "今日复习"), studyNode("p", "hero-subtitle", "从一个知识点开始，稳步推进。"));
+  const actions = studyNode("div", "hero-actions");
+  const daily = getDailyTaskEntries(entries);
+  actions.append(studyAction(daily.length ? "开始复习" : "浏览知识卡片", () => {
+    setState({viewMode: "cards", journalMode: false, reviewFilter: daily.length ? "daily" : "全部", sort: "default", quizMode: false});
+  }, true));
+  const recent = [...entries].filter(e => getReviewedAtValue(e)).sort((a,b) => getReviewedAtValue(b)-getReviewedAtValue(a))[0];
+  const resume = studyAction("继续上次", () => { if (recent) openDashboardEntry(recent.id); });
+  resume.disabled = !recent;
+  if (!recent) resume.title = "完成一次复习后，可从这里继续";
+  actions.append(resume);
+  copy.append(actions);
+  const metrics = getDashboardMetrics(entries);
+  const strip = studyNode("div", "study-metrics");
+  [[metrics.entries,"知识点","KNOWLEDGE POINTS"],[metrics.highRisk,"高频易错","HIGH FREQUENCY"],[metrics.journals,"分录","ENTRIES"]].forEach(([value,label,en]) => {
+    const item = studyNode("div", "study-metric");
+    item.append(studyNode("strong", "", value),studyNode("span", "", label),studyNode("small", "", en)); strip.append(item);
+  });
+  copy.append(strip);
+  const orbit = studyNode("div", "study-orbit");
+  const center = studyNode("div", "orbit-center");
+  const today = new Date().toDateString();
+  const completed = entries.filter(e => { const t=getReviewedAtValue(e); return t && new Date(t).toDateString()===today; }).length;
+  center.append(studyNode("strong", "", String(completed)),studyNode("span", "", "今日已复习"),studyNode("small", "", `待复习 ${daily.length} 个知识点`));
+  orbit.append(center); hero.append(copy,orbit); return hero;
+}
+function renderStudyPreview(entry) {
+  const panel = createDashboardPanel("当前知识点", "CURRENT TOPIC");
+  panel.classList.add("study-preview");
+  if (!entry) {panel.append(createInlineEmptyState("暂无知识点", "试试其他章节。"));return panel;}
+  panel.append(studyNode("div", "preview-topic", entry.topic),studyNode("h4", "preview-question", entry.question));
+  const list = studyNode("ol", "preview-conclusions");
+  createListItems(list, (entry.conclusion || []).slice(0,3));
+  if (!list.children.length) list.append(studyNode("li", "", entry.summary));
+  panel.append(list,studyAction("查看知识卡片", () => openDashboardEntry(entry.id)));
+  return panel;
+}
 function renderDashboard(entries) {
   clearNode(cardList);
-  const workbench = document.createElement("div");
-  workbench.className = "dashboard-workbench";
-  workbench.appendChild(renderMetricStrip(entries));
-  workbench.appendChild(renderRecommendationPanel(entries));
-  const grid = document.createElement("div");
-  grid.className = "dashboard-grid";
-  const main = document.createElement("div");
-  main.className = "dashboard-main";
-  main.appendChild(renderTopicCoveragePanel(entries));
-  const twoUp = document.createElement("div");
-  twoUp.className = "dashboard-two-up";
-  twoUp.appendChild(renderDifficultyPanel(entries));
-  twoUp.appendChild(renderReviewPanel(entries));
-  main.appendChild(twoUp);
-  const side = document.createElement("div");
-  side.className = "dashboard-side";
-  const queuePanel = renderQueuePanel(entries);
-  renderDashboardActions(queuePanel);
-  side.appendChild(queuePanel);
-  side.appendChild(renderJournalHeatPanel(entries));
-  grid.appendChild(main);
-  grid.appendChild(side);
-  workbench.appendChild(grid);
-  cardList.appendChild(workbench);
+  const workbench = studyNode("div", "dashboard-workbench");
+  workbench.append(renderStudyHero(entries));
+  const grid = studyNode("div", "study-grid");
+  const items = getContinuationEntries(entries,4);
+  const selected = items.find(e => e.id === dashboardPreviewId) || items[0];
+  const queue = createDashboardPanel("今日复习清单", "TODAY’S QUEUE");
+  const list = studyNode("div", "study-queue");
+  items.forEach((entry,index) => {
+    const button = studyNode("button", "study-queue-item" + (entry.id===selected?.id ? " selected" : ""));
+    button.type = "button";
+    button.setAttribute("aria-pressed", String(entry.id === selected?.id));
+    const copy = studyNode("div", "queue-copy");
+    copy.append(studyNode("strong", "", entry.question),studyNode("span", "", `${entry.topic} · ${entry.difficulty}`));
+    button.append(studyNode("span", "queue-number", String(index+1).padStart(2,"0")), copy, studyNode("span","queue-status",getPriorityLabel(entry)));
+    button.addEventListener("click", () => { dashboardPreviewId=entry.id; renderDashboard(entries); });
+    list.append(button);
+  });
+  queue.append(list);
+  const footer = studyNode("div", "queue-footer");
+  footer.append(studyNode("span", "", `今日待复习 ${getDailyTaskEntries(entries).length} 个知识点`),studyAction("查看全部",()=>setState({viewMode:"cards",journalMode:false,reviewFilter:"daily",sort:"default",quizMode:false})));
+  queue.append(footer);grid.append(queue,renderStudyPreview(selected));workbench.append(grid);
+  const details = studyNode("details", "study-analytics");
+  details.append(studyNode("summary", "", "学习统计与复习建议"));
+  const analytics = studyNode("div", "dashboard-two-up");
+  analytics.append(renderTopicCoveragePanel(entries),renderReviewPanel(entries),renderDifficultyPanel(entries),renderJournalHeatPanel(entries));
+  details.append(renderRecommendationPanel(entries),analytics);workbench.append(details);cardList.append(workbench);
 }
