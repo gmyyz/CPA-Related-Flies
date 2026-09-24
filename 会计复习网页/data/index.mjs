@@ -29,9 +29,10 @@ import topic26 from "./topics/外币折算.mjs";
 import topic27 from "./topics/债务重组.mjs";
 
 import { chapterDefinitions } from "./chapters.mjs";
+import { indexOrderedEntries } from "./validate-entry-order.mjs";
 import { updatedAt } from "./meta.mjs";
 
-const entriesById = new Map([
+const allEntries = [
   ...topic01,
   ...topic02,
   ...topic03,
@@ -59,7 +60,7 @@ const entriesById = new Map([
   ...topic25,
   ...topic26,
   ...topic27
-].map((entry) => [entry.id, entry]));
+];
 
 export const entryOrder = [
   "fixed-assets-inventory-surplus-loss-treatment",
@@ -291,6 +292,8 @@ export const entryOrder = [
   "debt-restructuring-debtor-asset-settlement-profit-classification",
   "debt-restructuring-debtor-modified-terms-ten-percent-test",
 ];
+
+const entriesById = indexOrderedEntries(allEntries, entryOrder);
 
 function normalizeForReview(entry) {
   const normalizeText = (value) => String(value || "").replace(/\s+/g, " ").trim().toLowerCase();

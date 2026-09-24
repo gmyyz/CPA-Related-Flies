@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { serializeInlineJson } from "./inline-json.mjs";
 import { studyData } from "../data/index.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -26,7 +27,7 @@ function validateStudyData(data) {
 
 export function renderStudyData(data = studyData) {
   validateStudyData(data);
-  return `// 此文件由 data/ 专题源自动生成；请编辑 data/topics/ 和 data/index.mjs，勿直接修改。\nwindow.studyData = ${JSON.stringify(data, null, 2)};\n`;
+  return `// 此文件由 data/ 专题源自动生成；请编辑 data/topics/ 和 data/index.mjs，勿直接修改。\nwindow.studyData = ${serializeInlineJson(data, 2)};\n`;
 }
 
 export async function syncStudyData({ check = false } = {}) {

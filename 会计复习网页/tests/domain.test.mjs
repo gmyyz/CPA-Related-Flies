@@ -175,6 +175,7 @@ test("Gist service writes the versioned progress file without calling the real A
     ["js/services/cloud-sync.js"],
     ["writeRemoteProgressPayload"],
     {
+      document: { querySelector: () => null },
       CLOUD_SYNC_STORAGE_KEY: "cicpa-review-cloud-sync",
       GIST_PROGRESS_FILENAME: "cicpa-review-progress.json",
       cloudSessionToken: "token-test",

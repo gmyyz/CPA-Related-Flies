@@ -18,3 +18,8 @@ tmp_pdf_pages/
 /output/
 *.pdf
 *.xlsx
+
+# Legacy locations of local review artifacts (kept ignored on other checkouts)
+/.local-design-qa/
+/design-qa.md
+/docs/content-review/

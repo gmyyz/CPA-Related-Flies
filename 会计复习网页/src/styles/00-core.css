@@ -705,3 +705,17 @@
         animation-iteration-count: 1 !important;
       }
     }
+
+    .progress-save-warning {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: #fff1e8;
+      color: #803020;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .progress-save-warning button {
+      margin-left: 12px;
+    }

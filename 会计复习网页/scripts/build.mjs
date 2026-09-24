@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { transform } from "esbuild";
+import { serializeInlineJson } from "./inline-json.mjs";
 import { revenueEntryIds } from "./revenue-note-ids.mjs";
 import { markdownNoteSources } from "./markdown-notes.mjs";
 import financialNoteDetails from "../data/financial-note-details.mjs";
@@ -212,7 +213,7 @@ async function buildPage() {
     .replace(cssMarker, () => css)
     .replace(dataMarker, () => escapeInlineScript(studyData.trim()))
     .replace(mermaidMarker, () => escapeInlineScript(mermaidSource.trim()))
-    .replace(revenueNotesMarker, () => `window.markdownSections = ${JSON.stringify({ ...otherNotes, ...revenueNotes, ...financialNotes.notes })};\nwindow.studyData.entries.push(...${JSON.stringify(financialNotes.entries)});`)
+    .replace(revenueNotesMarker, () => `window.markdownSections = ${serializeInlineJson({ ...otherNotes, ...revenueNotes, ...financialNotes.notes })};\nwindow.studyData.entries.push(...${serializeInlineJson(financialNotes.entries)});`)
     .replace(jsMarker, () => result.code.trimEnd())
     .replace(/\r\n/g, "\n")
     .replace(/^ +\t/gm, "\t")

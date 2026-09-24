@@ -351,6 +351,7 @@ function renderCards(entries, totalEntries = entries.length) {
         button.classList.toggle("active", progress.favorite);
       }
       button.addEventListener("click", () => {
+        const progress = getProgress(entry.id);
         if (action === "reviewed") {
           updateProgress(entry.id, {});
         }

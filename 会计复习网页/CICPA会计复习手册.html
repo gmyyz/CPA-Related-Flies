@@ -715,6 +715,20 @@
       }
     }
 
+    .progress-save-warning {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: #fff1e8;
+      color: #803020;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .progress-save-warning button {
+      margin-left: 12px;
+    }
+
 .dashboard-workbench {
       display: grid;
       gap: 14px;
@@ -2122,6 +2136,10 @@ button:disabled {opacity:.45;cursor:default;transform:none;}
   </style>
 </head>
 <body>
+  <aside id="progress-save-warning" class="progress-save-warning" role="alert" hidden>
+    <span>进度未能保存到本机，目前仅保留在本页内存中；关闭或刷新可能丢失。请检查浏览器存储权限或空间后重试。</span>
+    <button id="retry-progress-save" type="button">重试保存</button>
+  </aside>
   <div class="page-shell">
     <header class="app-command">
       <div class="workspace-title">学习工作台 <span>STUDY CONSOLE</span></div>
@@ -11997,7 +12015,7 @@ window.studyData = {
       "conclusion": [
         "仅附服务期条件：假定期末尚未解锁股票自期初或较晚授予日解锁。含业绩条件：假定期末就是解锁日，以期末实际业绩判断是否满足；不能用预计未来达标代替。",
         "假定行权价P＝发行价＋期末尚未取得职工服务按股份支付准则确定的每股公允价值。用适用期间加权股数N及平均市价M计算净增N×(1−P/M)；P不是合同实际改价。",
-        "假定解锁时，加回基本EPS已扣的对应现金股利或净利润；再检验调整后EPS是否稀释。P<M只说明股数增量为正，不足以跳过分子调整、亏损及组合稀释测试。"
+        "假定解锁时，加回基本EPS已扣的对应现金股利或净利润；再检验调整后EPS是否稀释。P\u003cM只说明股数增量为正，不足以跳过分子调整、亏损及组合稀释测试。"
       ],
       "reasoning": [
         "估值演算前提：每股发行价8元，授予的权益工具用于计量职工服务的每股公允价值给定为15元，服务期3年且均匀取得。这里15不是未经调整的普通股市价；若题给的是普通股市价，不能直接用15计算服务价值。第1年末未取得服务15×2/3=10元，P=18元。",
@@ -16384,10 +16402,17 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       });
     }
   }
+  const progressSaveWarning = document.querySelector("#progress-save-warning");
+  const retryProgressSaveButton = document.querySelector("#retry-progress-save");
+  retryProgressSaveButton?.addEventListener("click", persistProgress);
   function persistProgress() {
     try {
       window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progressState));
+      if (progressSaveWarning) progressSaveWarning.hidden = true;
+      return true;
     } catch (error) {
+      if (progressSaveWarning) progressSaveWarning.hidden = false;
+      return false;
     }
   }
   function readProgressState() {
@@ -17637,17 +17662,18 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
           button.classList.toggle("active", progress.favorite);
         }
         button.addEventListener("click", () => {
+          const progress2 = getProgress(entry.id);
           if (action === "reviewed") {
             updateProgress(entry.id, {});
           }
           if (action === "known") {
-            updateProgress(entry.id, { status: progress.status === "known" ? "new" : "known" });
+            updateProgress(entry.id, { status: progress2.status === "known" ? "new" : "known" });
           }
           if (action === "weak") {
-            updateProgress(entry.id, { status: progress.status === "weak" ? "new" : "weak" });
+            updateProgress(entry.id, { status: progress2.status === "weak" ? "new" : "weak" });
           }
           if (action === "favorite") {
-            updateProgress(entry.id, { favorite: !progress.favorite }, { touch: false });
+            updateProgress(entry.id, { favorite: !progress2.favorite }, { touch: false });
           }
         });
       });

@@ -1,7 +1,14 @@
+const progressSaveWarning = document.querySelector("#progress-save-warning");
+const retryProgressSaveButton = document.querySelector("#retry-progress-save");
+retryProgressSaveButton?.addEventListener("click", persistProgress);
 function persistProgress() {
   try {
     window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progressState));
+    if (progressSaveWarning) progressSaveWarning.hidden = true;
+    return true;
   } catch (error) {
+    if (progressSaveWarning) progressSaveWarning.hidden = false;
+    return false;
   }
 }
 function readProgressState() {
