@@ -17391,7 +17391,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       statusRow.appendChild(buildStatusPill(state.journalSource === "auto" ? "自动提取" : "结构化", "quiz"));
     }
     if (state.randomEntryId && visibleEntries.length === 1) {
-      const randomText = state.randomEntrySource === "notes" ? "完整笔记" : state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
+      const randomText = state.randomEntrySource === "notes" ? "完整笔记" : state.randomEntrySource === "detail" ? "知识卡片详情" : state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
       statusRow.appendChild(buildStatusPill(randomText, "random"));
     }
     if (statusRow.childNodes.length > 0) {
@@ -17686,7 +17686,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
   function renderCards(entries, totalEntries = entries.length) {
     clearNode(cardList);
     const mermaidNodes = [];
-    if (state.randomEntrySource === "notes" && state.randomEntryId) {
+    if (["notes", "detail"].includes(state.randomEntrySource) && state.randomEntryId) {
       const returnEntryId = state.randomEntryId;
       const back = studyNode("button", "note-back-button ghost-button", "← 返回知识卡片");
       back.type = "button";
@@ -17727,20 +17727,20 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       appendInlineMarkdown(summary, entry.summary);
       summary.hidden = state.quizMode && !isExpanded;
       hint.hidden = !(state.quizMode && !isExpanded);
-      toggleButton.textContent = isExpanded ? sourceNotes && state.randomEntrySource === "notes" ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情" : state.quizMode ? "查看解析" : sourceNotes ? "展开完整笔记" : "展开详情";
+      toggleButton.textContent = isExpanded ? ["notes", "detail"].includes(state.randomEntrySource) ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情" : state.quizMode ? "查看解析" : sourceNotes ? "展开完整笔记" : "展开详情";
       toggleButton.setAttribute("aria-expanded", String(isExpanded));
       toggleButton.setAttribute("aria-controls", detailsId);
       details.id = detailsId;
       toggleButton.addEventListener("click", () => {
-        if (sourceNotes && state.randomEntrySource === "notes") {
+        if (["notes", "detail"].includes(state.randomEntrySource)) {
           uiState.expandedIds.delete(entry.id);
           setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
           window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
           return;
         }
-        if (sourceNotes && !isExpanded && state.randomEntrySource !== "notes") {
+        if (!isExpanded) {
           uiState.expandedIds.add(entry.id);
-          setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: "notes" }, { clearRandom: false, resetCardLimit: false });
+          setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: sourceNotes ? "notes" : "detail" }, { clearRandom: false, resetCardLimit: false });
           window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
           return;
         }
@@ -18679,7 +18679,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       return;
     }
     document.body.dataset.view = state.viewMode;
-    const isNoteView = state.viewMode === "cards" && state.randomEntrySource === "notes" && Boolean(state.randomEntryId);
+    const isNoteView = state.viewMode === "cards" && ["notes", "detail"].includes(state.randomEntrySource) && Boolean(state.randomEntryId);
     document.body.dataset.noteView = String(isNoteView);
     if (isNoteView) uiState.expandedIds.add(state.randomEntryId);
     const filteredEntries = getFilteredEntries();

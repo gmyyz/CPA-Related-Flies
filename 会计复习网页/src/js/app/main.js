@@ -3,7 +3,7 @@ function renderResults() {
     return;
   }
   document.body.dataset.view = state.viewMode;
-  const isNoteView = state.viewMode === "cards" && state.randomEntrySource === "notes" && Boolean(state.randomEntryId);
+  const isNoteView = state.viewMode === "cards" && ["notes", "detail"].includes(state.randomEntrySource) && Boolean(state.randomEntryId);
   document.body.dataset.noteView = String(isNoteView);
   if (isNoteView) uiState.expandedIds.add(state.randomEntryId);
   const filteredEntries = getFilteredEntries();

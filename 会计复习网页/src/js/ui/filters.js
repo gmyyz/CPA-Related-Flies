@@ -279,7 +279,7 @@ function renderResultsMeta(filteredEntries, visibleEntries, totalVisibleEntries 
     statusRow.appendChild(buildStatusPill(state.journalSource === "auto" ? "自动提取" : "结构化", "quiz"));
   }
   if (state.randomEntryId && visibleEntries.length === 1) {
-    const randomText = state.randomEntrySource === "notes" ? "完整笔记" : state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
+    const randomText = state.randomEntrySource === "notes" ? "完整笔记" : state.randomEntrySource === "detail" ? "知识卡片详情" : state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
     statusRow.appendChild(buildStatusPill(randomText, "random"));
   }
   if (statusRow.childNodes.length > 0) {

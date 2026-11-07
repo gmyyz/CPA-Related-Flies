@@ -288,7 +288,7 @@ function updateRenderedCardProgress(entryId) {
 function renderCards(entries, totalEntries = entries.length) {
   clearNode(cardList);
   const mermaidNodes = [];
-  if (state.randomEntrySource === "notes" && state.randomEntryId) {
+  if (["notes", "detail"].includes(state.randomEntrySource) && state.randomEntryId) {
     const returnEntryId = state.randomEntryId;
     const back = studyNode("button", "note-back-button ghost-button", "← 返回知识卡片");
     back.type = "button";
@@ -330,7 +330,7 @@ function renderCards(entries, totalEntries = entries.length) {
     summary.hidden = state.quizMode && !isExpanded;
     hint.hidden = !(state.quizMode && !isExpanded);
     toggleButton.textContent = isExpanded
-      ? (sourceNotes && state.randomEntrySource === "notes" ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情")
+      ? (["notes", "detail"].includes(state.randomEntrySource) ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情")
       : state.quizMode
         ? "查看解析"
         : (sourceNotes ? "展开完整笔记" : "展开详情");
@@ -338,15 +338,15 @@ function renderCards(entries, totalEntries = entries.length) {
     toggleButton.setAttribute("aria-controls", detailsId);
     details.id = detailsId;
     toggleButton.addEventListener("click", () => {
-      if (sourceNotes && state.randomEntrySource === "notes") {
+      if (["notes", "detail"].includes(state.randomEntrySource)) {
         uiState.expandedIds.delete(entry.id);
         setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
         window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
         return;
       }
-      if (sourceNotes && !isExpanded && state.randomEntrySource !== "notes") {
+      if (!isExpanded) {
         uiState.expandedIds.add(entry.id);
-        setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: "notes" }, { clearRandom: false, resetCardLimit: false });
+        setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: sourceNotes ? "notes" : "detail" }, { clearRandom: false, resetCardLimit: false });
         window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
         return;
       }
