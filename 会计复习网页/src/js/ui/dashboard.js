@@ -463,10 +463,35 @@ function renderStudyPreview(entry) {
   panel.classList.add("study-preview");
   if (!entry) {panel.append(createInlineEmptyState("暂无知识点", "试试其他章节。"));return panel;}
   panel.append(studyNode("div", "preview-topic", entry.topic),studyNode("h4", "preview-question", entry.question));
-  const list = studyNode("ol", "preview-conclusions");
-  createListItems(list, (entry.conclusion || []).slice(0,3));
+  const conclusion = studyNode("section", "preview-section preview-core");
+  conclusion.append(studyNode("h5", "", "核心结论"));
+  const list = studyNode("ul", "preview-conclusions");
+  createListItems(list, (entry.conclusion || []).slice(0, 3));
   if (!list.children.length) list.append(studyNode("li", "", entry.summary));
-  panel.append(list,studyAction("查看知识卡片", () => openDashboardEntry(entry.id)));
+  conclusion.append(list); panel.append(conclusion);
+  if (entry.reasoning?.length) {
+    const reasoning = studyNode("section", "preview-section");
+    reasoning.append(studyNode("h5", "", "判断逻辑"));
+    const points = studyNode("ol", "preview-reasoning");
+    createListItems(points, entry.reasoning.slice(0, 3));
+    reasoning.append(points); panel.append(reasoning);
+  }
+  if (entry.journalEntries?.length) {
+    const journal = entry.journalEntries[0];
+    const section = studyNode("section", "preview-section");
+    section.append(studyNode("h5", "", "典型分录"));
+    const box = studyNode("div", "preview-journal");
+    box.append(studyNode("strong", "", journal.title));
+    if (journal.scope) box.append(studyNode("p", "preview-journal-context", journal.scope));
+    if (journal.condition) box.append(studyNode("p", "preview-journal-context", journal.condition));
+    (journal.lines || []).forEach(line => {
+      const row = studyNode("div", "preview-journal-line");
+      row.append(studyNode("span", "", `${line.side}：${line.account}`), studyNode("span", "", line.amount || ""));
+      box.append(row);
+    });
+    section.append(box); panel.append(section);
+  }
+  panel.append(studyAction("查看知识卡片", () => openDashboardEntry(entry.id)));
   return panel;
 }
 function renderDashboard(entries) {

@@ -2133,6 +2133,89 @@ button:disabled {opacity:.45;cursor:default;transform:none;}
 .brand-block {margin-left:4px;}
 .study-hero,.study-grid>.dashboard-panel {border-top-color:#a5d9f7;border-bottom-color:#a5d9f7;}
 @media(min-width:761px) and (max-width:1000px){.study-grid{grid-template-columns:1fr}.study-metric span{display:block;margin:6px 0 0}.study-metric small{font-size:7px}.study-hero{padding-inline:24px}.hero-subtitle{font-size:15px}}
+
+/* RIGOL-inspired study workspace */
+:root {--bg:#f5f3f0;--panel:#fcfbf9;--panel-strong:#fff;--ink:#171717;--muted:#696966;--line:#d9d8d5;--brand:#e5b500;--brand-deep:#8b6900;--shadow:none;--radius:10px}
+body {background:var(--bg);color:var(--ink)}
+button:hover {border-color:#d2ad26;background-color:#fff5d5}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible {outline:3px solid #c69b00;outline-offset:3px}
+.page-shell {padding-left:268px;padding-right:20px;max-width:none}
+.app-command {background:transparent;padding:14px 0;border-bottom:1px solid #d8d6d2;align-items:center}
+.workspace-title {font-size:17px;color:#262626}.workspace-title span {color:#777}
+.command-search {width:min(55%,480px)}.command-search input {border-color:#d2d1ce;background:#faf9f7}
+.controls {width:248px;background:#202020;color:#ededeb;border:0;padding:22px 14px;left:0}
+.brand-block {margin:0 12px 30px}.brand-block h1 {font-size:29px;color:#fff}.brand-subtitle {color:#c6c6c6}.brand-icon {filter:invert(78%) sepia(80%) saturate(1100%) hue-rotate(358deg) brightness(105%)}
+.view-switch {gap:5px;margin-bottom:30px}.view-switch button {color:#f3f3f1;font-weight:600;padding:15px 13px;border-radius:7px;font-size:16px}.view-switch button.active {background:#51471f;color:#ffda30;border-left-color:#ffcd00}.view-switch img {filter:invert(1);opacity:.9}.view-switch button.active img {filter:invert(81%) sepia(90%) saturate(1200%) hue-rotate(356deg);opacity:1}
+.controls h2 {color:#f2f2f2;font-size:14px;font-weight:600;margin-left:8px}.controls h2 small {color:#b0b0ad}.controls section + section {border-color:#4a4a48}.controls .field-label,.controls p,.controls label {color:#d1d1ce}
+.chapter-list {max-height:450px}.chapter-button {background:transparent;border-bottom:1px solid #454545;color:#ededeb;padding:12px 10px}.chapter-button:hover {background:#39372d;color:#fff}.chapter-button.active {color:#ffe26b;background:#4a4634;border-left:3px solid #ffce00}.chapter-count {background:#464646;color:#dedede}.chapter-button.active .chapter-count {background:#79651b;color:#fff2a8}
+.controls .chip,.controls select,.controls input {background:#303030;color:#eee;border-color:#626262}.controls .chip.active {background:#5b501e;color:#ffe266;border-color:#d3b32d}
+.quick-action {color:#63562c}.accent-button {background:#ffd21c;border-color:#ffd21c;color:#151515;box-shadow:none;font-weight:700}.accent-button:hover {background:#e8bd16;color:#151515}
+.layout {margin-top:16px}.dashboard-workbench {gap:16px}.study-hero {min-height:0;display:flex;align-items:center;gap:16px;padding:12px 16px;background:#f9f8f5;border:1px solid var(--line);border-radius:8px;box-shadow:none}.study-hero-copy {display:flex;flex:1;align-items:center;gap:18px;min-width:0}.study-hero h2,.hero-subtitle {display:none}.hero-actions {gap:8px;order:2}.hero-actions button {min-height:40px;padding:8px 16px;font-size:13px}.study-metrics {display:flex;align-items:center;gap:0;margin:0;padding:0;border:0;flex:1}.study-metric {padding:0 16px}.study-metric strong {font-size:22px;font-weight:700}.study-metric span {font-size:11px}.study-metric small {display:none}.study-orbit {background:none;aspect-ratio:auto;width:auto;max-width:none}.orbit-center {display:flex;align-items:center;gap:7px;white-space:nowrap}.orbit-center strong {font-size:22px;font-weight:700}.orbit-center span,.orbit-center small {font-size:11px}
+.study-grid {grid-template-columns:minmax(270px, .48fr) minmax(0,1fr);gap:14px}.dashboard-panel {padding:22px;border-color:#d7d5d1;border-radius:10px;background:#fcfbf9}.dashboard-panel-header {border-bottom:1px solid #e0dfdc;padding-bottom:15px;margin-bottom:16px}.dashboard-panel-header h3 {font-size:21px}.study-grid .dashboard-panel-header p {color:#777}.study-queue-item {grid-template-columns:32px minmax(0,1fr);gap:12px;padding:16px 10px;background:transparent;border-bottom:1px solid #e2e0dc}.study-queue-item.selected {background:#fff5d7;border-left:3px solid #f3c700;border-radius:6px}.queue-number {color:#ab8000;font-size:20px;font-weight:700}.queue-copy strong {font-size:15px;font-weight:650;line-height:1.55}.queue-copy span {font-size:12px}.queue-status {display:none}.queue-footer {margin-top:auto;padding-top:24px}.queue-footer button,.study-preview>.ghost-button {color:#8b6900;font-weight:700}
+.preview-topic {align-self:flex-end;background:#ffe9a1;color:#604800;border-radius:5px;padding:5px 10px;font-weight:600}.preview-question {font-size:clamp(20px,2vw,28px);line-height:1.4;font-weight:700;margin:0 0 22px;padding:0;border:0}.preview-section {margin-bottom:20px}.preview-section h5 {font-size:18px;border-left:5px solid #f2c700;padding-left:10px;margin:0 0 12px}.preview-conclusions {background:#fff6dd;border-radius:7px;max-height:none;overflow:visible;padding:12px 18px 12px 34px;margin:0}.preview-conclusions li,.preview-reasoning li {font-size:14px;color:#222;line-height:1.8;padding:3px 0}.preview-conclusions li::marker,.preview-reasoning li::marker {color:#ad8200}.preview-reasoning {padding-left:24px;margin:0}.preview-journal {border:1px solid #e1dfda;border-radius:7px;overflow:hidden}.preview-journal>strong {display:block;background:#efeeeb;padding:10px 14px;font-size:14px}.preview-journal-context {font-size:12px;color:#686866;margin:8px 14px}.preview-journal-line {display:flex;justify-content:space-between;gap:12px;padding:6px 14px;font-size:14px}.study-analytics summary {color:#676762}
+.filter-button.active,.chip.active,.mode-button.active {background:#fff2c5;color:#715600;border-color:#e5c447}
+@media(min-width:1800px){.controls{left:0}}
+@media(max-width:1150px) and (min-width:761px){.page-shell{padding-left:225px;padding-right:14px}.controls{width:210px}.study-grid{grid-template-columns:minmax(225px,.6fr) minmax(0,1fr)}.study-hero-copy{flex-wrap:wrap}.study-metric{padding:0 9px}.orbit-center small{display:none}}
+@media(max-width:760px){.page-shell{width:100%;padding:0 14px 90px}.app-command{padding:14px 0}.command-search{width:100%}.study-hero{display:block;padding:12px}.study-hero-copy{display:flex;flex-wrap:wrap}.study-metrics{order:0;width:100%}.study-metric{padding:0 10px}.study-metric strong{font-size:20px}.study-metric span{display:block;margin:3px 0 0}.hero-actions{order:1}.study-orbit{margin-top:12px;justify-content:start}.study-grid{grid-template-columns:1fr}.dashboard-panel{padding:18px}.preview-question{font-size:22px}.mobile-command-bar{background:#202020;border-color:#444}.mobile-command-bar button{color:#eee}.mobile-command-bar button.active{background:#51471f;color:#ffdf4b}body.filters-open .controls{background:#202020;color:#eee;border-color:#555}.controls .close-filters{color:#222}.preview-conclusions{max-height:none}}
+.preview-reasoning li {overflow-x:auto;max-width:100%}
+.preview-reasoning table {min-width:460px}
+.study-hero,.study-grid>.dashboard-panel {border-color:#d7d5d1}
+
+/* Compact knowledge-card view, based on the selected single-column design. */
+body[data-view="cards"] .quick-actions {margin-top:9px;gap:22px}
+body[data-view="cards"] .toolbar {min-height:0;padding:10px 0 6px;background:transparent}
+body[data-view="cards"] .toolbar-copy h2 {font-size:23px}
+body[data-view="cards"] .toolbar-copy p {font-size:12px;line-height:1.5}
+body[data-view="cards"] .results-meta {margin:5px 0 10px;font-size:12px}
+body[data-view="cards"] .card-list {gap:12px}
+body[data-view="cards"] .qa-card {background:#fcfbf9;border:1px solid #dedcd7;border-left:3px solid #e6bd00;border-radius:8px;padding:15px 18px;box-shadow:none}
+body[data-view="cards"] .qa-topline {margin-bottom:8px;gap:8px}
+body[data-view="cards"] .badge-group {gap:6px}
+body[data-view="cards"] .topic-badge,body[data-view="cards"] .difficulty-badge {padding:4px 9px;font-size:11px;letter-spacing:0}
+body[data-view="cards"] .topic-badge {background:#eceae5;color:#4d4a43}
+body[data-view="cards"] .difficulty-badge {background:#fff0c3;color:#735700}
+body[data-view="cards"] .card-meta {font-size:11px;color:#6f6d68}
+body[data-view="cards"] .question-title {font-size:18px;line-height:1.4;max-width:1000px}
+body[data-view="cards"] .question-summary,body[data-view="cards"] .question-hint {font-size:13px;line-height:1.6;margin-top:6px;max-width:1050px}
+body[data-view="cards"] .card-actions {margin-top:10px;gap:8px}
+body[data-view="cards"] .mastery-actions {gap:6px;justify-content:flex-start}
+body[data-view="cards"] .mastery-button {border:1px solid #d4d1ca;border-radius:6px;background:#fff;color:#37342e;padding:6px 10px;font-size:12px}
+body[data-view="cards"] .mastery-button.active {background:#ffdf59;color:#362c00;border-color:#d7ad00}
+body[data-view="cards"] .mastery-button.weak.active {background:#ffebcf;color:#703900;border-color:#d48b33}
+body[data-view="cards"] .toggle-details {border:1px solid #c59b00;border-radius:6px;background:#fff8df;color:#4c3b00;padding:7px 13px;font-weight:700;font-size:12px}
+body[data-view="cards"] .card-tags {margin-top:8px;color:#77736a;font-size:11px}
+body[data-view="cards"] .card-tags summary {cursor:pointer;width:max-content;padding:2px 0}
+body[data-view="cards"] .tag-row {gap:6px;margin-top:7px}
+body[data-view="cards"] .tag {background:#f2f0eb;border-color:#dedbd4;color:#57534b;padding:4px 7px;font-size:11px}
+body[data-view="cards"] .card-detail-tabs {margin-top:13px;background:#f2f1ed;border-color:#dedcd6}
+body[data-view="cards"] .card-detail-tab.active {color:#725800;background:#fff5ce;box-shadow:none}
+@media(max-width:760px){body[data-view="cards"] .qa-card{padding:14px}body[data-view="cards"] .question-title{font-size:17px}body[data-view="cards"] .card-actions{align-items:flex-start}body[data-view="cards"] .toggle-details{order:0}body[data-view="cards"] .mastery-actions{order:1;width:100%;flex-wrap:wrap}body[data-view="cards"] .toolbar-copy p{display:none}}
+
+/* Two-column knowledge cards, with expanded content spanning the full reading width. */
+body[data-view="cards"] .card-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+body[data-view="cards"] .qa-card {display:flex;flex-direction:column;padding:20px;border:1px solid #dedcd7;border-radius:10px;min-width:0}
+body[data-view="cards"] .qa-card:has(.toggle-details[aria-expanded="true"]) {grid-column:1 / -1}
+body[data-view="cards"] .load-more-cards {grid-column:1 / -1}
+body[data-view="cards"] .qa-topline {margin-bottom:16px}
+body[data-view="cards"] .topic-badge {background:#dff1f6;color:#08698b}
+body[data-view="cards"] .difficulty-badge {background:#fff1ca;color:#765600}
+body[data-view="cards"] .question-title {font-size:20px;line-height:1.45}
+body[data-view="cards"] .question-summary,body[data-view="cards"] .question-hint {font-size:14px;line-height:1.65;margin-top:12px}
+body[data-view="cards"] .card-keywords {order:0;margin-top:auto;padding-top:16px}
+body[data-view="cards"] .tag-row,body[data-view="cards"] .extra-tags {display:flex;gap:6px;flex-wrap:wrap}
+body[data-view="cards"] .tag {border-radius:999px;background:#f7f6f3;padding:4px 9px;font-size:12px}
+body[data-view="cards"] .card-tags {margin-top:6px}
+body[data-view="cards"] .card-tags[hidden] {display:none}
+body[data-view="cards"] .extra-tags {margin-top:6px}
+body[data-view="cards"] .card-actions {order:1;border-top:1px solid #e6e4e0;padding-top:14px;margin-top:16px;gap:8px}
+body[data-view="cards"] .mastery-actions {flex-wrap:wrap}
+body[data-view="cards"] .toggle-details {background:#ffd21c;color:#1e1a0b;border-color:#ffd21c}
+body[data-view="cards"] .card-details {order:2}
+@media(max-width:1050px) and (min-width:761px){body[data-view="cards"] .qa-card{padding:16px}body[data-view="cards"] .question-title{font-size:18px}body[data-view="cards"] .card-actions .toggle-details{order:0}body[data-view="cards"] .mastery-actions{order:1}}
+@media(max-width:760px){body[data-view="cards"] .card-list{grid-template-columns:minmax(0,1fr)}body[data-view="cards"] .qa-card{padding:16px}body[data-view="cards"] .question-title{font-size:18px}}
+body[data-note-view="true"] .card-list {grid-template-columns:minmax(0,1fr)}
+body[data-note-view="true"] .note-back-button {justify-self:start;color:#705500;border-color:#d4c694;background:#fff9e8}
+body[data-note-view="true"] .qa-card {width:100%}
   </style>
 </head>
 <body>
@@ -2394,7 +2477,7 @@ button:disabled {opacity:.45;cursor:default;transform:none;}
           </div>
         </div>
       </div>
-      <div class="tag-row"></div>
+      <div class="card-keywords"><div class="tag-row"></div><details class="card-tags" hidden><summary>更多标签</summary><div class="extra-tags"></div></details></div>
     </article>
   </template>
 
@@ -17308,7 +17391,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       statusRow.appendChild(buildStatusPill(state.journalSource === "auto" ? "自动提取" : "结构化", "quiz"));
     }
     if (state.randomEntryId && visibleEntries.length === 1) {
-      const randomText = state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
+      const randomText = state.randomEntrySource === "notes" ? "完整笔记" : state.randomEntrySource === "related" ? "相邻知识点" : state.randomEntrySource === "journal" ? "分录来源卡片" : "随机抽题中";
       statusRow.appendChild(buildStatusPill(randomText, "random"));
     }
     if (statusRow.childNodes.length > 0) {
@@ -17603,6 +17686,17 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
   function renderCards(entries, totalEntries = entries.length) {
     clearNode(cardList);
     const mermaidNodes = [];
+    if (state.randomEntrySource === "notes" && state.randomEntryId) {
+      const returnEntryId = state.randomEntryId;
+      const back = studyNode("button", "note-back-button ghost-button", "← 返回知识卡片");
+      back.type = "button";
+      back.addEventListener("click", () => {
+        uiState.expandedIds.delete(returnEntryId);
+        setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
+        window.requestAnimationFrame(() => scrollEntryIntoView(returnEntryId));
+      });
+      cardList.appendChild(back);
+    }
     entries.forEach((entry) => {
       const fragment = cardTemplate.content.cloneNode(true);
       const article = fragment.querySelector(".qa-card");
@@ -17633,11 +17727,23 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       appendInlineMarkdown(summary, entry.summary);
       summary.hidden = state.quizMode && !isExpanded;
       hint.hidden = !(state.quizMode && !isExpanded);
-      toggleButton.textContent = isExpanded ? sourceNotes ? "收起完整笔记" : "收起详情" : state.quizMode ? "查看解析" : sourceNotes ? "展开完整笔记" : "展开详情";
+      toggleButton.textContent = isExpanded ? sourceNotes && state.randomEntrySource === "notes" ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情" : state.quizMode ? "查看解析" : sourceNotes ? "展开完整笔记" : "展开详情";
       toggleButton.setAttribute("aria-expanded", String(isExpanded));
       toggleButton.setAttribute("aria-controls", detailsId);
       details.id = detailsId;
       toggleButton.addEventListener("click", () => {
+        if (sourceNotes && state.randomEntrySource === "notes") {
+          uiState.expandedIds.delete(entry.id);
+          setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
+          window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
+          return;
+        }
+        if (sourceNotes && !isExpanded && state.randomEntrySource !== "notes") {
+          uiState.expandedIds.add(entry.id);
+          setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: "notes" }, { clearRandom: false, resetCardLimit: false });
+          window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
+          return;
+        }
         const cardTop = article.getBoundingClientRect().top;
         if (uiState.expandedIds.has(entry.id)) {
           uiState.expandedIds.delete(entry.id);
@@ -17685,7 +17791,7 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       const tabs = [...fragment.querySelectorAll("[data-detail-tab]")];
       const panes = [...fragment.querySelectorAll("[data-detail-pane]")];
       const hasOverview = [getQuickReviewItems(entry), entry.reasoning, entry.memory, entry.pitfalls].some((items) => items.length > 0);
-      const defaultTab = sourceNotes && !hasOverview ? "notes" : "overview";
+      const defaultTab = sourceNotes && (state.randomEntrySource === "notes" || !hasOverview) ? "notes" : "overview";
       const availableTabs = new Set(hasOverview || !sourceNotes ? ["overview"] : []);
       if (sourceNotes) availableTabs.add("notes");
       if (entry.journalEntries.length > 0) availableTabs.add("journal");
@@ -17781,12 +17887,15 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
         mermaidNodes.push(chart);
       }
       const tagRow = fragment.querySelector(".tag-row");
-      entry.tags.forEach((tag) => {
+      const extraTags = fragment.querySelector(".extra-tags");
+      const tagDetails = fragment.querySelector(".card-tags");
+      entry.tags.forEach((tag, index) => {
         const span = document.createElement("span");
         span.className = "tag";
         span.textContent = tag;
-        tagRow.appendChild(span);
+        (index < 4 ? tagRow : extraTags).appendChild(span);
       });
+      tagDetails.hidden = entry.tags.length <= 4;
       cardList.appendChild(fragment);
     });
     if (entries.length < totalEntries) {
@@ -18495,10 +18604,38 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       return panel;
     }
     panel.append(studyNode("div", "preview-topic", entry.topic), studyNode("h4", "preview-question", entry.question));
-    const list = studyNode("ol", "preview-conclusions");
+    const conclusion = studyNode("section", "preview-section preview-core");
+    conclusion.append(studyNode("h5", "", "核心结论"));
+    const list = studyNode("ul", "preview-conclusions");
     createListItems(list, (entry.conclusion || []).slice(0, 3));
     if (!list.children.length) list.append(studyNode("li", "", entry.summary));
-    panel.append(list, studyAction("查看知识卡片", () => openDashboardEntry(entry.id)));
+    conclusion.append(list);
+    panel.append(conclusion);
+    if (entry.reasoning?.length) {
+      const reasoning = studyNode("section", "preview-section");
+      reasoning.append(studyNode("h5", "", "判断逻辑"));
+      const points = studyNode("ol", "preview-reasoning");
+      createListItems(points, entry.reasoning.slice(0, 3));
+      reasoning.append(points);
+      panel.append(reasoning);
+    }
+    if (entry.journalEntries?.length) {
+      const journal = entry.journalEntries[0];
+      const section = studyNode("section", "preview-section");
+      section.append(studyNode("h5", "", "典型分录"));
+      const box = studyNode("div", "preview-journal");
+      box.append(studyNode("strong", "", journal.title));
+      if (journal.scope) box.append(studyNode("p", "preview-journal-context", journal.scope));
+      if (journal.condition) box.append(studyNode("p", "preview-journal-context", journal.condition));
+      (journal.lines || []).forEach((line) => {
+        const row = studyNode("div", "preview-journal-line");
+        row.append(studyNode("span", "", `${line.side}：${line.account}`), studyNode("span", "", line.amount || ""));
+        box.append(row);
+      });
+      section.append(box);
+      panel.append(section);
+    }
+    panel.append(studyAction("查看知识卡片", () => openDashboardEntry(entry.id)));
     return panel;
   }
   function renderDashboard(entries) {
@@ -18542,6 +18679,9 @@ window.studyData.entries.push(...[{"id":"financial-instruments-01","updatedAt":"
       return;
     }
     document.body.dataset.view = state.viewMode;
+    const isNoteView = state.viewMode === "cards" && state.randomEntrySource === "notes" && Boolean(state.randomEntryId);
+    document.body.dataset.noteView = String(isNoteView);
+    if (isNoteView) uiState.expandedIds.add(state.randomEntryId);
     const filteredEntries = getFilteredEntries();
     entryCount.textContent = `${studyData.entries.length} 个知识点`;
     updatedAt.textContent = `更新时间 ${studyData.updatedAt}`;

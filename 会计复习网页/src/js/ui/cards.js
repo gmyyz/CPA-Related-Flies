@@ -288,6 +288,17 @@ function updateRenderedCardProgress(entryId) {
 function renderCards(entries, totalEntries = entries.length) {
   clearNode(cardList);
   const mermaidNodes = [];
+  if (state.randomEntrySource === "notes" && state.randomEntryId) {
+    const returnEntryId = state.randomEntryId;
+    const back = studyNode("button", "note-back-button ghost-button", "← 返回知识卡片");
+    back.type = "button";
+    back.addEventListener("click", () => {
+      uiState.expandedIds.delete(returnEntryId);
+      setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
+      window.requestAnimationFrame(() => scrollEntryIntoView(returnEntryId));
+    });
+    cardList.appendChild(back);
+  }
   entries.forEach((entry) => {
     const fragment = cardTemplate.content.cloneNode(true);
     const article = fragment.querySelector(".qa-card");
@@ -319,7 +330,7 @@ function renderCards(entries, totalEntries = entries.length) {
     summary.hidden = state.quizMode && !isExpanded;
     hint.hidden = !(state.quizMode && !isExpanded);
     toggleButton.textContent = isExpanded
-      ? (sourceNotes ? "收起完整笔记" : "收起详情")
+      ? (sourceNotes && state.randomEntrySource === "notes" ? "返回知识卡片" : sourceNotes ? "收起完整笔记" : "收起详情")
       : state.quizMode
         ? "查看解析"
         : (sourceNotes ? "展开完整笔记" : "展开详情");
@@ -327,6 +338,18 @@ function renderCards(entries, totalEntries = entries.length) {
     toggleButton.setAttribute("aria-controls", detailsId);
     details.id = detailsId;
     toggleButton.addEventListener("click", () => {
+      if (sourceNotes && state.randomEntrySource === "notes") {
+        uiState.expandedIds.delete(entry.id);
+        setState({ randomEntryId: null, randomEntrySource: "" }, { clearRandom: false, resetCardLimit: false });
+        window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
+        return;
+      }
+      if (sourceNotes && !isExpanded && state.randomEntrySource !== "notes") {
+        uiState.expandedIds.add(entry.id);
+        setState({ viewMode: "cards", journalMode: false, randomEntryId: entry.id, randomEntrySource: "notes" }, { clearRandom: false, resetCardLimit: false });
+        window.requestAnimationFrame(() => scrollEntryIntoView(entry.id));
+        return;
+      }
       const cardTop = article.getBoundingClientRect().top;
       if (uiState.expandedIds.has(entry.id)) {
         uiState.expandedIds.delete(entry.id);
@@ -374,7 +397,7 @@ function renderCards(entries, totalEntries = entries.length) {
     const tabs = [...fragment.querySelectorAll("[data-detail-tab]")];
     const panes = [...fragment.querySelectorAll("[data-detail-pane]")];
     const hasOverview = [getQuickReviewItems(entry), entry.reasoning, entry.memory, entry.pitfalls].some((items) => items.length > 0);
-    const defaultTab = sourceNotes && !hasOverview ? "notes" : "overview";
+    const defaultTab = sourceNotes && (state.randomEntrySource === "notes" || !hasOverview) ? "notes" : "overview";
     const availableTabs = new Set(hasOverview || !sourceNotes ? ["overview"] : []);
     if (sourceNotes) availableTabs.add("notes");
     if (entry.journalEntries.length > 0) availableTabs.add("journal");
@@ -468,12 +491,15 @@ function renderCards(entries, totalEntries = entries.length) {
       mermaidNodes.push(chart);
     }
     const tagRow = fragment.querySelector(".tag-row");
-    entry.tags.forEach((tag) => {
+    const extraTags = fragment.querySelector(".extra-tags");
+    const tagDetails = fragment.querySelector(".card-tags");
+    entry.tags.forEach((tag, index) => {
       const span = document.createElement("span");
       span.className = "tag";
       span.textContent = tag;
-      tagRow.appendChild(span);
+      (index < 4 ? tagRow : extraTags).appendChild(span);
     });
+    tagDetails.hidden = entry.tags.length <= 4;
     cardList.appendChild(fragment);
   });
   if (entries.length < totalEntries) {
